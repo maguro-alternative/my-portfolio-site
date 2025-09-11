@@ -2,13 +2,40 @@ import Twitter from "@/components/twitter";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <h1 className="text-1 px-5 pt-10 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 relative z-2 container mx-auto xl:px-10 xl:pt-20 grid grid-cols-1">
-        ようこそ！！！
-        マグロポートフォリオ用トップページへ！！！
-      </h1>
-      <div className='sm:block md:flex lg:flex'>
-        <Twitter id="sigumataityouda" />
+    <div className="container mx-auto">
+      <div className="flex md:flex-row justify-between items-center p-2">
+        <div className="flex gap-5 mb-2.5 md:mb-0 p-2 text-white">
+          <a href="#" className="no-underline">
+            Home
+          </a>
+          <a href="#" className="no-underline">
+            About
+          </a>
+          <a href="#" className="no-underline">
+            Contact
+          </a>
+        </div>
+        <div className="flex items-center">
+          <Twitter id="sigumataityouda" />
+        </div>
+      </div>
+      <div className="text-white max-w-4/5 mx-auto">
+        <div className="flex md:flex-row justify-center items-center mb-5">
+          <div className="md:w-1/2">
+            <h1 className="text-4xl">ユニコォォォォォォォォォォォォォォォォォーーーーーーーーーン！！！</h1>
+            <p>
+              This is a sample application built with Honox, showcasing the use of islands and components.
+            </p>
+            <p>
+              Explore the code and see how you can create interactive web applications with ease!
+            </p>
+          </div>
+          <div className="flex justify-center items-center mb-5 md:w-1/2">
+          </div>
+        </div>
+      </div>
+      <div className="text-center p-5 text-white">
+        <p>© 2025 Maguro Alternative. All rights reserved.</p>
       </div>
     </div>
   );
