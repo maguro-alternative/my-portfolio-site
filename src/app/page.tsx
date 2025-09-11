@@ -1,4 +1,5 @@
 import Twitter from "@/components/twitter";
+import Github from "@/components/github";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
         </div>
         <div className="flex items-center">
           <Twitter id="sigumataityouda" />
+          <Github id="maguro-alternative" />
         </div>
       </div>
       <div className="text-white max-w-4/5 mx-auto">
