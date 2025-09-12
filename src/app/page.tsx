@@ -1,9 +1,11 @@
 import Twitter from "@/components/twitter";
 import Github from "@/components/github";
+import SpotlightAndWave from "@/components/SpotLightAndWave";
 
 export default function Home() {
   return (
     <div className="container mx-auto">
+      <SpotlightAndWave />
       <div className="flex md:flex-row justify-between items-center p-2">
         <div className="flex gap-5 mb-2.5 md:mb-0 p-2 text-white">
           <a href="#" className="no-underline">
