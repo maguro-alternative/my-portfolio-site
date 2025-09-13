@@ -225,10 +225,7 @@ export default function SpotlightAndWave() {
   const canvasOverlayRef = useRef<HTMLCanvasElement | null>(null);
   const { width, height } = useResizeEffect();
 
-  useEffect(() => {
-    const cleanup = canvasSpotligth(width, height, canvasWaveRef, canvasOverlayRef);
-    return cleanup;
-  }, [width, height]);
+  canvasSpotligth(width, height, canvasWaveRef, canvasOverlayRef)
 
   const canvasStyle: React.CSSProperties = { position: "fixed", top: 0, left: 0, width: "100%", height: "100%" };
 
