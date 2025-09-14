@@ -1,6 +1,6 @@
 import Twitter from "@/components/twitter";
 import Github from "@/components/github";
-import SpotlightAndWave from "@/components/SpotLightAndWave";
+import SpotlightAndWave from "@/components/features/SpotLightAndWave";
 
 export default function Home() {
   return (
