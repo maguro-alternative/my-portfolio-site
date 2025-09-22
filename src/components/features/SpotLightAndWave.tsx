@@ -17,7 +17,7 @@ let cachedSnapshot = { width: 0, height: 0 };
 let cachedServerSnapshot = { width: 0, height: 0 };
 
 function useResizeEffect() {
-  const getSnapshot = useCallback(() => {
+  const getSnapshot = () => {
     const width = isClient ? window.innerWidth : 0;
     const height = isClient ? window.innerHeight : 0;
     
@@ -27,11 +27,11 @@ function useResizeEffect() {
     }
     
     return cachedSnapshot;
-  }, []);
+  };
 
-  const getServerSnapshot = useCallback(() => {
+  const getServerSnapshot = () => {
     return cachedServerSnapshot;
-  }, []);
+  };
 
   return useSyncExternalStore(resizeSubscribe, getSnapshot, getServerSnapshot);
 }
