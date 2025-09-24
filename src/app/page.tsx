@@ -1,5 +1,6 @@
 import Twitter from "@/components/twitter";
 import Github from "@/components/github";
+import Uchuemon from "@/components/commonUI/uchuemon";
 import SpotlightAndWave from "@/components/features/SpotLightAndWave";
 
 export default function Home() {
@@ -35,6 +36,7 @@ export default function Home() {
             </p>
           </div>
           <div className="flex justify-center items-center mb-5 md:w-1/2">
+            <Uchuemon />
           </div>
         </div>
       </div>
