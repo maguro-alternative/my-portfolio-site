@@ -15,7 +15,7 @@ export default function ProfilePage() {
       className="h-screen overflow-hidden bg-cover"
       style={{ backgroundImage: `url('${selectedBackground}')` }}
     >
-      <div className="flex fixed w-full h-full snow-container">
+      <div className="flex fixed w-full h-full">
         <div className="before:absolute after:absolute w-full h-full color-snow text-center before:content-['❄'] before:left-[-30%] before:animate-fall-small-9 after:content-['❄'] after:left-[30%] after:animate-fall-small-9">
           <span className="absolute animate-fall-small-13">❄</span>
         </div>
