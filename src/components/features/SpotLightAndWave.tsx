@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useSyncExternalStore, useCallback, useMemo, useEffect, type RefObject } from "react";
+import { useRef, useSyncExternalStore, type RefObject } from "react";
 import { noise } from "@/lib/perlin";
 
 const isClient = typeof window !== 'undefined';
