@@ -1,7 +1,14 @@
 'use client'
 
-import configs from "@tsparticles/configs";
 import { type ISourceOptions } from "@tsparticles/engine";
+
+function isClientSide() {
+  try {
+    return !!window;
+  } catch {
+    return false;
+  }
+}
 
 export default function SnowContainer() {
   const config:ISourceOptions = {
@@ -101,7 +108,7 @@ export default function SnowContainer() {
     }
   };
 
-  if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+  if (isClientSide()) {
     initParticles();
   }
 
