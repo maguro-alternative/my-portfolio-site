@@ -13,14 +13,14 @@ const config: StorybookConfig = {
     "@storybook/addon-vitest"
   ],
   "framework": {
-    "name": "@storybook/nextjs-vite",
+    "name": "@storybook/nextjs",
     "options": {}
   },
   "staticDirs": [
     "../public"
   ],
   features: {
-    experimentalRSC: true
+    experimentalRSC: true,
   }
 };
 export default config;
