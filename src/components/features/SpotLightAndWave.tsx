@@ -20,7 +20,7 @@ function resizeSubscribe(callback: () => void) {
 }
 
 let cachedSnapshot = { width: 0, height: 0 };
-let cachedServerSnapshot = { width: 0, height: 0 };
+const cachedServerSnapshot = { width: 0, height: 0 };
 
 function useResizeEffect() {
   const getSnapshot = () => {
@@ -87,7 +87,7 @@ export function drawWave(
   w: number,
   h: number,
   vertexNum: number = 10,
-  maxVertex: number = 5,
+  // maxVertex: number = 5,
   debugMode: boolean = false
 ): void {
   // 曲線を描き直す
