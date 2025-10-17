@@ -3,18 +3,7 @@
 import { useRef, useSyncExternalStore, type RefObject } from "react";
 import { noise } from "@/lib/perlin";
 
-function isClientSide() {
-  try {
-    return !!window;
-  } catch {
-    return false;
-  }
-}
-
 function resizeSubscribe(callback: () => void) {
-  if (!isClientSide()) {
-    return () => {};
-  }
   window.addEventListener("resize", callback);
   return () => window.removeEventListener("resize", callback);
 }
@@ -22,10 +11,10 @@ function resizeSubscribe(callback: () => void) {
 let cachedSnapshot = { width: 0, height: 0 };
 const cachedServerSnapshot = { width: 0, height: 0 };
 
-function useResizeEffect() {
+function useWindowSize() {
   const getSnapshot = () => {
-    const width = isClientSide() ? window.innerWidth : 0;
-    const height = isClientSide() ? window.innerHeight : 0;
+    const width =  window.innerWidth;
+    const height = window.innerHeight;
     
     // 値が変更された場合のみ新しいオブジェクトを作成
     if (cachedSnapshot.width !== width || cachedSnapshot.height !== height) {
@@ -229,11 +218,9 @@ function canvasSpotligth(
 export default function SpotlightAndWave() {
   const canvasWaveRef = useRef<HTMLCanvasElement | null>(null);
   const canvasOverlayRef = useRef<HTMLCanvasElement | null>(null);
-  const { width, height } = useResizeEffect();
+  const { width, height } = useWindowSize();
 
-  canvasSpotligth(width, height, canvasWaveRef, canvasOverlayRef)
-
-  console.log(isClientSide(), width, height)
+  canvasSpotligth(width, height, canvasWaveRef, canvasOverlayRef);
 
   const canvasStyle: React.CSSProperties = { position: "fixed", top: 0, left: 0, width: "100%", height: "100%" };
 
