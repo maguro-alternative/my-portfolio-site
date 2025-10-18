@@ -13,7 +13,7 @@ const config: StorybookConfig = {
     "@storybook/addon-vitest"
   ],
   "framework": {
-    "name": "@storybook/nextjs",
+    "name": "@storybook/nextjs-vite",
     "options": {}
   },
   "staticDirs": [
