@@ -2,14 +2,6 @@
 
 import { type ISourceOptions } from "@tsparticles/engine";
 
-function isClientSide() {
-  try {
-    return !!window;
-  } catch {
-    return false;
-  }
-}
-
 export default function SnowContainer() {
   const config:ISourceOptions = {
     particles: {
@@ -108,12 +100,21 @@ export default function SnowContainer() {
     }
   };
 
-  if (isClientSide()) {
-    initParticles();
-  }
+  initParticles();
 
   return (
     <div>
+      <div className="flex fixed w-full h-full">
+        <div className="before:absolute after:absolute w-full h-full color-snow text-center before:content-['❄'] before:left-[-30%] before:animate-fall-small-9 after:content-['❄'] after:left-[30%] after:animate-fall-small-9">
+          <span className="absolute animate-fall-small-13">❄</span>
+        </div>
+        <div className="before:absolute after:absolute before:content-['❄'] before:left-[-40%] before:animate-fall-medium-10 after:content-['❄'] after:left-[40%] after:animate-fall-medium-6">
+          <span className="absolute animate-fall-medium-8 left-[10%]">❄</span>
+        </div>
+        <div className="before:absolute after:absolute before:content-['❄'] before:left-[-35%] before:animate-fall-large-6 after:content-['❄'] after:left-[35%] after:animate-fall-large-7">
+          <span className="absolute animate-fall-large-5 left-[-10%]">❄</span>
+        </div>
+      </div>
       <div id="tsparticles" style={{ background: '', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}></div>
     </div>
   );
