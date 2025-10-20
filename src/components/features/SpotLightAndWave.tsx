@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useSyncExternalStore, type RefObject } from "react";
+import { useSyncExternalStore, useState } from "react";
 import { noise } from "@/lib/perlin";
 
 function resizeSubscribe(callback: () => void) {
@@ -95,9 +95,9 @@ export function drawWave(
     const vertexArr: number[] = [];
     // 波の次の目標値を計算
     for (let j = 0; j <= vertexNum; j++) {
-        const noiseNum: number = noise.perlin2(j * 0.2, time + timeOffset);
-        // 目標座標を計算。画面の高さに比例
-        vertexArr[j] = noiseNum * h * 0.5;
+      const noiseNum: number = noise.perlin2(j * 0.2, time + timeOffset);
+      // 目標座標を計算。画面の高さに比例
+      vertexArr[j] = noiseNum * h * 0.5;
     }
 
     const BASE_Y: number = h / 2; // 画面中央のY座標
@@ -170,12 +170,9 @@ function drawDebugView(
 function canvasSpotligth(
   width: number,
   height: number,
-  canvasWaveRef: RefObject<HTMLCanvasElement | null>,
-  canvasOverlayRef: RefObject<HTMLCanvasElement | null>
+  canvasWave: HTMLCanvasElement | null,
+  canvasOverlay: HTMLCanvasElement | null
 ) {
-  const canvasWave = canvasWaveRef.current;
-  const canvasOverlay = canvasOverlayRef.current;
-
   if (!canvasWave || !canvasOverlay) return;
 
   const contextWave = canvasWave.getContext("2d");
@@ -216,11 +213,11 @@ function canvasSpotligth(
 }
 
 export default function SpotlightAndWave() {
-  const canvasWaveRef = useRef<HTMLCanvasElement | null>(null);
-  const canvasOverlayRef = useRef<HTMLCanvasElement | null>(null);
+  const [canvasWave, setCanvasWave] = useState<HTMLCanvasElement | null>(null);
+  const [canvasOverlay, setCanvasOverlay] = useState<HTMLCanvasElement | null>(null);
   const { width, height } = useWindowSize();
 
-  canvasSpotligth(width, height, canvasWaveRef, canvasOverlayRef);
+  canvasSpotligth(width, height, canvasWave, canvasOverlay);
 
   const canvasStyle: React.CSSProperties = { position: "fixed", top: 0, left: 0, width: "100%", height: "100%" };
 
@@ -229,12 +226,12 @@ export default function SpotlightAndWave() {
       <div id="bg" style={{ ...canvasStyle, zIndex: -2, background: "linear-gradient(to bottom, hsl(145, 33%, 48%),hsl(152, 21%, 54%),hsl(175, 20%, 53%))", animation: "AnimationName 10s ease infinite" } as React.CSSProperties}></div>
       <canvas
         id="canvasWave"
-        ref={canvasWaveRef}
+        ref={setCanvasWave}
         style={{ ...canvasStyle, zIndex: -3 }}
       />
       <canvas
         id="canvasOverlay"
-        ref={canvasOverlayRef}
+        ref={setCanvasOverlay}
         style={{ ...canvasStyle, zIndex: -1, mixBlendMode: "hard-light" }}
       />
     </div>
