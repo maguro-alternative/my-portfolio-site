@@ -144,8 +144,8 @@ export function drawWave(
 }
 
 function drawDebugView(
-    context: CanvasRenderingContext2D,
-    points: { x: number; y: number }[]
+  context: CanvasRenderingContext2D,
+  points: { x: number; y: number }[]
 ): void {
     for (let i = 0; i < points.length; i++) {
         const p0x: number = points[i].x;
