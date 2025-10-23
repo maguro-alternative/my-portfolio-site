@@ -147,24 +147,24 @@ function drawDebugView(
   context: CanvasRenderingContext2D,
   points: { x: number; y: number }[]
 ): void {
-    for (let i = 0; i < points.length; i++) {
-      const p0x: number = points[i].x;
-      const p0y: number = points[i].y;
-      if (i > 0) {
-          const p1x: number = points[i - 1].x;
-          const p1y: number = points[i - 1].y;
-          context.beginPath();
-          context.strokeStyle = "red";
-          context.lineWidth = 0.5;
-          context.moveTo(p1x, p1y);
-          context.lineTo(p0x, p0y);
-          context.stroke();
-      }
-      context.beginPath();
-      context.fillStyle = "red";
-      context.arc(p0x, p0y, 3, 0, 2 * Math.PI);
-      context.fill();
+  for (let i = 0; i < points.length; i++) {
+    const p0x: number = points[i].x;
+    const p0y: number = points[i].y;
+    if (i > 0) {
+        const p1x: number = points[i - 1].x;
+        const p1y: number = points[i - 1].y;
+        context.beginPath();
+        context.strokeStyle = "red";
+        context.lineWidth = 0.5;
+        context.moveTo(p1x, p1y);
+        context.lineTo(p0x, p0y);
+        context.stroke();
     }
+    context.beginPath();
+    context.fillStyle = "red";
+    context.arc(p0x, p0y, 3, 0, 2 * Math.PI);
+    context.fill();
+  }
 }
 
 function canvasSpotligth(
