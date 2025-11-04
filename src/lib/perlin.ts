@@ -66,7 +66,7 @@ const F3 = 1 / 3;
 const G3 = 1 / 6;
 
 function fade(t: number): number {
-    return t * t * t * (t * (t * 6 - 15) + 10);
+  return t * t * t * (t * (t * 6 - 15) + 10);
 }
 
 function lerp(a: number, b: number, t: number): number {
