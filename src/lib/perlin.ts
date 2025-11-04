@@ -76,8 +76,8 @@ function lerp(a: number, b: number, t: number): number {
 export const noise = {
     seed(seed: number): void {
         if (seed > 0 && seed < 1) {
-            // Scale seed out
-            seed *= 65536;
+          // Scale seed out
+          seed *= 65536;
         }
         seed = Math.floor(seed);
         if (seed < 256) {
