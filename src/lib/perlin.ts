@@ -81,7 +81,7 @@ export const noise = {
         }
         seed = Math.floor(seed);
         if (seed < 256) {
-            seed |= seed << 8;
+          seed |= seed << 8;
         }
 
         for (let i = 0; i < 256; i++) {
