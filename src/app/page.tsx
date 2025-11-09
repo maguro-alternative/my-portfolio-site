@@ -1,5 +1,5 @@
-import Twitter from "@/components/twitter";
-import Github from "@/components/github";
+import Twitter from "@/components/socials/twitter";
+import Github from "@/components/socials/github";
 import Uchuemon from "@/components/commonUI/uchuemon";
 import SpotlightAndWave from "@/components/features/SpotLightAndWave";
 
