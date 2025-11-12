@@ -26,8 +26,6 @@ export default function SnowContainer() {
               },
               shape: {
                   type: "circle",
-                  options: {
-                  }
               },
               opacity: {
                 value: { min: 0.3, max: 0.8 },  // 透明度もランダムに
