@@ -38,7 +38,6 @@ export default function SnowContainer() {
               },
               size: {
                 value: { min: 1, max: 6 },
-                //random: true,
                 animation: {
                   enable: false,
                   speed: 20,
