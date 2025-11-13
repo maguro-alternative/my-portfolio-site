@@ -22,7 +22,7 @@ export default function SnowContainer() {
                 }
               },
               color: {
-                  value: "#F4F4F4",
+                value: "#F4F4F4",
               },
               shape: {
                   type: "circle",
