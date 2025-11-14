@@ -219,20 +219,18 @@ export default function SpotlightAndWave() {
 
   canvasSpotligth(width, height, canvasWave, canvasOverlay);
 
-  const canvasStyle: React.CSSProperties = { position: "fixed", top: 0, left: 0, width: "100%", height: "100%" };
-
   return (
     <div>
-      <div id="bg" style={{ ...canvasStyle, zIndex: -2, background: "linear-gradient(to bottom, hsl(145, 33%, 48%),hsl(152, 21%, 54%),hsl(175, 20%, 53%))", animation: "AnimationName 10s ease infinite" } as React.CSSProperties}></div>
+      <div id="bg" className="fixed top-0 left-0 w-full h-full z-[-2] bg-[linear-gradient(to_bottom,hsl(145_33%_48%),hsl(152_21%_54%),hsl(175_20%_53%))] animate-[AnimationName_10s_ease_infinite]"></div>
       <canvas
         id="canvasWave"
         ref={setCanvasWave}
-        style={{ ...canvasStyle, zIndex: -3 }}
+        className="fixed top-0 left-0 w-full h-full z-[-3]"
       />
       <canvas
         id="canvasOverlay"
         ref={setCanvasOverlay}
-        style={{ ...canvasStyle, zIndex: -1, mixBlendMode: "hard-light" }}
+        className="fixed top-0 left-0 w-full h-full z-[-1] mix-blend-hard-light"
       />
     </div>
   );
