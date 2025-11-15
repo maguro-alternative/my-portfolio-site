@@ -112,7 +112,7 @@ export default function SnowContainer() {
           <span className="absolute animate-fall-large-5 left-[-10%]">❄</span>
         </div>
       </div>
-      <div id="tsparticles" style={{ background: '', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}></div>
+      <div id="tsparticles" className="absolute top-0 left-0 w-full h-full"></div>
     </Suspense>
   );
 }
