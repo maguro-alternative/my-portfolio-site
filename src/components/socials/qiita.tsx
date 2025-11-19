@@ -4,10 +4,41 @@ type Props = {
 
 export default function Qiita({ id }: Props) {
   return (
-    <a href={`https://qiita.com/${id}`} target="_blank" rel="noopener noreferrer">
-      <img 
-        src='https://img.shields.io/badge/Qiita-55C500?style=for-the-badge&logo=qiita&logoColor=white'
-      ></img>
-    </a>
+    <div className='sm:block md:flex lg:flex'>
+              {/*qitta*/}
+              <a 
+                href={`https://qiita.com/${id}`}
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <img 
+                  className='sm:float-none md:float-left lg:float-left'
+                  src={`https://badgen.org/img/qiita/${id}/contributions?style=plastic`} 
+                  alt="Contributions" 
+                />
+              </a>
+              <a 
+                href={`https://qiita.com/${id}`}
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <img 
+                  className='sm:float-none md:float-left lg:float-left'
+                  src={`https://badgen.org/img/qiita/${id}/followers?style=plastic`} 
+                  alt="Followers" 
+                />
+              </a>
+              <a 
+                href={`https://qiita.com/${id}`}
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <img 
+                  className='sm:float-none md:float-left lg:float-left'
+                  src={`https://badgen.org/img/qiita/${id}/articles?style=plastic`} 
+                  alt="Articles"
+                />
+              </a>
+            </div>
   )
 }
