@@ -41,7 +41,6 @@ export default function SnowContainer() {
                 animation: {
                   enable: false,
                   speed: 20,
-                  //size_min: 0.1,
                   sync: false
                 }
               },
