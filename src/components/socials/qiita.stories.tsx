@@ -17,6 +17,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    id: 'maguro_alterna',
+    id: 'maguro-alternative',
   },
 };
