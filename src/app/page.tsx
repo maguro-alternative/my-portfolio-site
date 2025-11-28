@@ -40,28 +40,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="bg-white opacity-50">
-        <img 
-          className='sm:float-none md:float-left lg:float-left md:w-1/12 md:h-3/6 xl:w-2/12'
-          src="https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue" 
-        />
-        <img 
-          className='sm:float-none md:float-left lg:float-left md:w-1/12 md:h-3/6 xl:w-2/12'
-          src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" 
-        />
-        <img 
-          className='sm:float-none md:float-left lg:float-left md:w-1/12 md:h-3/6 xl:w-2/12'
-          src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" 
-        />
-        <img 
-          className='sm:float-none md:float-left lg:float-left md:w-1/12 md:h-3/6 xl:w-2/12'
-          src="https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white" 
-        />
-        <img 
-          className='sm:float-none md:float-left lg:float-left md:w-1/12 md:h-3/6 xl:w-2/12'
-          src="https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white" 
-        />
-      </div>
       <div className="text-center p-5 text-white">
         <p>© 2025 Maguro Alternative. All rights reserved.</p>
       </div>
