@@ -1,102 +1,102 @@
 'use client'
-
-import { useEffect, Suspense } from "react";
+import { Suspense } from "react";
 
 export default function SnowContainer() {
-  useEffect(() => {
-    const initParticles = async () => {
-      try {
-        const { tsParticles } = await import("@tsparticles/engine");
-        const { loadAll } = await import("@tsparticles/all");
+  const initParticles = async () => {
+    try {
+      if (typeof window === 'undefined') {
+        return;
+      }
+      const { tsParticles } = await import("@tsparticles/engine");
+      const { loadAll } = await import("@tsparticles/all");
 
-        await loadAll(tsParticles);
+      await loadAll(tsParticles);
 
-        await tsParticles.load({
-          id: "tsparticles",
-          options: {
-            particles: {
-              number: {
-                value: 150,
-                density: {
-                  enable: true,
-                }
-              },
-              color: {
-                value: "#F4F4F4",
-              },
-              shape: {
-                  type: "circle",
-              },
-              opacity: {
-                value: { min: 0.3, max: 0.8 },  // 透明度もランダムに
-                animation: {
-                  enable: false,
-                  speed: 1,
-                  destroy: "min",
-                  sync: false
-                }
-              },
-              size: {
-                value: { min: 1, max: 6 },
-                animation: {
-                  enable: false,
-                  speed: 20,
-                  sync: false
-                }
-              },
-              line_linked: {
-                enable: false
-              },
-              move: {
+      await tsParticles.load({
+        id: "tsparticles",
+        options: {
+          particles: {
+            number: {
+              value: 150,
+              density: {
                 enable: true,
-                speed: 5,
-                direction: "bottom",
-                random: true,
-                straight: false,
-                outModes: "out",
-                attract: {
-                  enable: false,
-                  rotate: {
-                    x: 300,
-                    y: 1200,
-                  },
-                }
-              },
-              
-              zIndex: {
-                  value: {
-                    min: 0,
-                    max: 1,
-                  },
-                  opacityRate: 10,
-                  sizeRate: 10,
-                  velocityRate: 10,
-              },
-            },
-            interactivity: {
-              detect_on: "canvas",
-              events: {
-                onHover: {
-                  enable: false
-                },
-                onClick: {
-                  enable: false
-                },
-                resize: {
-                  enable: true
-                }
               }
             },
-            retina_detect: true
+            color: {
+              value: "#F4F4F4",
+            },
+            shape: {
+                type: "circle",
+            },
+            opacity: {
+              value: { min: 0.3, max: 0.8 },  // 透明度もランダムに
+              animation: {
+                enable: false,
+                speed: 1,
+                destroy: "min",
+                sync: false
+              }
+            },
+            size: {
+              value: { min: 1, max: 6 },
+              animation: {
+                enable: false,
+                speed: 20,
+                sync: false
+              }
+            },
+            line_linked: {
+              enable: false
+            },
+            move: {
+              enable: true,
+              speed: 5,
+              direction: "bottom",
+              random: true,
+              straight: false,
+              outModes: "out",
+              attract: {
+                enable: false,
+                rotate: {
+                  x: 300,
+                  y: 1200,
+                },
+              }
+            },
+            
+            zIndex: {
+                value: {
+                  min: 0,
+                  max: 1,
+                },
+                opacityRate: 10,
+                sizeRate: 10,
+                velocityRate: 10,
+            },
           },
-        });
-      } catch (error) {
-        console.error("Failed to load particles:", error);
-      }
-    };
+          interactivity: {
+            detect_on: "canvas",
+            events: {
+              onHover: {
+                enable: false
+              },
+              onClick: {
+                enable: false
+              },
+              resize: {
+                enable: true
+              }
+            }
+          },
+          retina_detect: true
+        },
+      });
+    } catch (error) {
+      console.error("Failed to load particles:", error);
+    }
+  };
 
-    initParticles();
-  }, []);
+  initParticles();
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
