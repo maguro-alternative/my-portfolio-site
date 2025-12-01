@@ -2,9 +2,16 @@
 import { Suspense } from "react";
 
 export default function SnowContainer() {
+  const getIsClient = () => {
+    try {
+      return !!window;
+    } catch {
+      return false;
+    }
+  };
   const initParticles = async () => {
     try {
-      if (typeof window === 'undefined') {
+      if (!getIsClient()) {
         return;
       }
       const { tsParticles } = await import("@tsparticles/engine");
