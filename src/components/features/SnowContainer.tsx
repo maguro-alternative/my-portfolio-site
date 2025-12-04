@@ -1,14 +1,15 @@
 'use client'
 import { Suspense } from "react";
 
+const getIsClient = () => {
+  try {
+    return !!window;
+  } catch {
+    return false;
+  }
+};
+
 export default function SnowContainer() {
-  const getIsClient = () => {
-    try {
-      return !!window;
-    } catch {
-      return false;
-    }
-  };
   const initParticles = async () => {
     try {
       if (!getIsClient()) {
