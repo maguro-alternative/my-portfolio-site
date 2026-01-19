@@ -34,7 +34,7 @@ export default function SnowContainer() {
               value: "#F4F4F4",
             },
             shape: {
-                type: "circle",
+              type: "circle",
             },
             opacity: {
               value: { min: 0.3, max: 0.8 },  // 透明度もランダムに
@@ -73,13 +73,13 @@ export default function SnowContainer() {
             },
             
             zIndex: {
-                value: {
-                  min: 0,
-                  max: 1,
-                },
-                opacityRate: 10,
-                sizeRate: 10,
-                velocityRate: 10,
+              value: {
+                min: 0,
+                max: 1,
+              },
+              opacityRate: 10,
+              sizeRate: 10,
+              velocityRate: 10,
             },
           },
           interactivity: {
