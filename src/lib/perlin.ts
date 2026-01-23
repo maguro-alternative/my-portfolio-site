@@ -8,7 +8,7 @@ export class Grad {
   }
 
   dot3(x: number, y: number, z: number): number {
-      return this.x * x + this.y * y + this.z * z;
+    return this.x * x + this.y * y + this.z * z;
   }
 }
 
