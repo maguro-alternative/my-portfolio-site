@@ -15,9 +15,9 @@
     "@tsparticles/configs": "^3.9.1",
     "@tsparticles/engine": "^3.9.1",
     "drizzle-orm": "^0.44.5",
-    "next": "^15.5.4",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "next": "^16.1.2",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.1",
