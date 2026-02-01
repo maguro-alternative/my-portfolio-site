@@ -5,7 +5,7 @@ export function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
   const hostname = req.headers.get("host") || "";
 
-  if (process.env.VERCEL_ENV !== 'development') {
+  if (process.env.VERCEL_ENV === 'development') {
     console.log('Middleware is only active in development mode.');
     return NextResponse.next();
   }
