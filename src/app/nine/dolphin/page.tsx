@@ -20,6 +20,29 @@ export default function NineDolphin() {
   const [showSuggestions, setShowSuggestions] = useState<boolean[]>(Array(9).fill(false));
   const cardRef = useRef<HTMLDivElement>(null);
 
+  // URLパラメータから選択内容を復元
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const urlTitle = params.get('title');
+    if (urlTitle) {
+      setTitle(urlTitle);
+    }
+
+    const items: SelectedItem[] = Array(9).fill(null).map(() => ({ name: '' }));
+    for (let i = 1; i <= 9; i++) {
+      const name = params.get(`c${i}`);
+      const image = params.get(`img${i}`);
+      if (name) {
+        items[i - 1] = { name, image: image || undefined };
+      }
+    }
+    
+    // 少なくとも1つ選択されている場合のみ更新
+    if (items.some(item => item.name)) {
+      setSelectedItems(items);
+    }
+  }, []);
+
   // OGP画像URLを更新
   useEffect(() => {
     const params = new URLSearchParams();
