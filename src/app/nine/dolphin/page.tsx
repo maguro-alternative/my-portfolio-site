@@ -27,6 +27,9 @@ export default function NineDolphin() {
     selectedItems.forEach((item, index) => {
       if (item.name) {
         params.set(`c${index + 1}`, item.name);
+        if (item.image) {
+          params.set(`img${index + 1}`, item.image);
+        }
       }
     });
     
@@ -113,7 +116,21 @@ export default function NineDolphin() {
     const items = selectedItems
       .map((item, i) => `${i + 1}. ${item.name || '未選択'}`)
       .join('\n');
-    return `#私を構成する9つのドルフィンウェーブキャラクター\n\n${items}`;
+    
+    // URLパラメータを生成
+    const params = new URLSearchParams();
+    params.set('title', title);
+    selectedItems.forEach((item, index) => {
+      if (item.name) {
+        params.set(`c${index + 1}`, item.name);
+        if (item.image) {
+          params.set(`img${index + 1}`, item.image);
+        }
+      }
+    });
+    
+    const shareUrl = `${window.location.origin}/nine/dolphin?${params.toString()}`;
+    return `#私を構成する9つのドルフィンウェーブキャラクター\n\n${items}\n\n${shareUrl}`;
   };
 
   const handleCopyShareText = () => {

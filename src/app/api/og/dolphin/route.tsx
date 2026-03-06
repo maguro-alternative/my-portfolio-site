@@ -8,10 +8,14 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const title = searchParams.get('title') || '私を構成する9つのドルフィンウェーブキャラクター';
     
-    const characters: string[] = [];
+    // キャラクター画像URLを取得（最大9個）
+    const characterImages: string[] = [];
+    const characterNames: string[] = [];
     for (let i = 1; i <= 9; i++) {
-      const char = searchParams.get(`c${i}`);
-      if (char) characters.push(decodeURIComponent(char));
+      const img = searchParams.get(`img${i}`);
+      const name = searchParams.get(`c${i}`);
+      if (img) characterImages.push(decodeURIComponent(img));
+      if (name) characterNames.push(decodeURIComponent(name));
     }
 
     return new ImageResponse(
@@ -36,18 +40,18 @@ export async function GET(request: NextRequest) {
               justifyContent: 'center',
               backgroundColor: 'white',
               borderRadius: '24px',
-              padding: '40px',
-              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+              padding: '32px',
+              boxShadow: '0 8px 16px rgba(0, 0, 0, 0.1)',
               width: '90%',
               maxWidth: '1100px',
             }}
           >
             <h1
               style={{
-                fontSize: '48px',
+                fontSize: '40px',
                 fontWeight: 'bold',
                 color: '#1e293b',
-                marginBottom: '40px',
+                marginBottom: '32px',
                 textAlign: 'center',
               }}
             >
@@ -57,7 +61,7 @@ export async function GET(request: NextRequest) {
               style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(3, 1fr)',
-                gap: '16px',
+                gap: '12px',
                 width: '100%',
               }}
             >
@@ -69,45 +73,81 @@ export async function GET(request: NextRequest) {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    backgroundColor: '#f1f5f9',
+                    backgroundColor: characterImages[index] ? 'transparent' : '#f1f5f9',
                     borderRadius: '12px',
-                    padding: '20px',
-                    height: '140px',
+                    overflow: 'hidden',
+                    height: '160px',
                     border: '2px solid #cbd5e1',
+                    position: 'relative',
                   }}
                 >
-                  <div
-                    style={{
-                      fontSize: '14px',
-                      fontWeight: 'bold',
-                      color: '#64748b',
-                      marginBottom: '8px',
-                    }}
-                  >
-                    #{index + 1}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: '16px',
-                      color: '#334155',
-                      textAlign: 'center',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: 'vertical',
-                    }}
-                  >
-                    {characters[index] || '未選択'}
-                  </div>
+                  {characterImages[index] ? (
+                    <>
+                      <img
+                        src={characterImages[index]}
+                        alt={characterNames[index] || `Character ${index + 1}`}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                        }}
+                      />
+                      <div
+                        style={{
+                          position: 'absolute',
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
+                          padding: '8px',
+                          display: 'flex',
+                          flexDirection: 'column',
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontSize: '12px',
+                            color: 'white',
+                            textAlign: 'center',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          {characterNames[index] || '未選択'}
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div
+                        style={{
+                          fontSize: '14px',
+                          fontWeight: 'bold',
+                          color: '#64748b',
+                          marginBottom: '8px',
+                        }}
+                      >
+                        #{index + 1}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: '14px',
+                          color: '#94a3b8',
+                        }}
+                      >
+                        未選択
+                      </div>
+                    </>
+                  )}
                 </div>
               ))}
             </div>
           </div>
           <div
             style={{
-              marginTop: '24px',
-              fontSize: '20px',
+              marginTop: '20px',
+              fontSize: '18px',
               color: '#64748b',
               display: 'flex',
               alignItems: 'center',
