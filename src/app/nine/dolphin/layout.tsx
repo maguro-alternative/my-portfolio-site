@@ -13,8 +13,29 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "私を構成する9つのドルフィンウェーブキャラクター",
-  description: "9つのドルフィンウェーブキャラクターを選んで画像として保存",
+  title: "私を構成する9つのドルフィンウェーブのキャラクター",
+  description: "9つのドルフィンウェーブのキャラクターを選んで画像として保存。お気に入りのキャラクターで自分だけの画像を作成できます。",
+  openGraph: {
+    title: "私を構成する9つのドルフィンウェーブのキャラクター",
+    description: "9つのドルフィンウェーブのキャラクターを選んで画像として保存",
+    type: "website",
+    locale: "ja_JP",
+    siteName: "私を構成する9つのドルフィンウェーブのキャラクター",
+    images: [
+      {
+        url: '/api/og/dolphin?title=私を構成する9つのドルフィンウェーブのキャラクター',
+        width: 1200,
+        height: 630,
+        alt: '私を構成する9つのドルフィンウェーブのキャラクター',
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "私を構成する9つのドルフィンウェーブのキャラクター",
+    description: "9つのドルフィンウェーブのキャラクターを選んで画像として保存",
+    images: ['/api/og/dolphin?title=私を構成する9つのドルフィンウェーブのキャラクター'],
+  },
 };
 
 export default function RootLayout({

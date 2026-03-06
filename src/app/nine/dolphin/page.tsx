@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { toPng } from 'html-to-image';
 import { CharacterSearchCard } from './components/CharacterSearchCard';
 import { ShareTextSection } from './components/ShareTextSection';
@@ -19,6 +19,39 @@ export default function NineDolphin() {
   const [searchTerms, setSearchTerms] = useState<string[]>(Array(9).fill(''));
   const [showSuggestions, setShowSuggestions] = useState<boolean[]>(Array(9).fill(false));
   const cardRef = useRef<HTMLDivElement>(null);
+
+  // OGP画像URLを更新
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.set('title', title);
+    selectedItems.forEach((item, index) => {
+      if (item.name) {
+        params.set(`c${index + 1}`, item.name);
+      }
+    });
+    
+    const ogUrl = `/api/og/dolphin?${params.toString()}`;
+    const ogMetaImage = document.querySelector('meta[property="og:image"]');
+    const twitterMetaImage = document.querySelector('meta[name="twitter:image"]');
+    
+    if (ogMetaImage) {
+      ogMetaImage.setAttribute('content', `${window.location.origin}${ogUrl}`);
+    } else {
+      const meta = document.createElement('meta');
+      meta.setAttribute('property', 'og:image');
+      meta.setAttribute('content', `${window.location.origin}${ogUrl}`);
+      document.head.appendChild(meta);
+    }
+    
+    if (twitterMetaImage) {
+      twitterMetaImage.setAttribute('content', `${window.location.origin}${ogUrl}`);
+    } else {
+      const meta = document.createElement('meta');
+      meta.setAttribute('name', 'twitter:image');
+      meta.setAttribute('content', `${window.location.origin}${ogUrl}`);
+      document.head.appendChild(meta);
+    }
+  }, [title, selectedItems]);
 
   const handleSearch = (index: number, value: string) => {
     const newSearchTerms = [...searchTerms];
