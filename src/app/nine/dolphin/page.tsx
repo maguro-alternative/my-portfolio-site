@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { toPng } from 'html-to-image';
+import html2canvas from 'html2canvas';
 import { CharacterSearchCard } from './components/CharacterSearchCard';
 import { ShareTextSection } from './components/ShareTextSection';
 import { PreviewGrid } from './components/PreviewGrid';
@@ -18,6 +18,7 @@ export default function NineDolphin() {
   );
   const [searchTerms, setSearchTerms] = useState<string[]>(Array(9).fill(''));
   const [showSuggestions, setShowSuggestions] = useState<boolean[]>(Array(9).fill(false));
+  const [shareText, setShareText] = useState('');
   const cardRef = useRef<HTMLDivElement>(null);
 
   // URLパラメータから選択内容を復元
@@ -79,6 +80,11 @@ export default function NineDolphin() {
     }
   }, [title, selectedItems]);
 
+  // shareTextを更新
+  useEffect(() => {
+    setShareText(generateShareText());
+  }, [title, selectedItems]);
+
   const handleSearch = (index: number, value: string) => {
     const newSearchTerms = [...searchTerms];
     newSearchTerms[index] = value;
@@ -91,7 +97,9 @@ export default function NineDolphin() {
 
   const handleSelect = (index: number, name: string, imageUrl: string) => {
     const newSelectedItems = [...selectedItems];
-    newSelectedItems[index] = { name, image: imageUrl };
+    // 画像URLをプロキシ経由に変換
+    const proxiedImageUrl = `/api/image-proxy?url=${encodeURIComponent(imageUrl)}`;
+    newSelectedItems[index] = { name, image: proxiedImageUrl };
     setSelectedItems(newSelectedItems);
 
     const newSearchTerms = [...searchTerms];
@@ -121,17 +129,21 @@ export default function NineDolphin() {
     if (!cardRef.current) return;
 
     try {
-      const dataUrl = await toPng(cardRef.current, {
-        quality: 1,
-        pixelRatio: 2,
+      const canvas = await html2canvas(cardRef.current, {
+        useCORS: true,
+        allowTaint: true,
+        scale: 2,
+        backgroundColor: '#ffffff',
       });
 
+      const dataUrl = canvas.toDataURL('image/png');
       const link = document.createElement('a');
       link.download = 'my-9-dolphin-wave.png';
       link.href = dataUrl;
       link.click();
     } catch (err) {
       console.error('画像の生成に失敗しました', err);
+      alert('画像の生成に失敗しました。');
     }
   };
 
@@ -162,7 +174,7 @@ export default function NineDolphin() {
   };
 
   const handleCopyShareText = () => {
-    navigator.clipboard.writeText(generateShareText());
+    navigator.clipboard.writeText(shareText);
     alert('コピーしました！');
   };
 
@@ -204,7 +216,7 @@ export default function NineDolphin() {
           </div>
 
           <ShareTextSection
-            shareText={generateShareText()}
+            shareText={shareText}
             onCopy={handleCopyShareText}
           />
         </section>
