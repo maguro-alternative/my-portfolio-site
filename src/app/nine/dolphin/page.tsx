@@ -140,6 +140,11 @@ export default function NineDolphin() {
       .map((item, i) => `${i + 1}. ${item.name || '未選択'}`)
       .join('\n');
     
+    // クライアント側でのみURLを生成
+    if (typeof window === 'undefined') {
+      return `#私を構成する9つのドルフィンウェーブキャラクター\n\n${items}`;
+    }
+    
     // URLパラメータを生成
     const params = new URLSearchParams();
     params.set('title', title);
