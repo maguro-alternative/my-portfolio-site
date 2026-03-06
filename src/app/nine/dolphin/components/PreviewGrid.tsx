@@ -8,7 +8,7 @@ interface SelectedItem {
 interface PreviewGridProps {
   title: string;
   selectedItems: SelectedItem[];
-  cardRef: RefObject<HTMLDivElement>;
+  cardRef: RefObject<HTMLDivElement | null>;
   onDownload: () => void;
 }
 
