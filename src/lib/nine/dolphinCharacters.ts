@@ -47,8 +47,8 @@ export const dolphinCharacters: DolphinCharacter[] = [
   { name: 'アマディア・ヴォルファ', team: 'ISRW', slug: 'amadea-wolfa', imageUrl: 'https://hpgames.jp/dolphin-wave/assets/img/chara/amadea-wolfa/ogp.png' },
   
   // GRIMO→GOETIA
-  { name: '亀江 つぐみ', team: 'GRIMO→GOETIA', slug: 'tsugumi-kamie', imageUrl: 'https://hpgames.jp/dolphin-wave/assets/img/chara/tsugumi-kamie/ogp.png' },
-  { name: '埴原 はる', team: 'GRIMO→GOETIA', slug: 'haru-hanihara', imageUrl: 'https://hpgames.jp/dolphin-wave/assets/img/chara/haru-hanihara/ogp.png' },
+  { name: '紙枝 つぐみ', team: 'GRIMO→GOETIA', slug: 'tsugumi-kamie', imageUrl: 'https://hpgames.jp/dolphin-wave/assets/img/chara/tsugumi-kamie/ogp.png' },
+  { name: '羽仁原 はる', team: 'GRIMO→GOETIA', slug: 'haru-hanihara', imageUrl: 'https://hpgames.jp/dolphin-wave/assets/img/chara/haru-hanihara/ogp.png' },
   { name: 'ユノ', team: 'GRIMO→GOETIA', slug: 'yuno', imageUrl: 'https://hpgames.jp/dolphin-wave/assets/img/chara/yuno/ogp.png' },
-  { name: '黒口 むる', team: 'GRIMO→GOETIA', slug: 'muru-kurokuchi', imageUrl: 'https://hpgames.jp/dolphin-wave/assets/img/chara/muru-kurokuchi/ogp.png' },
+  { name: '玄口 むうる', team: 'GRIMO→GOETIA', slug: 'muru-kurokuchi', imageUrl: 'https://hpgames.jp/dolphin-wave/assets/img/chara/muru-kurokuchi/ogp.png' },
 ];
