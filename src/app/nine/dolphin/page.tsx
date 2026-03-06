@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { dolphinCharacters } from '@/lib/nine/dolphinCharacters';
 import { toPng } from 'html-to-image';
+import { CharacterSearchCard } from './components/CharacterSearchCard';
+import { ShareTextSection } from './components/ShareTextSection';
+import { PreviewGrid } from './components/PreviewGrid';
 
 interface SelectedItem {
   name: string;
@@ -48,11 +50,12 @@ export default function NineDolphin() {
     setSelectedItems(newSelectedItems);
   };
 
-  const getFilteredCharacters = (searchTerm: string) => {
-    if (!searchTerm) return [];
-    return dolphinCharacters.filter(char =>
-      char.name.toLowerCase().includes(searchTerm.toLowerCase())
-    ).slice(0, 10);
+  const handleFocus = (index: number) => {
+    if (searchTerms[index]) {
+      const newShowSuggestions = [...showSuggestions];
+      newShowSuggestions[index] = true;
+      setShowSuggestions(newShowSuggestions);
+    }
   };
 
   const handleDownload = async () => {
@@ -108,113 +111,33 @@ export default function NineDolphin() {
 
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
             {selectedItems.map((item, index) => (
-              <article key={index} className="rounded-lg border border-slate-300 bg-slate-50 p-3">
-                <div className="mb-2 flex items-center justify-between">
-                  <h3 className="text-sm font-semibold text-slate-700">#{index + 1}</h3>
-                  {item.name && (
-                    <button
-                      onClick={() => handleClear(index)}
-                      className="text-xs text-red-600 hover:text-red-700"
-                    >
-                      クリア
-                    </button>
-                  )}
-                </div>
-
-                <div className="relative space-y-2">
-                  <input
-                    type="text"
-                    placeholder="キャラクター名で検索"
-                    className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
-                    value={searchTerms[index]}
-                    onChange={(e) => handleSearch(index, e.target.value)}
-                    onFocus={() => {
-                      if (searchTerms[index]) {
-                        const newShowSuggestions = [...showSuggestions];
-                        newShowSuggestions[index] = true;
-                        setShowSuggestions(newShowSuggestions);
-                      }
-                    }}
-                  />
-
-                  {showSuggestions[index] && (
-                    <div className="absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-md border border-slate-300 bg-white shadow-lg">
-                      {getFilteredCharacters(searchTerms[index]).map((char, i) => (
-                        <button
-                          key={i}
-                          onClick={() => handleSelect(index, char.name, char.imageUrl)}
-                          className="w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-blue-50"
-                        >
-                          <div className="font-medium">{char.name}</div>
-                          <div className="text-xs text-slate-500">{char.team}</div>
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <div className="mt-3">
-                  <p className="text-xs text-slate-600">
-                    選択中: {item.name || 'なし'}
-                  </p>
-                </div>
-              </article>
+              <CharacterSearchCard
+                key={index}
+                index={index}
+                selectedName={item.name}
+                searchTerm={searchTerms[index]}
+                showSuggestions={showSuggestions[index]}
+                onSearch={(value) => handleSearch(index, value)}
+                onSelect={(name, imageUrl) => handleSelect(index, name, imageUrl)}
+                onClear={() => handleClear(index)}
+                onFocus={() => handleFocus(index)}
+              />
             ))}
           </div>
 
-          {/* シェアテキスト */}
-          <section className="space-y-3 rounded-lg border border-slate-300 bg-slate-50 p-4">
-            <p className="text-sm font-semibold text-slate-700">シェアテキスト</p>
-            <div className="rounded-md border border-slate-300 bg-white p-3">
-              <p className="mb-2 text-xs text-slate-500">文字数: {generateShareText().length}</p>
-              <p className="mb-3 whitespace-pre-wrap text-xs text-slate-800">{generateShareText()}</p>
-              <button
-                onClick={handleCopyShareText}
-                className="rounded border border-slate-300 bg-white px-3 py-1 text-xs text-slate-700 hover:bg-slate-50"
-              >
-                コピー
-              </button>
-            </div>
-          </section>
+          <ShareTextSection
+            shareText={generateShareText()}
+            onCopy={handleCopyShareText}
+          />
         </section>
 
         {/* 右側: プレビューエリア */}
-        <section className="rounded-xl border border-slate-300 bg-white p-4 shadow-sm">
-          <div ref={cardRef} className="mx-auto w-full max-w-[600px] rounded-xl border border-slate-300 bg-white p-6">
-            <h1 className="mb-4 text-center text-xl font-bold tracking-wide text-slate-800 sm:text-2xl">
-              {title}
-            </h1>
-            <div className="grid grid-cols-3 gap-2 sm:gap-3">
-              {selectedItems.map((item, index) => (
-                <article key={index} className="relative overflow-hidden rounded-lg border border-slate-300 bg-slate-100">
-                  <div className="aspect-square">
-                    {item.image ? (
-                      <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center bg-slate-200 text-center text-xs text-slate-500 sm:text-sm">
-                        No Image
-                      </div>
-                    )}
-                  </div>
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-2">
-                    <p className="line-clamp-2 text-xs font-semibold text-white sm:text-sm">
-                      {index + 1}. {item.name || '未選択'}
-                    </p>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-4 text-center">
-            <button
-              onClick={handleDownload}
-              className="rounded-lg border border-blue-600 bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
-            >
-              画像としてダウンロード
-            </button>
-          </div>
-        </section>
+        <PreviewGrid
+          title={title}
+          selectedItems={selectedItems}
+          cardRef={cardRef}
+          onDownload={handleDownload}
+        />
       </div>
     </div>
   );
