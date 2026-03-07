@@ -283,7 +283,7 @@ export default function NineDolphin() {
   };
 
   return (
-    <div className="mx-auto min-h-screen w-full max-w-2xl px-3 py-6">
+    <div className="mx-auto min-h-screen w-full max-w-md px-2 py-6">
       {/* タイトル入力 */}
       <section className="mb-6">
         <label className="block space-y-1">
@@ -325,7 +325,7 @@ export default function NineDolphin() {
               // 選択済みパネル
               <button
                 onClick={() => handlePanelClick(index)}
-                className="group relative aspect-video w-full overflow-hidden rounded-lg border border-slate-200 bg-slate-100"
+                className="group relative aspect-[4/3] w-full overflow-hidden rounded-lg border border-slate-200 bg-slate-100"
               >
                 {item.image && (
                   <img
@@ -356,7 +356,7 @@ export default function NineDolphin() {
               // 空パネル
               <button
                 onClick={() => handlePanelClick(index)}
-                className="flex aspect-video w-full flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 text-slate-400 transition-colors hover:border-slate-400 hover:bg-slate-100 hover:text-slate-500"
+                className="flex aspect-[4/3] w-full flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 text-slate-400 transition-colors hover:border-slate-400 hover:bg-slate-100 hover:text-slate-500"
               >
                 <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
