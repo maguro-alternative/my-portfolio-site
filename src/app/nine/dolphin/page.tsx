@@ -131,29 +131,27 @@ export default function NineDolphin() {
     if (!cardRef.current) return;
 
     try {
-      // キャプチャ用に一時的に幅・フォントサイズを拡大して高品質化
-      const el = cardRef.current;
-      const originalWidth = el.style.width;
-      const originalPadding = el.style.padding;
-      el.style.width = '900px';
-      el.style.padding = '24px';
+      // クローンを作成してオフスクリーンに配置（モバイルSafari対応）
+      const clone = cardRef.current.cloneNode(true) as HTMLElement;
+      clone.style.cssText = 'position:fixed;left:-9999px;top:0;width:900px;padding:24px;z-index:-1;';
 
       // タイトルを拡大
-      const titleEl = el.querySelector('h1');
-      const originalTitleStyle = titleEl?.getAttribute('style') || '';
-      titleEl?.setAttribute('style', 'font-size: 24px; margin-bottom: 16px;');
+      const titleEl = clone.querySelector('h1') as HTMLElement | null;
+      if (titleEl) {
+        titleEl.style.fontSize = '24px';
+        titleEl.style.marginBottom = '16px';
+      }
 
-      // 名前ラベルを拡大（<p>に直接適用してTailwindクラスを上書き）
-      const labels = el.querySelectorAll<HTMLElement>('[data-label]');
-      const originalLabelStyles: string[] = [];
-      labels.forEach((label) => {
-        originalLabelStyles.push(label.getAttribute('style') || '');
-        label.style.cssText = 'font-size: 14px !important; white-space: nowrap;';
+      // 名前ラベルを拡大
+      clone.querySelectorAll<HTMLElement>('[data-label]').forEach((label) => {
+        label.style.fontSize = '14px';
+        label.style.whiteSpace = 'nowrap';
       });
 
+      document.body.appendChild(clone);
+
       // CORS回避: プロキシ経由の画像をdata URLに事前変換
-      const imgs = el.querySelectorAll('img');
-      const originalSrcs: { img: HTMLImageElement; src: string }[] = [];
+      const imgs = clone.querySelectorAll('img');
       await Promise.all(
         Array.from(imgs).map(async (img) => {
           try {
@@ -164,7 +162,6 @@ export default function NineDolphin() {
               reader.onloadend = () => resolve(reader.result as string);
               reader.readAsDataURL(blob);
             });
-            originalSrcs.push({ img, src: img.src });
             img.src = dataUrl;
           } catch {
             // 変換できない場合はそのまま
@@ -172,22 +169,13 @@ export default function NineDolphin() {
         })
       );
 
-      const canvas = await html2canvas(el, {
+      const canvas = await html2canvas(clone, {
         useCORS: true,
         scale: 2,
         backgroundColor: '#ffffff',
       });
 
-      // 元に戻す
-      el.style.width = originalWidth;
-      el.style.padding = originalPadding;
-      titleEl?.setAttribute('style', originalTitleStyle);
-      labels.forEach((label, i) => {
-        label.setAttribute('style', originalLabelStyles[i]);
-      });
-      originalSrcs.forEach(({ img, src }) => {
-        img.src = src;
-      });
+      document.body.removeChild(clone);
 
       const dataUrl = canvas.toDataURL('image/png');
       const link = document.createElement('a');
