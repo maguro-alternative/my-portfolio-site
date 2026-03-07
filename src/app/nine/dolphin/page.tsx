@@ -2,13 +2,15 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { dolphinCharacters } from '@/lib/nine/dolphinCharacters';
-import { CharacterSearchCard } from './components/CharacterSearchCard';
+import { CharacterSearchModal } from './components/CharacterSearchModal';
 import { ShareTextSection } from './components/ShareTextSection';
-import { PreviewGrid } from './components/PreviewGrid';
+import { WaveBackground } from './components/WaveBackground';
+import { WaveFooter } from './components/WaveFooter';
 
 interface SelectedItem {
   name: string;
   image?: string;
+  originalImage?: string;
   slug?: string;
 }
 
@@ -31,10 +33,12 @@ export default function NineDolphin() {
   const [selectedItems, setSelectedItems] = useState<SelectedItem[]>(
     Array(9).fill(null).map(() => ({ name: '' }))
   );
-  const [searchTerms, setSearchTerms] = useState<string[]>(Array(9).fill(''));
-  const [showSuggestions, setShowSuggestions] = useState<boolean[]>(Array(9).fill(false));
   const [shareText, setShareText] = useState('');
+  const [modalOpen, setModalOpen] = useState(false);
+  const [activePanelIndex, setActivePanelIndex] = useState(0);
   const cardRef = useRef<HTMLDivElement>(null);
+
+  const selectedCount = selectedItems.filter((item) => item.name).length;
 
   // URLパラメータから選択内容を復元
   useEffect(() => {
@@ -51,12 +55,11 @@ export default function NineDolphin() {
         const char = dolphinCharacters.find(c => c.slug === slug);
         if (char) {
           const proxiedImageUrl = `/api/image-proxy?url=${encodeURIComponent(char.imageUrl)}`;
-          items[i - 1] = { name: char.name, image: proxiedImageUrl, slug: char.slug };
+          items[i - 1] = { name: char.name, image: proxiedImageUrl, originalImage: char.imageUrl, slug: char.slug };
         }
       }
     }
 
-    // 少なくとも1つ選択されている場合のみ更新
     if (items.some(item => item.name)) {
       setSelectedItems(items);
     }
@@ -95,49 +98,30 @@ export default function NineDolphin() {
     }
   }, [title, selectedItems]);
 
-  // shareTextを更新
   useEffect(() => {
     setShareText(generateShareText());
   }, [title, selectedItems]);
 
-  const handleSearch = (index: number, value: string) => {
-    const newSearchTerms = [...searchTerms];
-    newSearchTerms[index] = value;
-    setSearchTerms(newSearchTerms);
-
-    const newShowSuggestions = [...showSuggestions];
-    newShowSuggestions[index] = value.length > 0;
-    setShowSuggestions(newShowSuggestions);
-  };
-
   const handleSelect = (index: number, name: string, imageUrl: string, slug: string) => {
     const newSelectedItems = [...selectedItems];
-    // 画像URLをプロキシ経由に変換
     const proxiedImageUrl = `/api/image-proxy?url=${encodeURIComponent(imageUrl)}`;
-    newSelectedItems[index] = { name, image: proxiedImageUrl, slug };
+    newSelectedItems[index] = { name, image: proxiedImageUrl, originalImage: imageUrl, slug };
     setSelectedItems(newSelectedItems);
-
-    const newSearchTerms = [...searchTerms];
-    newSearchTerms[index] = '';
-    setSearchTerms(newSearchTerms);
-
-    const newShowSuggestions = [...showSuggestions];
-    newShowSuggestions[index] = false;
-    setShowSuggestions(newShowSuggestions);
   };
 
-  const handleClear = (index: number) => {
+  const handleReset = () => {
+    setSelectedItems(Array(9).fill(null).map(() => ({ name: '' })));
+  };
+
+  const handlePanelClick = (index: number) => {
+    setActivePanelIndex(index);
+    setModalOpen(true);
+  };
+
+  const handleClearPanel = (index: number) => {
     const newSelectedItems = [...selectedItems];
     newSelectedItems[index] = { name: '' };
     setSelectedItems(newSelectedItems);
-  };
-
-  const handleFocus = (index: number) => {
-    if (searchTerms[index]) {
-      const newShowSuggestions = [...showSuggestions];
-      newShowSuggestions[index] = true;
-      setShowSuggestions(newShowSuggestions);
-    }
   };
 
   const loadImage = (src: string): Promise<HTMLImageElement> => {
@@ -152,7 +136,6 @@ export default function NineDolphin() {
 
   const handleDownload = async () => {
     try {
-      // レイアウト定数（ピクセル）
       const SCALE = 2;
       const W = 900;
       const PAD = 24;
@@ -179,63 +162,59 @@ export default function NineDolphin() {
       const ctx = canvas.getContext('2d')!;
       ctx.scale(SCALE, SCALE);
 
-      // 背景
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, W, H);
 
-      // 外枠
-      ctx.strokeStyle = '#cbd5e1'; // slate-300
+      ctx.strokeStyle = '#cbd5e1';
       ctx.lineWidth = 1;
       roundRect(ctx, PAD - 1, PAD - 1, contentW + 2, titleAreaH + gridH + PAD + 2, BORDER_RADIUS);
       ctx.stroke();
 
-      // タイトル
-      ctx.fillStyle = '#1e293b'; // slate-800
+      ctx.fillStyle = '#1e293b';
       ctx.font = `bold ${TITLE_FONT_SIZE}px sans-serif`;
       ctx.textAlign = 'center';
       ctx.fillText(title, W / 2, PAD + TITLE_FONT_SIZE);
 
-      // 画像をプリロード
       const images = await Promise.all(
         selectedItems.map(async (item) => {
           if (!item.image) return null;
-          try {
-            // プロキシ経由の画像をfetchしてblob URLに変換（CORS対応）
-            const res = await fetch(item.image);
-            const blob = await res.blob();
-            const blobUrl = URL.createObjectURL(blob);
-            const img = await loadImage(blobUrl);
-            URL.revokeObjectURL(blobUrl);
-            return img;
-          } catch {
-            return null;
+          // プロキシ経由 → 失敗時は元URLで直接試行
+          const urls = [item.image, item.originalImage].filter(Boolean) as string[];
+          for (const url of urls) {
+            try {
+              const res = await fetch(url);
+              if (!res.ok) continue;
+              const blob = await res.blob();
+              const blobUrl = URL.createObjectURL(blob);
+              const img = await loadImage(blobUrl);
+              URL.revokeObjectURL(blobUrl);
+              return img;
+            } catch {
+              continue;
+            }
           }
+          return null;
         })
       );
 
-      // カード描画
       for (let i = 0; i < 9; i++) {
         const col = i % COLS;
         const row = Math.floor(i / COLS);
         const x = PAD + col * (cardW + GAP);
         const y = PAD + titleAreaH + row * (cardH + GAP);
 
-        // カード枠
         ctx.save();
         ctx.strokeStyle = '#cbd5e1';
         ctx.lineWidth = BORDER;
         roundRect(ctx, x, y, cardW, cardH, BORDER_RADIUS);
         ctx.stroke();
 
-        // クリップ（角丸内に描画を収める）
         ctx.beginPath();
         roundRect(ctx, x, y, cardW, cardH, BORDER_RADIUS);
         ctx.clip();
 
-        // 画像領域
         const img = images[i];
         if (img) {
-          // object-cover: アスペクト比を維持しつつ領域を埋める
           const imgAspect = img.naturalWidth / img.naturalHeight;
           const slotAspect = cardW / imgH;
           let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
@@ -248,20 +227,17 @@ export default function NineDolphin() {
           }
           ctx.drawImage(img, sx, sy, sw, sh, x, y, cardW, imgH);
         } else {
-          // No Image placeholder
-          ctx.fillStyle = '#e2e8f0'; // slate-200
+          ctx.fillStyle = '#e2e8f0';
           ctx.fillRect(x, y, cardW, imgH);
-          ctx.fillStyle = '#94a3b8'; // slate-400
+          ctx.fillStyle = '#94a3b8';
           ctx.font = '12px sans-serif';
           ctx.textAlign = 'center';
           ctx.fillText('No Image', x + cardW / 2, y + imgH / 2 + 4);
         }
 
-        // ラベル背景
-        ctx.fillStyle = '#0f172a'; // slate-900
+        ctx.fillStyle = '#0f172a';
         ctx.fillRect(x, y + imgH, cardW, LABEL_HEIGHT);
 
-        // ラベルテキスト
         ctx.fillStyle = '#ffffff';
         ctx.font = `bold ${LABEL_FONT_SIZE}px sans-serif`;
         ctx.textAlign = 'center';
@@ -271,7 +247,6 @@ export default function NineDolphin() {
         ctx.restore();
       }
 
-      // ダウンロード
       const dataUrl = canvas.toDataURL('image/png');
       const link = document.createElement('a');
       link.download = 'my-9-dolphin-wave.png';
@@ -310,55 +285,139 @@ export default function NineDolphin() {
   };
 
   return (
-    <div className="mx-auto min-h-screen w-full max-w-7xl px-4 py-6">
-      <header className="mb-6 space-y-2">
-        <p className="text-xs uppercase tracking-wider text-blue-600">9 Dolphin Wave Characters</p>
-        <h1 className="text-2xl font-bold text-slate-800 sm:text-3xl">私を構成する9人のドルフィン</h1>
-        <p className="text-sm text-slate-600">9キャラクターを選んで一覧化し、画像として保存できます。</p>
+    <div className="relative min-h-screen w-full pb-44">
+      <WaveBackground />
+      <WaveFooter />
+      {/* ページヘッダー（青バンド内・全幅） */}
+      <header className="relative z-10 px-4 pb-16 pt-6">
+        <div className="mx-auto max-w-lg">
+          <p className="text-sm font-semibold tracking-widest text-white/80">
+            9 DOLPHIN WAVE CHARACTERS
+          </p>
+          <h1 className="mt-1 text-2xl font-bold text-white">
+            私を構成する9人のドルフィン
+          </h1>
+          <p className="mt-1 text-sm text-white/70">
+            9キャラクターを選んで一覧化し、画像として保存できます。
+          </p>
+        </div>
       </header>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {/* 左側: 選択エリア */}
-        <section className="space-y-4 rounded-xl border border-slate-300 bg-white p-4 shadow-sm">
-          <label className="block space-y-2">
-            <span className="text-sm font-semibold text-slate-700">タイトル</span>
-            <input
-              type="text"
-              className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 focus:border-blue-500 focus:outline-none"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </label>
+      <div className="mx-auto max-w-lg px-4 pb-6">
 
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-            {selectedItems.map((item, index) => (
-              <CharacterSearchCard
-                key={index}
-                index={index}
-                selectedName={item.name}
-                searchTerm={searchTerms[index]}
-                showSuggestions={showSuggestions[index]}
-                onSearch={(value) => handleSearch(index, value)}
-                onSelect={(name, imageUrl, slug) => handleSelect(index, name, imageUrl, slug)}
-                onClear={() => handleClear(index)}
-                onFocus={() => handleFocus(index)}
-              />
-            ))}
-          </div>
-
-          <ShareTextSection
-            shareText={shareText}
-            onCopy={handleCopyShareText}
+      {/* タイトル入力 */}
+      <section className="mb-6">
+        <label className="block space-y-1">
+          <span className="text-sm font-semibold text-slate-700">
+            タイトル（任意・最大30文字）
+          </span>
+          <input
+            type="text"
+            maxLength={30}
+            className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
-        </section>
+        </label>
+        <p className="mt-1 text-xs text-slate-400">
+          「{title}」として共有されます
+        </p>
+      </section>
 
-        {/* 右側: プレビューエリア */}
-        <PreviewGrid
-          title={title}
-          selectedItems={selectedItems}
-          cardRef={cardRef}
-          onDownload={handleDownload}
-        />
+      {/* カウンター + リセット */}
+      <div className="mb-3 flex items-center justify-between">
+        <p className="text-sm font-semibold text-slate-700">
+          {selectedCount} / 9 キャラ選択済み
+        </p>
+        <button
+          onClick={handleReset}
+          disabled={selectedCount === 0}
+          className="text-sm text-slate-400 hover:text-slate-600 disabled:cursor-not-allowed disabled:text-slate-300"
+        >
+          リセット
+        </button>
+      </div>
+
+      {/* 3x3 パネルグリッド */}
+      <div className="-mx-4 mb-6 grid grid-cols-3 gap-2 px-2 sm:mx-0 sm:px-0">
+        {selectedItems.map((item, index) => (
+          <div key={index} className="relative">
+            {item.name ? (
+              // 選択済みパネル
+              <button
+                onClick={() => handlePanelClick(index)}
+                className="group relative aspect-square w-full overflow-hidden rounded-lg border border-slate-200 bg-slate-100 p-0"
+              >
+                {item.image && (
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="absolute inset-0 h-full w-full object-cover object-top"
+                  />
+                )}
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-1 pb-1.5 pt-5">
+                  <p className="truncate text-center text-xs font-bold text-white drop-shadow-sm">
+                    {item.name}
+                  </p>
+                </div>
+                {/* 削除ボタン */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleClearPanel(index);
+                  }}
+                  className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-black/50 text-white opacity-0 transition-opacity group-hover:opacity-100"
+                >
+                  <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </button>
+            ) : (
+              // 空パネル（ENTRYカード風）
+              <button
+                onClick={() => handlePanelClick(index)}
+                className="group relative aspect-square w-full rounded-md border border-slate-300 bg-slate-100 shadow-sm transition-colors hover:border-slate-400 hover:bg-slate-200/70"
+              >
+                {/* 内側の枠線 */}
+                <div className="absolute inset-2 flex flex-col items-center justify-center gap-1 rounded border border-dashed border-slate-300 group-hover:border-slate-400">
+                  {/* 赤い十字 */}
+                  <svg className="h-10 w-10 text-red-500" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M11 2h2v9h9v2h-9v9h-2v-9H2v-2h9z" />
+                  </svg>
+                  <span className="text-xs font-bold tracking-widest text-slate-500">ENTRY</span>
+                </div>
+              </button>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* 完成ボタン */}
+      <div className="mb-8 text-center">
+        <button
+          onClick={handleDownload}
+          disabled={selectedCount < 9}
+          className="rounded-lg bg-indigo-600 px-8 py-3 text-sm font-bold text-white shadow-sm transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500"
+        >
+          完成！
+        </button>
+      </div>
+
+      {/* シェアセクション */}
+      <ShareTextSection
+        shareText={shareText}
+        onCopy={handleCopyShareText}
+        disabled={selectedCount < 9}
+      />
+
+      {/* 検索モーダル */}
+      <CharacterSearchModal
+        isOpen={modalOpen}
+        panelIndex={activePanelIndex}
+        onSelect={(name, imageUrl, slug) => handleSelect(activePanelIndex, name, imageUrl, slug)}
+        onClose={() => setModalOpen(false)}
+      />
       </div>
     </div>
   );
