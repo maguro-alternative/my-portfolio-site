@@ -1,5 +1,6 @@
 import { ImageResponse } from '@vercel/og';
 import { NextRequest } from 'next/server';
+import { dolphinCharacters } from '@/lib/nine/dolphinCharacters';
 
 export const runtime = 'edge';
 
@@ -7,15 +8,25 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const title = searchParams.get('title') || '私を構成する9人のドルフィン';
-    
-    // キャラクター画像URLを取得（最大9個）
+
+    // slug からキャラクター情報を解決
     const characterImages: string[] = [];
     const characterNames: string[] = [];
     for (let i = 1; i <= 9; i++) {
-      const img = searchParams.get(`img${i}`);
-      const name = searchParams.get(`c${i}`);
-      if (img) characterImages.push(decodeURIComponent(img));
-      if (name) characterNames.push(decodeURIComponent(name));
+      const slug = searchParams.get(`s${i}`);
+      if (slug) {
+        const char = dolphinCharacters.find(c => c.slug === slug);
+        if (char) {
+          characterImages.push(char.imageUrl);
+          characterNames.push(char.name);
+        } else {
+          characterImages.push('');
+          characterNames.push('未選択');
+        }
+      } else {
+        characterImages.push('');
+        characterNames.push('');
+      }
     }
 
     return new ImageResponse(
@@ -73,7 +84,7 @@ export async function GET(request: NextRequest) {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    backgroundColor: characterImages[index] ? 'transparent' : '#f1f5f9',
+                    backgroundColor: characterImages[index] && characterImages[index] !== '' ? 'transparent' : '#f1f5f9',
                     borderRadius: '12px',
                     overflow: 'hidden',
                     height: '160px',
@@ -81,7 +92,7 @@ export async function GET(request: NextRequest) {
                     position: 'relative',
                   }}
                 >
-                  {characterImages[index] ? (
+                  {characterImages[index] && characterImages[index] !== '' ? (
                     <>
                       <img
                         src={characterImages[index]}
