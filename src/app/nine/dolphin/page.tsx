@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { dolphinCharacters } from '@/lib/nine/dolphinCharacters';
 import { CharacterSearchModal } from './components/CharacterSearchModal';
 import { ShareTextSection } from './components/ShareTextSection';
+import { WaveBackground } from './components/WaveBackground';
 
 interface SelectedItem {
   name: string;
@@ -283,7 +284,8 @@ export default function NineDolphin() {
   };
 
   return (
-    <div className="mx-auto min-h-screen w-full px-4 py-6">
+    <div className="relative mx-auto min-h-screen w-full px-4 py-6">
+      <WaveBackground />
       {/* ページヘッダー */}
       <header className="mb-6">
         <p className="text-sm font-semibold tracking-widest text-blue-600">
