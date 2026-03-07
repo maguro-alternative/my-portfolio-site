@@ -283,7 +283,7 @@ export default function NineDolphin() {
   };
 
   return (
-    <div className="mx-auto min-h-screen w-full max-w-lg px-4 py-6">
+    <div className="mx-auto min-h-screen w-full px-4 py-6">
       {/* タイトル入力 */}
       <section className="mb-6">
         <label className="block space-y-1">
