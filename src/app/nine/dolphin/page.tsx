@@ -284,20 +284,22 @@ export default function NineDolphin() {
   };
 
   return (
-    <div className="relative mx-auto min-h-screen w-full max-w-lg px-4 py-6">
+    <div className="relative mx-auto min-h-screen w-full max-w-lg">
       <WaveBackground />
-      {/* ページヘッダー */}
-      <header className="mb-6">
-        <p className="text-sm font-semibold tracking-widest text-blue-600">
+      {/* ページヘッダー（青バンド内） */}
+      <header className="relative z-10 px-4 pb-16 pt-6">
+        <p className="text-sm font-semibold tracking-widest text-white/80">
           9 DOLPHIN WAVE CHARACTERS
         </p>
-        <h1 className="mt-1 text-2xl font-bold text-slate-900">
+        <h1 className="mt-1 text-2xl font-bold text-white">
           私を構成する9人のドルフィン
         </h1>
-        <p className="mt-1 text-sm text-slate-500">
+        <p className="mt-1 text-sm text-white/70">
           9キャラクターを選んで一覧化し、画像として保存できます。
         </p>
       </header>
+
+      <div className="px-4 pb-6">
 
       {/* タイトル入力 */}
       <section className="mb-6">
@@ -407,6 +409,7 @@ export default function NineDolphin() {
         onSelect={(name, imageUrl, slug) => handleSelect(activePanelIndex, name, imageUrl, slug)}
         onClose={() => setModalOpen(false)}
       />
+      </div>
     </div>
   );
 }
