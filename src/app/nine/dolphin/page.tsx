@@ -131,10 +131,26 @@ export default function NineDolphin() {
     if (!cardRef.current) return;
 
     try {
-      // キャプチャ用に一時的に幅を固定して高品質化
+      // キャプチャ用に一時的に幅・フォントサイズを拡大して高品質化
       const el = cardRef.current;
       const originalWidth = el.style.width;
+      const originalPadding = el.style.padding;
       el.style.width = '900px';
+      el.style.padding = '24px';
+
+      // タイトルを拡大
+      const titleEl = el.querySelector('h1');
+      const originalTitleStyle = titleEl?.getAttribute('style') || '';
+      titleEl?.setAttribute('style', 'font-size: 24px; margin-bottom: 16px;');
+
+      // 名前ラベルを拡大
+      const labels = el.querySelectorAll<HTMLElement>('[data-label]');
+      const originalLabelStyles: string[] = [];
+      labels.forEach((label) => {
+        originalLabelStyles.push(label.getAttribute('style') || '');
+        label.style.fontSize = '14px';
+        label.style.padding = '4px 8px';
+      });
 
       // CORS回避: プロキシ経由の画像をdata URLに事前変換
       const imgs = el.querySelectorAll('img');
@@ -165,6 +181,11 @@ export default function NineDolphin() {
 
       // 元に戻す
       el.style.width = originalWidth;
+      el.style.padding = originalPadding;
+      titleEl?.setAttribute('style', originalTitleStyle);
+      labels.forEach((label, i) => {
+        label.setAttribute('style', originalLabelStyles[i]);
+      });
       originalSrcs.forEach(({ img, src }) => {
         img.src = src;
       });

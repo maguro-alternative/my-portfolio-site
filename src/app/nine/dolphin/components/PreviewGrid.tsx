@@ -31,7 +31,7 @@ export function PreviewGrid({ title, selectedItems, cardRef, onDownload }: Previ
                   </div>
                 )}
               </div>
-              <div className="bg-slate-900 px-1 py-0.5 sm:py-1">
+              <div data-label className="bg-slate-900 px-1 py-0.5 sm:py-1">
                 <p className="truncate text-center text-xs font-bold leading-tight text-white">
                   {index + 1}. {item.name || '未選択'}
                 </p>
