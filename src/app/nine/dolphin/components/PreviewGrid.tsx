@@ -14,7 +14,7 @@ interface PreviewGridProps {
 
 export function PreviewGrid({ title, selectedItems, cardRef, onDownload }: PreviewGridProps) {
   return (
-    <section className="rounded-xl border border-slate-300 bg-white p-4 shadow-sm">
+    <section className="self-start rounded-xl border border-slate-300 bg-white p-4 shadow-sm">
       <div ref={cardRef} className="mx-auto max-w-[900px] rounded-xl border border-slate-300 bg-white p-8">
         <h1 className="mb-6 text-center text-xl font-bold tracking-wide text-slate-800 sm:text-2xl md:text-3xl">
           {title}
