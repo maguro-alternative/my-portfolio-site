@@ -331,7 +331,7 @@ export default function NineDolphin() {
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="h-full w-full object-contain"
+                    className="h-full w-full object-cover object-top"
                   />
                 )}
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-1 pb-1.5 pt-5">
