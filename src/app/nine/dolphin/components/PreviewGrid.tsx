@@ -15,11 +15,11 @@ interface PreviewGridProps {
 export function PreviewGrid({ title, selectedItems, cardRef, onDownload }: PreviewGridProps) {
   return (
     <section className="rounded-xl border border-slate-300 bg-white p-4 shadow-sm">
-      <div ref={cardRef} className="mx-auto w-[900px] rounded-xl border border-slate-300 bg-white p-8">
-        <h1 className="mb-6 text-center text-3xl font-bold tracking-wide text-slate-800">
+      <div ref={cardRef} className="mx-auto max-w-[900px] rounded-xl border border-slate-300 bg-white p-8">
+        <h1 className="mb-6 text-center text-xl font-bold tracking-wide text-slate-800 sm:text-2xl md:text-3xl">
           {title}
         </h1>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4">
           {selectedItems.map((item, index) => (
             <article key={index} className="relative overflow-hidden rounded-lg border-2 border-slate-300 bg-slate-100">
               <div className="aspect-[16/9]">
