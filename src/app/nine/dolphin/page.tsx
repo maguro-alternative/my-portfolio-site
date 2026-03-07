@@ -5,6 +5,7 @@ import { dolphinCharacters } from '@/lib/nine/dolphinCharacters';
 import { CharacterSearchModal } from './components/CharacterSearchModal';
 import { ShareTextSection } from './components/ShareTextSection';
 import { WaveBackground } from './components/WaveBackground';
+import { WaveFooter } from './components/WaveFooter';
 
 interface SelectedItem {
   name: string;
@@ -284,8 +285,9 @@ export default function NineDolphin() {
   };
 
   return (
-    <div className="relative min-h-screen w-full">
+    <div className="relative min-h-screen w-full pb-44">
       <WaveBackground />
+      <WaveFooter />
       {/* ページヘッダー（青バンド内・全幅） */}
       <header className="relative z-10 px-4 pb-16 pt-6">
         <div className="mx-auto max-w-lg">
