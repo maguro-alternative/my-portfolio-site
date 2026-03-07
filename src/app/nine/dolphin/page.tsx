@@ -284,22 +284,24 @@ export default function NineDolphin() {
   };
 
   return (
-    <div className="relative mx-auto min-h-screen w-full max-w-lg">
+    <div className="relative min-h-screen w-full">
       <WaveBackground />
-      {/* ページヘッダー（青バンド内） */}
+      {/* ページヘッダー（青バンド内・全幅） */}
       <header className="relative z-10 px-4 pb-16 pt-6">
-        <p className="text-sm font-semibold tracking-widest text-white/80">
-          9 DOLPHIN WAVE CHARACTERS
-        </p>
-        <h1 className="mt-1 text-2xl font-bold text-white">
-          私を構成する9人のドルフィン
-        </h1>
-        <p className="mt-1 text-sm text-white/70">
-          9キャラクターを選んで一覧化し、画像として保存できます。
-        </p>
+        <div className="mx-auto max-w-lg">
+          <p className="text-sm font-semibold tracking-widest text-white/80">
+            9 DOLPHIN WAVE CHARACTERS
+          </p>
+          <h1 className="mt-1 text-2xl font-bold text-white">
+            私を構成する9人のドルフィン
+          </h1>
+          <p className="mt-1 text-sm text-white/70">
+            9キャラクターを選んで一覧化し、画像として保存できます。
+          </p>
+        </div>
       </header>
 
-      <div className="px-4 pb-6">
+      <div className="mx-auto max-w-lg px-4 pb-6">
 
       {/* タイトル入力 */}
       <section className="mb-6">
