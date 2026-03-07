@@ -284,7 +284,7 @@ export default function NineDolphin() {
   };
 
   return (
-    <div className="relative mx-auto min-h-screen w-full px-4 py-6">
+    <div className="relative mx-auto min-h-screen w-full max-w-lg px-4 py-6">
       <WaveBackground />
       {/* ページヘッダー */}
       <header className="mb-6">
@@ -333,7 +333,7 @@ export default function NineDolphin() {
       </div>
 
       {/* 3x3 パネルグリッド */}
-      <div className="-mx-4 mb-6 grid grid-cols-3 gap-2 px-2">
+      <div className="-mx-4 mb-6 grid grid-cols-3 gap-2 px-2 sm:mx-0 sm:px-0">
         {selectedItems.map((item, index) => (
           <div key={index} className="relative">
             {item.name ? (
