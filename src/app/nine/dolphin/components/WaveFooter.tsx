@@ -43,9 +43,15 @@ export function WaveFooter() {
       </div>
 
       {/* 青いフッターバンド + コピーライト */}
-      <div className="flex h-20 items-center justify-center bg-blue-500">
+      <div className="flex flex-col items-center justify-center gap-1 bg-blue-500 py-3">
         <p className="pointer-events-auto text-center text-sm text-white">
           &copy; 2025 Maguro Alternative. All rights reserved.
+        </p>
+        <p className="pointer-events-auto text-center text-sm text-white">
+          作者のTwitter: <a href="https://twitter.com/sigumataityouda" className="text-blue-300 hover:text-blue-100" target="_blank" rel="noopener noreferrer">@sigumataityouda</a>, <a href="https://twitter.com/maguro_alterich" className="text-blue-300 hover:text-blue-100" target="_blank" rel="noopener noreferrer">@maguro_alterich</a>
+        </p>
+        <p className="pointer-events-auto text-center text-sm text-white">
+          画像：&copy;Marvelous Inc. &copy;HONEY PARADE GAMES Inc.
         </p>
       </div>
     </div>
