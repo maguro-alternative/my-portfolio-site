@@ -318,7 +318,7 @@ export default function NineDolphin() {
       </div>
 
       {/* 3x3 パネルグリッド */}
-      <div className="mb-6 grid grid-cols-3 gap-3">
+      <div className="-mx-4 mb-6 grid grid-cols-3 gap-2 px-2">
         {selectedItems.map((item, index) => (
           <div key={index} className="relative">
             {item.name ? (
