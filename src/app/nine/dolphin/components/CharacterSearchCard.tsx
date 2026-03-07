@@ -6,7 +6,7 @@ interface CharacterSearchCardProps {
   searchTerm: string;
   showSuggestions: boolean;
   onSearch: (value: string) => void;
-  onSelect: (name: string, imageUrl: string) => void;
+  onSelect: (name: string, imageUrl: string, slug: string) => void;
   onClear: () => void;
   onFocus: () => void;
 }
@@ -23,8 +23,11 @@ export function CharacterSearchCard({
 }: CharacterSearchCardProps) {
   const getFilteredCharacters = (searchTerm: string): DolphinCharacter[] => {
     if (!searchTerm) return [];
+    const term = searchTerm.toLowerCase();
     return dolphinCharacters.filter(char =>
-      char.name.toLowerCase().includes(searchTerm.toLowerCase())
+      char.name.toLowerCase().includes(term) ||
+      char.reading.includes(term) ||
+      char.team.toLowerCase().includes(term)
     ).slice(0, 10);
   };
 
@@ -57,7 +60,7 @@ export function CharacterSearchCard({
             {getFilteredCharacters(searchTerm).map((char, i) => (
               <button
                 key={i}
-                onClick={() => onSelect(char.name, char.imageUrl)}
+                onClick={() => onSelect(char.name, char.imageUrl, char.slug)}
                 className="w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-blue-50"
               >
                 <div className="font-medium">{char.name}</div>

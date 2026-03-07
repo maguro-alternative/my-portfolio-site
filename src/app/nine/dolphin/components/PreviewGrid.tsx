@@ -15,24 +15,24 @@ interface PreviewGridProps {
 export function PreviewGrid({ title, selectedItems, cardRef, onDownload }: PreviewGridProps) {
   return (
     <section className="self-start rounded-xl border border-slate-300 bg-white p-4 shadow-sm">
-      <div ref={cardRef} className="mx-auto max-w-[900px] rounded-xl border border-slate-300 bg-white p-8">
-        <h1 className="mb-6 text-center text-xl font-bold tracking-wide text-slate-800 sm:text-2xl md:text-3xl">
+      <div ref={cardRef} className="mx-auto max-w-[900px] rounded-xl border border-slate-300 bg-white p-2 sm:p-4 md:p-6">
+        <h1 className="mb-2 text-center text-sm font-bold tracking-wide text-slate-800 sm:mb-4 sm:text-lg md:text-2xl">
           {title}
         </h1>
-        <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4">
+        <div className="grid grid-cols-3 gap-1 sm:gap-2 md:gap-3">
           {selectedItems.map((item, index) => (
-            <article key={index} className="relative overflow-hidden rounded-lg border-2 border-slate-300 bg-slate-100">
-              <div className="aspect-[16/9]">
+            <article key={index} className="overflow-hidden rounded border border-slate-300 sm:rounded-lg sm:border-2">
+              <div className="aspect-video bg-slate-200">
                 {item.image ? (
-                  <img src={item.image} alt={item.name} className="h-full w-full object-contain bg-blue-500" />
+                  <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-slate-200 text-center text-sm text-slate-500">
+                  <div className="flex h-full w-full items-center justify-center text-center text-[10px] text-slate-400 sm:text-xs">
                     No Image
                   </div>
                 )}
               </div>
-              <div className="bg-slate-900 px-3 py-2">
-                <p className="text-sm font-bold text-white">
+              <div className="bg-slate-900 px-1 py-0.5 sm:py-1">
+                <p data-label className="whitespace-nowrap text-center text-xs font-bold leading-tight text-white">
                   {index + 1}. {item.name || '未選択'}
                 </p>
               </div>

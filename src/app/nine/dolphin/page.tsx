@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import html2canvas from 'html2canvas';
+import { dolphinCharacters } from '@/lib/nine/dolphinCharacters';
 import { CharacterSearchCard } from './components/CharacterSearchCard';
 import { ShareTextSection } from './components/ShareTextSection';
 import { PreviewGrid } from './components/PreviewGrid';
@@ -9,6 +10,7 @@ import { PreviewGrid } from './components/PreviewGrid';
 interface SelectedItem {
   name: string;
   image?: string;
+  slug?: string;
 }
 
 export default function NineDolphin() {
@@ -31,13 +33,16 @@ export default function NineDolphin() {
 
     const items: SelectedItem[] = Array(9).fill(null).map(() => ({ name: '' }));
     for (let i = 1; i <= 9; i++) {
-      const name = params.get(`c${i}`);
-      const image = params.get(`img${i}`);
-      if (name) {
-        items[i - 1] = { name, image: image || undefined };
+      const slug = params.get(`s${i}`);
+      if (slug) {
+        const char = dolphinCharacters.find(c => c.slug === slug);
+        if (char) {
+          const proxiedImageUrl = `/api/image-proxy?url=${encodeURIComponent(char.imageUrl)}`;
+          items[i - 1] = { name: char.name, image: proxiedImageUrl, slug: char.slug };
+        }
       }
     }
-    
+
     // 少なくとも1つ選択されている場合のみ更新
     if (items.some(item => item.name)) {
       setSelectedItems(items);
@@ -49,18 +54,15 @@ export default function NineDolphin() {
     const params = new URLSearchParams();
     params.set('title', title);
     selectedItems.forEach((item, index) => {
-      if (item.name) {
-        params.set(`c${index + 1}`, item.name);
-        if (item.image) {
-          params.set(`img${index + 1}`, item.image);
-        }
+      if (item.slug) {
+        params.set(`s${index + 1}`, item.slug);
       }
     });
-    
+
     const ogUrl = `/api/og/dolphin?${params.toString()}`;
     const ogMetaImage = document.querySelector('meta[property="og:image"]');
     const twitterMetaImage = document.querySelector('meta[name="twitter:image"]');
-    
+
     if (ogMetaImage) {
       ogMetaImage.setAttribute('content', `${window.location.origin}${ogUrl}`);
     } else {
@@ -69,7 +71,7 @@ export default function NineDolphin() {
       meta.setAttribute('content', `${window.location.origin}${ogUrl}`);
       document.head.appendChild(meta);
     }
-    
+
     if (twitterMetaImage) {
       twitterMetaImage.setAttribute('content', `${window.location.origin}${ogUrl}`);
     } else {
@@ -95,11 +97,11 @@ export default function NineDolphin() {
     setShowSuggestions(newShowSuggestions);
   };
 
-  const handleSelect = (index: number, name: string, imageUrl: string) => {
+  const handleSelect = (index: number, name: string, imageUrl: string, slug: string) => {
     const newSelectedItems = [...selectedItems];
     // 画像URLをプロキシ経由に変換
     const proxiedImageUrl = `/api/image-proxy?url=${encodeURIComponent(imageUrl)}`;
-    newSelectedItems[index] = { name, image: proxiedImageUrl };
+    newSelectedItems[index] = { name, image: proxiedImageUrl, slug };
     setSelectedItems(newSelectedItems);
 
     const newSearchTerms = [...searchTerms];
@@ -129,11 +131,62 @@ export default function NineDolphin() {
     if (!cardRef.current) return;
 
     try {
-      const canvas = await html2canvas(cardRef.current, {
+      // キャプチャ用に一時的に幅・フォントサイズを拡大して高品質化
+      const el = cardRef.current;
+      const originalWidth = el.style.width;
+      const originalPadding = el.style.padding;
+      el.style.width = '900px';
+      el.style.padding = '24px';
+
+      // タイトルを拡大
+      const titleEl = el.querySelector('h1');
+      const originalTitleStyle = titleEl?.getAttribute('style') || '';
+      titleEl?.setAttribute('style', 'font-size: 24px; margin-bottom: 16px;');
+
+      // 名前ラベルを拡大（<p>に直接適用してTailwindクラスを上書き）
+      const labels = el.querySelectorAll<HTMLElement>('[data-label]');
+      const originalLabelStyles: string[] = [];
+      labels.forEach((label) => {
+        originalLabelStyles.push(label.getAttribute('style') || '');
+        label.style.cssText = 'font-size: 14px !important; white-space: nowrap;';
+      });
+
+      // CORS回避: プロキシ経由の画像をdata URLに事前変換
+      const imgs = el.querySelectorAll('img');
+      const originalSrcs: { img: HTMLImageElement; src: string }[] = [];
+      await Promise.all(
+        Array.from(imgs).map(async (img) => {
+          try {
+            const res = await fetch(img.src);
+            const blob = await res.blob();
+            const dataUrl = await new Promise<string>((resolve) => {
+              const reader = new FileReader();
+              reader.onloadend = () => resolve(reader.result as string);
+              reader.readAsDataURL(blob);
+            });
+            originalSrcs.push({ img, src: img.src });
+            img.src = dataUrl;
+          } catch {
+            // 変換できない場合はそのまま
+          }
+        })
+      );
+
+      const canvas = await html2canvas(el, {
         useCORS: true,
-        allowTaint: true,
         scale: 2,
         backgroundColor: '#ffffff',
+      });
+
+      // 元に戻す
+      el.style.width = originalWidth;
+      el.style.padding = originalPadding;
+      titleEl?.setAttribute('style', originalTitleStyle);
+      labels.forEach((label, i) => {
+        label.setAttribute('style', originalLabelStyles[i]);
+      });
+      originalSrcs.forEach(({ img, src }) => {
+        img.src = src;
       });
 
       const dataUrl = canvas.toDataURL('image/png');
@@ -151,24 +204,19 @@ export default function NineDolphin() {
     const items = selectedItems
       .map((item, i) => `${i + 1}. ${item.name || '未選択'}`)
       .join('\n');
-    
-    // クライアント側でのみURLを生成
+
     if (typeof window === 'undefined') {
       return `#私を構成する9人のドルフィン\n\n${items}`;
     }
-    
-    // URLパラメータを生成
+
     const params = new URLSearchParams();
     params.set('title', title);
     selectedItems.forEach((item, index) => {
-      if (item.name) {
-        params.set(`c${index + 1}`, item.name);
-        if (item.image) {
-          params.set(`img${index + 1}`, item.image);
-        }
+      if (item.slug) {
+        params.set(`s${index + 1}`, item.slug);
       }
     });
-    
+
     const shareUrl = `${window.location.origin}/nine/dolphin?${params.toString()}`;
     return `#私を構成する9人のドルフィン\n\n${items}\n\n${shareUrl}`;
   };
@@ -208,7 +256,7 @@ export default function NineDolphin() {
                 searchTerm={searchTerms[index]}
                 showSuggestions={showSuggestions[index]}
                 onSearch={(value) => handleSearch(index, value)}
-                onSelect={(name, imageUrl) => handleSelect(index, name, imageUrl)}
+                onSelect={(name, imageUrl, slug) => handleSelect(index, name, imageUrl, slug)}
                 onClear={() => handleClear(index)}
                 onFocus={() => handleFocus(index)}
               />
