@@ -374,15 +374,19 @@ export default function NineDolphin() {
                 </button>
               </button>
             ) : (
-              // 空パネル
+              // 空パネル（ENTRYカード風）
               <button
                 onClick={() => handlePanelClick(index)}
-                className="flex aspect-square w-full flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 text-slate-400 transition-colors hover:border-slate-400 hover:bg-slate-100 hover:text-slate-500"
+                className="group relative aspect-square w-full rounded-md border border-slate-300 bg-slate-100 shadow-sm transition-colors hover:border-slate-400 hover:bg-slate-200/70"
               >
-                <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
-                </svg>
-                <span className="text-xs">追加</span>
+                {/* 内側の枠線 */}
+                <div className="absolute inset-2 flex flex-col items-center justify-center gap-1 rounded border border-dashed border-slate-300 group-hover:border-slate-400">
+                  {/* 赤い十字 */}
+                  <svg className="h-10 w-10 text-red-500" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M11 2h2v9h9v2h-9v9h-2v-9H2v-2h9z" />
+                  </svg>
+                  <span className="text-xs font-bold tracking-widest text-slate-500">ENTRY</span>
+                </div>
               </button>
             )}
           </div>
