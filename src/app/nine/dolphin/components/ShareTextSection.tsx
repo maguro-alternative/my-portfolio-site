@@ -1,13 +1,23 @@
 interface ShareTextSectionProps {
   shareText: string;
   onCopy: () => void;
+  disabled?: boolean;
 }
 
-export function ShareTextSection({ shareText, onCopy }: ShareTextSectionProps) {
+export function ShareTextSection({ shareText, onCopy, disabled }: ShareTextSectionProps) {
   const handleTwitterShare = () => {
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
     window.open(twitterUrl, '_blank', 'width=550,height=420');
   };
+
+  if (disabled) {
+    return (
+      <section className="space-y-3 rounded-lg border border-slate-200 bg-slate-50 p-4 opacity-50">
+        <p className="text-sm font-semibold text-slate-400">シェアテキスト</p>
+        <p className="text-xs text-slate-400">9キャラすべて選択するとシェアできます</p>
+      </section>
+    );
+  }
 
   return (
     <section className="space-y-3 rounded-lg border border-slate-300 bg-slate-50 p-4">

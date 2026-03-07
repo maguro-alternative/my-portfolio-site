@@ -397,7 +397,7 @@ export default function NineDolphin() {
       <div className="mb-8 text-center">
         <button
           onClick={handleDownload}
-          disabled={selectedCount === 0}
+          disabled={selectedCount < 9}
           className="rounded-lg bg-indigo-600 px-8 py-3 text-sm font-bold text-white shadow-sm transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500"
         >
           完成！
@@ -408,6 +408,7 @@ export default function NineDolphin() {
       <ShareTextSection
         shareText={shareText}
         onCopy={handleCopyShareText}
+        disabled={selectedCount < 9}
       />
 
       {/* 検索モーダル */}
