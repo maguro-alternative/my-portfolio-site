@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "マグロポートフォリオ",
   description: "マグロのポートフォリオサイトです。",
+  icons: {
+    icon: "/uchuemon.png",
+  },
 };
 
 export default function RootLayout({
