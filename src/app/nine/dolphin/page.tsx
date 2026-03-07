@@ -283,7 +283,7 @@ export default function NineDolphin() {
   };
 
   return (
-    <div className="mx-auto min-h-screen w-full max-w-md px-2 py-6">
+    <div className="mx-auto min-h-screen w-full max-w-lg px-4 py-6">
       {/* タイトル入力 */}
       <section className="mb-6">
         <label className="block space-y-1">
@@ -318,7 +318,7 @@ export default function NineDolphin() {
       </div>
 
       {/* 3x3 パネルグリッド */}
-      <div className="mb-6 grid grid-cols-3 gap-2">
+      <div className="mb-6 grid grid-cols-3 gap-3">
         {selectedItems.map((item, index) => (
           <div key={index} className="relative">
             {item.name ? (
