@@ -12,7 +12,6 @@ import { WaveFooter } from './components/WaveFooter';
 export default function NineDolphin() {
   const {
     title,
-    setTitle,
     selectedItems,
     selectedCount,
     shareText,
@@ -58,25 +57,6 @@ export default function NineDolphin() {
       </header>
 
       <div className="mx-auto max-w-lg px-4 pb-6">
-        {/* タイトル入力 */}
-        <section className="mb-6">
-          <label className="block space-y-1">
-            <span className="text-sm font-semibold text-slate-700">
-              タイトル（任意・最大30文字）
-            </span>
-            <input
-              type="text"
-              maxLength={30}
-              className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </label>
-          <p className="mt-1 text-xs text-slate-400">
-            「{title}」として共有されます
-          </p>
-        </section>
-
         {/* カウンター + リセット */}
         <div className="mb-3 flex items-center justify-between">
           <p className="text-sm font-semibold text-slate-700">
