@@ -22,17 +22,17 @@ export function PreviewGrid({ title, selectedItems, cardRef, onDownload }: Previ
         <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4">
           {selectedItems.map((item, index) => (
             <article key={index} className="relative overflow-hidden rounded-lg border-2 border-slate-300 bg-slate-100">
-              <div className="aspect-[3/4]">
+              <div className="aspect-video">
                 {item.image ? (
-                  <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
+                  <img src={item.image} alt={item.name} className="h-full w-full object-contain" />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-slate-200 text-center text-sm text-slate-500">
+                  <div className="flex h-full w-full items-center justify-center bg-slate-200 text-center text-xs text-slate-500">
                     No Image
                   </div>
                 )}
               </div>
-              <div className="absolute bottom-0 left-0 right-0 bg-slate-900/80 px-2 py-1">
-                <p className="text-center text-[10px] font-bold leading-tight text-white sm:text-xs">
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent px-1 pb-0.5 pt-3">
+                <p className="truncate text-center text-[8px] font-bold text-white sm:text-[10px]">
                   {index + 1}. {item.name || '未選択'}
                 </p>
               </div>
