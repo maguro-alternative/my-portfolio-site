@@ -121,7 +121,6 @@ export function useDolphinState() {
 
   return {
     title,
-    setTitle,
     selectedItems,
     selectedCount,
     shareText,
