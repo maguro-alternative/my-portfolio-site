@@ -143,13 +143,12 @@ export default function NineDolphin() {
       const originalTitleStyle = titleEl?.getAttribute('style') || '';
       titleEl?.setAttribute('style', 'font-size: 24px; margin-bottom: 16px;');
 
-      // 名前ラベルを拡大
+      // 名前ラベルを拡大（<p>に直接適用してTailwindクラスを上書き）
       const labels = el.querySelectorAll<HTMLElement>('[data-label]');
       const originalLabelStyles: string[] = [];
       labels.forEach((label) => {
         originalLabelStyles.push(label.getAttribute('style') || '');
-        label.style.fontSize = '14px';
-        label.style.padding = '4px 8px';
+        label.style.cssText = 'font-size: 14px !important; white-space: nowrap;';
       });
 
       // CORS回避: プロキシ経由の画像をdata URLに事前変換
