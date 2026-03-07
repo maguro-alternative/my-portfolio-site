@@ -284,6 +284,19 @@ export default function NineDolphin() {
 
   return (
     <div className="mx-auto min-h-screen w-full px-4 py-6">
+      {/* ページヘッダー */}
+      <header className="mb-6">
+        <p className="text-sm font-semibold tracking-widest text-blue-600">
+          9 DOLPHIN WAVE CHARACTERS
+        </p>
+        <h1 className="mt-1 text-2xl font-bold text-slate-900">
+          私を構成する9人のドルフィン
+        </h1>
+        <p className="mt-1 text-sm text-slate-500">
+          9キャラクターを選んで一覧化し、画像として保存できます。
+        </p>
+      </header>
+
       {/* タイトル入力 */}
       <section className="mb-6">
         <label className="block space-y-1">
