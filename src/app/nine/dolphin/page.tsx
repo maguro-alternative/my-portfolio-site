@@ -325,7 +325,7 @@ export default function NineDolphin() {
               // 選択済みパネル
               <button
                 onClick={() => handlePanelClick(index)}
-                className="group relative aspect-[4/3] w-full overflow-hidden rounded-lg border border-slate-200 bg-slate-100"
+                className="group relative aspect-square w-full overflow-hidden rounded-lg border border-slate-200 bg-slate-100"
               >
                 {item.image && (
                   <img
@@ -356,7 +356,7 @@ export default function NineDolphin() {
               // 空パネル
               <button
                 onClick={() => handlePanelClick(index)}
-                className="flex aspect-[4/3] w-full flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 text-slate-400 transition-colors hover:border-slate-400 hover:bg-slate-100 hover:text-slate-500"
+                className="flex aspect-square w-full flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 text-slate-400 transition-colors hover:border-slate-400 hover:bg-slate-100 hover:text-slate-500"
               >
                 <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
