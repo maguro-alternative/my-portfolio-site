@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { dolphinCharacters } from '@/lib/nine/dolphinCharacters';
 import { CharacterSearchModal } from './components/CharacterSearchModal';
 import { ShareTextSection } from './components/ShareTextSection';
@@ -36,7 +36,6 @@ export default function NineDolphin() {
   const [shareText, setShareText] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [activePanelIndex, setActivePanelIndex] = useState(0);
-  const cardRef = useRef<HTMLDivElement>(null);
 
   const selectedCount = selectedItems.filter((item) => item.name).length;
 
@@ -400,7 +399,7 @@ export default function NineDolphin() {
           disabled={selectedCount < 9}
           className="rounded-lg bg-indigo-600 px-8 py-3 text-sm font-bold text-white shadow-sm transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500"
         >
-          完成！
+          画像をダウンロード
         </button>
       </div>
 
