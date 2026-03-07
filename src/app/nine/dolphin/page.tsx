@@ -131,8 +131,13 @@ export default function NineDolphin() {
     if (!cardRef.current) return;
 
     try {
+      // キャプチャ用に一時的に幅を固定して高品質化
+      const el = cardRef.current;
+      const originalWidth = el.style.width;
+      el.style.width = '900px';
+
       // CORS回避: プロキシ経由の画像をdata URLに事前変換
-      const imgs = cardRef.current.querySelectorAll('img');
+      const imgs = el.querySelectorAll('img');
       const originalSrcs: { img: HTMLImageElement; src: string }[] = [];
       await Promise.all(
         Array.from(imgs).map(async (img) => {
@@ -152,13 +157,14 @@ export default function NineDolphin() {
         })
       );
 
-      const canvas = await html2canvas(cardRef.current, {
+      const canvas = await html2canvas(el, {
         useCORS: true,
         scale: 2,
         backgroundColor: '#ffffff',
       });
 
-      // 元のsrcに戻す
+      // 元に戻す
+      el.style.width = originalWidth;
       originalSrcs.forEach(({ img, src }) => {
         img.src = src;
       });
