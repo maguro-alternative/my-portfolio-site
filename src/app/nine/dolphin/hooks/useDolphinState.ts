@@ -89,7 +89,7 @@ export function useDolphinState() {
 
     const params = buildShareParams(selectedItems);
     const shareUrl = `${window.location.origin}/nine/dolphin?${params.toString()}`;
-    setShareText(`#私を構成する9人のドルフィン\n\n${items}\n\n${shareUrl}`);
+    setShareText(`#My9Dolphin\n\n${items}\n\n${shareUrl}`);
   }, [selectedItems]);
 
   const handleSelect = (index: number, name: string, imageUrl: string, slug: string) => {
