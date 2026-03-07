@@ -14,9 +14,8 @@ function createEmptyItems(): SelectedItem[] {
   return Array(9).fill(null).map(() => ({ name: '' }));
 }
 
-function buildShareParams(title: string, items: SelectedItem[]): URLSearchParams {
+function buildShareParams(items: SelectedItem[]): URLSearchParams {
   const params = new URLSearchParams();
-  params.set('title', title);
   items.forEach((item, index) => {
     if (item.slug) {
       params.set(`s${index + 1}`, item.slug);
@@ -30,7 +29,6 @@ function proxyUrl(imageUrl: string): string {
 }
 
 export function useDolphinState() {
-  const [title, setTitle] = useState('私を構成する9人のドルフィン');
   const [selectedItems, setSelectedItems] = useState<SelectedItem[]>(createEmptyItems());
   const [shareText, setShareText] = useState('');
 
@@ -39,10 +37,6 @@ export function useDolphinState() {
   // URLパラメータから選択内容を復元
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const urlTitle = params.get('title');
-    if (urlTitle) {
-      setTitle(urlTitle);
-    }
 
     const items = createEmptyItems();
     for (let i = 1; i <= 9; i++) {
@@ -67,7 +61,7 @@ export function useDolphinState() {
 
   // OGP画像URLを更新
   useEffect(() => {
-    const params = buildShareParams(title, selectedItems);
+    const params = buildShareParams(selectedItems);
     const ogUrl = `/api/og/dolphin?${params.toString()}`;
     const fullUrl = `${window.location.origin}${ogUrl}`;
 
@@ -85,7 +79,7 @@ export function useDolphinState() {
 
     updateMeta('meta[property="og:image"]', 'property', fullUrl);
     updateMeta('meta[name="twitter:image"]', 'name', fullUrl);
-  }, [title, selectedItems]);
+  }, [selectedItems]);
 
   // シェアテキスト生成
   useEffect(() => {
@@ -93,10 +87,10 @@ export function useDolphinState() {
       .map((item, i) => `${i + 1}. ${item.name || '未選択'}`)
       .join('\n');
 
-    const params = buildShareParams(title, selectedItems);
+    const params = buildShareParams(selectedItems);
     const shareUrl = `${window.location.origin}/nine/dolphin?${params.toString()}`;
     setShareText(`#私を構成する9人のドルフィン\n\n${items}\n\n${shareUrl}`);
-  }, [title, selectedItems]);
+  }, [selectedItems]);
 
   const handleSelect = (index: number, name: string, imageUrl: string, slug: string) => {
     const newItems = [...selectedItems];
@@ -120,7 +114,6 @@ export function useDolphinState() {
   };
 
   return {
-    title,
     selectedItems,
     selectedCount,
     shareText,
