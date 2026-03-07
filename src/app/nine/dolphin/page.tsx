@@ -325,13 +325,13 @@ export default function NineDolphin() {
               // 選択済みパネル
               <button
                 onClick={() => handlePanelClick(index)}
-                className="group relative aspect-square w-full overflow-hidden rounded-lg border border-slate-200 bg-slate-100"
+                className="group relative aspect-square w-full overflow-hidden rounded-lg border border-slate-200 bg-slate-100 p-0"
               >
                 {item.image && (
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="h-full w-full object-cover object-top"
+                    className="absolute inset-0 h-full w-full object-cover object-top"
                   />
                 )}
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-1 pb-1.5 pt-5">
