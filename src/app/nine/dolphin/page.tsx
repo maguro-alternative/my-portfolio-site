@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import html2canvas from 'html2canvas';
 import { dolphinCharacters } from '@/lib/nine/dolphinCharacters';
 import { CharacterSearchCard } from './components/CharacterSearchCard';
 import { ShareTextSection } from './components/ShareTextSection';
@@ -11,6 +10,20 @@ interface SelectedItem {
   name: string;
   image?: string;
   slug?: string;
+}
+
+function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
 }
 
 export default function NineDolphin() {
@@ -127,68 +140,138 @@ export default function NineDolphin() {
     }
   };
 
+  const loadImage = (src: string): Promise<HTMLImageElement> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = src;
+    });
+  };
+
   const handleDownload = async () => {
-    if (!cardRef.current) return;
-
     try {
-      // キャプチャ用に一時的に幅・フォントサイズを拡大して高品質化
-      const el = cardRef.current;
-      const originalWidth = el.style.width;
-      const originalPadding = el.style.padding;
-      el.style.width = '900px';
-      el.style.padding = '24px';
+      // レイアウト定数（ピクセル）
+      const SCALE = 2;
+      const W = 900;
+      const PAD = 24;
+      const GAP = 12;
+      const COLS = 3;
+      const TITLE_FONT_SIZE = 24;
+      const LABEL_FONT_SIZE = 14;
+      const LABEL_HEIGHT = 32;
+      const BORDER = 2;
+      const BORDER_RADIUS = 8;
 
-      // タイトルを拡大
-      const titleEl = el.querySelector('h1');
-      const originalTitleStyle = titleEl?.getAttribute('style') || '';
-      titleEl?.setAttribute('style', 'font-size: 24px; margin-bottom: 16px;');
+      const contentW = W - PAD * 2;
+      const cardW = (contentW - GAP * (COLS - 1)) / COLS;
+      const imgH = Math.round(cardW * 9 / 16);
+      const cardH = imgH + LABEL_HEIGHT;
+      const ROWS = 3;
+      const titleAreaH = TITLE_FONT_SIZE + 20;
+      const gridH = cardH * ROWS + GAP * (ROWS - 1);
+      const H = PAD + titleAreaH + gridH + PAD;
 
-      // 名前ラベルを拡大（<p>に直接適用してTailwindクラスを上書き）
-      const labels = el.querySelectorAll<HTMLElement>('[data-label]');
-      const originalLabelStyles: string[] = [];
-      labels.forEach((label) => {
-        originalLabelStyles.push(label.getAttribute('style') || '');
-        label.style.cssText = 'font-size: 14px !important; white-space: nowrap;';
-      });
+      const canvas = document.createElement('canvas');
+      canvas.width = W * SCALE;
+      canvas.height = H * SCALE;
+      const ctx = canvas.getContext('2d')!;
+      ctx.scale(SCALE, SCALE);
 
-      // CORS回避: プロキシ経由の画像をdata URLに事前変換
-      const imgs = el.querySelectorAll('img');
-      const originalSrcs: { img: HTMLImageElement; src: string }[] = [];
-      await Promise.all(
-        Array.from(imgs).map(async (img) => {
+      // 背景
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, W, H);
+
+      // 外枠
+      ctx.strokeStyle = '#cbd5e1'; // slate-300
+      ctx.lineWidth = 1;
+      roundRect(ctx, PAD - 1, PAD - 1, contentW + 2, titleAreaH + gridH + PAD + 2, BORDER_RADIUS);
+      ctx.stroke();
+
+      // タイトル
+      ctx.fillStyle = '#1e293b'; // slate-800
+      ctx.font = `bold ${TITLE_FONT_SIZE}px sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText(title, W / 2, PAD + TITLE_FONT_SIZE);
+
+      // 画像をプリロード
+      const images = await Promise.all(
+        selectedItems.map(async (item) => {
+          if (!item.image) return null;
           try {
-            const res = await fetch(img.src);
+            // プロキシ経由の画像をfetchしてblob URLに変換（CORS対応）
+            const res = await fetch(item.image);
             const blob = await res.blob();
-            const dataUrl = await new Promise<string>((resolve) => {
-              const reader = new FileReader();
-              reader.onloadend = () => resolve(reader.result as string);
-              reader.readAsDataURL(blob);
-            });
-            originalSrcs.push({ img, src: img.src });
-            img.src = dataUrl;
+            const blobUrl = URL.createObjectURL(blob);
+            const img = await loadImage(blobUrl);
+            URL.revokeObjectURL(blobUrl);
+            return img;
           } catch {
-            // 変換できない場合はそのまま
+            return null;
           }
         })
       );
 
-      const canvas = await html2canvas(el, {
-        useCORS: true,
-        scale: 2,
-        backgroundColor: '#ffffff',
-      });
+      // カード描画
+      for (let i = 0; i < 9; i++) {
+        const col = i % COLS;
+        const row = Math.floor(i / COLS);
+        const x = PAD + col * (cardW + GAP);
+        const y = PAD + titleAreaH + row * (cardH + GAP);
 
-      // 元に戻す
-      el.style.width = originalWidth;
-      el.style.padding = originalPadding;
-      titleEl?.setAttribute('style', originalTitleStyle);
-      labels.forEach((label, i) => {
-        label.setAttribute('style', originalLabelStyles[i]);
-      });
-      originalSrcs.forEach(({ img, src }) => {
-        img.src = src;
-      });
+        // カード枠
+        ctx.save();
+        ctx.strokeStyle = '#cbd5e1';
+        ctx.lineWidth = BORDER;
+        roundRect(ctx, x, y, cardW, cardH, BORDER_RADIUS);
+        ctx.stroke();
 
+        // クリップ（角丸内に描画を収める）
+        ctx.beginPath();
+        roundRect(ctx, x, y, cardW, cardH, BORDER_RADIUS);
+        ctx.clip();
+
+        // 画像領域
+        const img = images[i];
+        if (img) {
+          // object-cover: アスペクト比を維持しつつ領域を埋める
+          const imgAspect = img.naturalWidth / img.naturalHeight;
+          const slotAspect = cardW / imgH;
+          let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
+          if (imgAspect > slotAspect) {
+            sw = img.naturalHeight * slotAspect;
+            sx = (img.naturalWidth - sw) / 2;
+          } else {
+            sh = img.naturalWidth / slotAspect;
+            sy = (img.naturalHeight - sh) / 2;
+          }
+          ctx.drawImage(img, sx, sy, sw, sh, x, y, cardW, imgH);
+        } else {
+          // No Image placeholder
+          ctx.fillStyle = '#e2e8f0'; // slate-200
+          ctx.fillRect(x, y, cardW, imgH);
+          ctx.fillStyle = '#94a3b8'; // slate-400
+          ctx.font = '12px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('No Image', x + cardW / 2, y + imgH / 2 + 4);
+        }
+
+        // ラベル背景
+        ctx.fillStyle = '#0f172a'; // slate-900
+        ctx.fillRect(x, y + imgH, cardW, LABEL_HEIGHT);
+
+        // ラベルテキスト
+        ctx.fillStyle = '#ffffff';
+        ctx.font = `bold ${LABEL_FONT_SIZE}px sans-serif`;
+        ctx.textAlign = 'center';
+        const labelText = `${i + 1}. ${selectedItems[i].name || '未選択'}`;
+        ctx.fillText(labelText, x + cardW / 2, y + imgH + LABEL_HEIGHT / 2 + LABEL_FONT_SIZE / 3);
+
+        ctx.restore();
+      }
+
+      // ダウンロード
       const dataUrl = canvas.toDataURL('image/png');
       const link = document.createElement('a');
       link.download = 'my-9-dolphin-wave.png';
