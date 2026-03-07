@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useDolphinState } from './hooks/useDolphinState';
-import { downloadCanvasImage } from './utils/canvasDownload';
+import { generateCanvasImage } from './utils/canvasDownload';
 import { CharacterSearchModal } from './components/CharacterSearchModal';
 import { ShareTextSection } from './components/ShareTextSection';
 import { SelectionGrid } from './components/SelectionGrid';
@@ -22,15 +22,17 @@ export default function NineDolphin() {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [activePanelIndex, setActivePanelIndex] = useState(0);
+  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
 
   const handlePanelClick = (index: number) => {
     setActivePanelIndex(index);
     setModalOpen(true);
   };
 
-  const handleDownload = async () => {
+  const handleGenerate = async () => {
     try {
-      await downloadCanvasImage('私を構成する9人のドルフィン', selectedItems);
+      const dataUrl = await generateCanvasImage('私を構成する9人のドルフィン', selectedItems);
+      setGeneratedImage(dataUrl);
     } catch (err) {
       console.error('画像の生成に失敗しました', err);
       alert('画像の生成に失敗しました。');
@@ -79,13 +81,24 @@ export default function NineDolphin() {
         {/* 完成ボタン */}
         <div className="mb-8 text-center">
           <button
-            onClick={handleDownload}
+            onClick={handleGenerate}
             disabled={selectedCount < 9}
             className="rounded-lg bg-indigo-600 px-8 py-3 text-sm font-bold text-white shadow-sm transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500"
           >
-            画像をダウンロード
+            画像を作成
           </button>
         </div>
+
+        {/* 生成画像 */}
+        {generatedImage && (
+          <div className="mb-8">
+            <img
+              src={generatedImage}
+              alt="私を構成する9人のドルフィン"
+              className="w-full rounded-lg shadow-md"
+            />
+          </div>
+        )}
 
         {/* シェアセクション */}
         <ShareTextSection

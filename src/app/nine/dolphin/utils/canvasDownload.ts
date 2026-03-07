@@ -47,7 +47,7 @@ async function loadItemImage(item: DownloadItem): Promise<HTMLImageElement | nul
   return null;
 }
 
-export async function downloadCanvasImage(title: string, selectedItems: DownloadItem[]) {
+export async function generateCanvasImage(title: string, selectedItems: DownloadItem[]): Promise<string> {
   const SCALE = 2;
   const W = 900;
   const PAD = 24;
@@ -139,9 +139,5 @@ export async function downloadCanvasImage(title: string, selectedItems: Download
     ctx.restore();
   }
 
-  const dataUrl = canvas.toDataURL('image/png');
-  const link = document.createElement('a');
-  link.download = 'my-9-dolphin-wave.png';
-  link.href = dataUrl;
-  link.click();
+  return canvas.toDataURL('image/png');
 }
