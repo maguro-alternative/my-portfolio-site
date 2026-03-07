@@ -8,6 +8,7 @@ import { ShareTextSection } from './components/ShareTextSection';
 interface SelectedItem {
   name: string;
   image?: string;
+  originalImage?: string;
   slug?: string;
 }
 
@@ -52,7 +53,7 @@ export default function NineDolphin() {
         const char = dolphinCharacters.find(c => c.slug === slug);
         if (char) {
           const proxiedImageUrl = `/api/image-proxy?url=${encodeURIComponent(char.imageUrl)}`;
-          items[i - 1] = { name: char.name, image: proxiedImageUrl, slug: char.slug };
+          items[i - 1] = { name: char.name, image: proxiedImageUrl, originalImage: char.imageUrl, slug: char.slug };
         }
       }
     }
@@ -102,7 +103,7 @@ export default function NineDolphin() {
   const handleSelect = (index: number, name: string, imageUrl: string, slug: string) => {
     const newSelectedItems = [...selectedItems];
     const proxiedImageUrl = `/api/image-proxy?url=${encodeURIComponent(imageUrl)}`;
-    newSelectedItems[index] = { name, image: proxiedImageUrl, slug };
+    newSelectedItems[index] = { name, image: proxiedImageUrl, originalImage: imageUrl, slug };
     setSelectedItems(newSelectedItems);
   };
 
@@ -175,16 +176,22 @@ export default function NineDolphin() {
       const images = await Promise.all(
         selectedItems.map(async (item) => {
           if (!item.image) return null;
-          try {
-            const res = await fetch(item.image);
-            const blob = await res.blob();
-            const blobUrl = URL.createObjectURL(blob);
-            const img = await loadImage(blobUrl);
-            URL.revokeObjectURL(blobUrl);
-            return img;
-          } catch {
-            return null;
+          // プロキシ経由 → 失敗時は元URLで直接試行
+          const urls = [item.image, item.originalImage].filter(Boolean) as string[];
+          for (const url of urls) {
+            try {
+              const res = await fetch(url);
+              if (!res.ok) continue;
+              const blob = await res.blob();
+              const blobUrl = URL.createObjectURL(blob);
+              const img = await loadImage(blobUrl);
+              URL.revokeObjectURL(blobUrl);
+              return img;
+            } catch {
+              continue;
+            }
           }
+          return null;
         })
       );
 
@@ -318,17 +325,17 @@ export default function NineDolphin() {
               // 選択済みパネル
               <button
                 onClick={() => handlePanelClick(index)}
-                className="group relative aspect-square w-full overflow-hidden rounded-lg border border-slate-200 bg-white"
+                className="group relative aspect-square w-full overflow-hidden rounded-lg border border-slate-200 bg-slate-100"
               >
                 {item.image && (
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-contain"
                   />
                 )}
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-1 pb-1.5 pt-4">
-                  <p className="truncate text-center text-xs font-bold text-white">
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-1 pb-1.5 pt-5">
+                  <p className="truncate text-center text-xs font-bold text-white drop-shadow-sm">
                     {item.name}
                   </p>
                 </div>
@@ -373,12 +380,10 @@ export default function NineDolphin() {
       </div>
 
       {/* シェアセクション */}
-      {selectedCount > 0 && (
-        <ShareTextSection
-          shareText={shareText}
-          onCopy={handleCopyShareText}
-        />
-      )}
+      <ShareTextSection
+        shareText={shareText}
+        onCopy={handleCopyShareText}
+      />
 
       {/* 検索モーダル */}
       <CharacterSearchModal
