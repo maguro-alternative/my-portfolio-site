@@ -6,7 +6,7 @@ export const runtime = 'edge';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const title = searchParams.get('title') || '私を構成する9つのドルフィン';
+    const title = searchParams.get('title') || '私を構成する9人のドルフィン';
     
     // キャラクター画像URLを取得（最大9個）
     const characterImages: string[] = [];

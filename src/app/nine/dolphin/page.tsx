@@ -12,7 +12,7 @@ interface SelectedItem {
 }
 
 export default function NineDolphin() {
-  const [title, setTitle] = useState('私を構成する9つのドルフィン');
+  const [title, setTitle] = useState('私を構成する9人のドルフィン');
   const [selectedItems, setSelectedItems] = useState<SelectedItem[]>(
     Array(9).fill(null).map(() => ({ name: '' }))
   );
@@ -154,7 +154,7 @@ export default function NineDolphin() {
     
     // クライアント側でのみURLを生成
     if (typeof window === 'undefined') {
-      return `#私を構成する9つのドルフィン\n\n${items}`;
+      return `#私を構成する9人のドルフィン\n\n${items}`;
     }
     
     // URLパラメータを生成
@@ -170,7 +170,7 @@ export default function NineDolphin() {
     });
     
     const shareUrl = `${window.location.origin}/nine/dolphin?${params.toString()}`;
-    return `#私を構成する9つのドルフィン\n\n${items}\n\n${shareUrl}`;
+    return `#私を構成する9人のドルフィン\n\n${items}\n\n${shareUrl}`;
   };
 
   const handleCopyShareText = () => {
@@ -182,7 +182,7 @@ export default function NineDolphin() {
     <div className="mx-auto min-h-screen w-full max-w-7xl px-4 py-6">
       <header className="mb-6 space-y-2">
         <p className="text-xs uppercase tracking-wider text-blue-600">9 Dolphin Wave Characters</p>
-        <h1 className="text-2xl font-bold text-slate-800 sm:text-3xl">私を構成する9つのドルフィン</h1>
+        <h1 className="text-2xl font-bold text-slate-800 sm:text-3xl">私を構成する9人のドルフィン</h1>
         <p className="text-sm text-slate-600">9キャラクターを選んで一覧化し、画像として保存できます。</p>
       </header>
 
