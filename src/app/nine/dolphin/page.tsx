@@ -11,7 +11,6 @@ import { WaveFooter } from './components/WaveFooter';
 
 export default function NineDolphin() {
   const {
-    title,
     selectedItems,
     selectedCount,
     shareText,
@@ -31,7 +30,7 @@ export default function NineDolphin() {
 
   const handleDownload = async () => {
     try {
-      await downloadCanvasImage(title, selectedItems);
+      await downloadCanvasImage('私を構成する9人のドルフィン', selectedItems);
     } catch (err) {
       console.error('画像の生成に失敗しました', err);
       alert('画像の生成に失敗しました。');
