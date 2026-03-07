@@ -42,8 +42,12 @@ export function WaveFooter() {
         </svg>
       </div>
 
-      {/* 青いフッターバンド */}
-      <div className="h-20 bg-blue-500" />
+      {/* 青いフッターバンド + コピーライト */}
+      <div className="flex h-20 items-center justify-center bg-blue-500">
+        <p className="pointer-events-auto text-center text-sm text-white">
+          &copy; 2025 Maguro Alternative. All rights reserved.
+        </p>
+      </div>
     </div>
   );
 }
