@@ -38,9 +38,8 @@ export default function NineDolphin() {
   };
 
   return (
-    <div className="relative min-h-screen w-full pb-44">
+    <div className="relative min-h-screen w-full">
       <WaveBackground />
-      <WaveFooter />
       <header className="relative z-10 px-4 pb-16 pt-6">
         <div className="mx-auto max-w-lg">
           <p className="text-sm font-semibold tracking-widest text-white/80">
@@ -103,6 +102,7 @@ export default function NineDolphin() {
           onClose={() => setModalOpen(false)}
         />
       </div>
+      <WaveFooter />
     </div>
   );
 }

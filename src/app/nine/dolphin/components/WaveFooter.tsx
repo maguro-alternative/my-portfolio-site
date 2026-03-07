@@ -2,9 +2,9 @@ export function WaveFooter() {
   // WaveBackground の各パスを Y=60 を軸に上下反転。
   // 塗りつぶしを下方向(L1440,120 L0,120)にし、波の下に青バンドを配置。
   return (
-    <div className="absolute inset-x-0 bottom-0">
+    <div className="w-full">
       {/* 波の境界 - 白から青へ */}
-      <div className="relative -mb-1 h-24 overflow-hidden">
+      <div className="relative -mb-1 h-24 overflow-hidden -z-10 pointer-events-none">
         {/* 波1 - 奥（ゆっくり・半透明の青） */}
         <svg
           className="pointer-events-none absolute bottom-0 h-full w-[200%] animate-wave-slow"
