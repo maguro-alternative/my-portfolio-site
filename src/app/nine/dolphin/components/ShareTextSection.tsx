@@ -14,7 +14,7 @@ export function ShareTextSection({ shareText, onCopy }: ShareTextSectionProps) {
       <p className="text-sm font-semibold text-slate-700">シェアテキスト</p>
       <div className="rounded-md border border-slate-300 bg-white p-3">
         <p className="mb-2 text-xs text-slate-500">文字数: {shareText.length}</p>
-        <p className="mb-3 whitespace-pre-wrap text-xs text-slate-800">{shareText}</p>
+        <p className="mb-3 whitespace-pre-wrap break-all text-xs text-slate-800">{shareText}</p>
         <div className="flex gap-2">
           <button
             onClick={onCopy}
