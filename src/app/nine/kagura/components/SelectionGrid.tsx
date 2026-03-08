@@ -53,9 +53,9 @@ export function SelectionGrid({ selectedItems, onPanelClick, onClearPanel }: Sel
           ) : (
             <button
               onClick={() => onPanelClick(index)}
-              className="group relative aspect-square w-full overflow-hidden rounded-lg transition-opacity hover:opacity-80"
+              className="block w-full transition-opacity hover:opacity-80"
             >
-              <svg width="100%" height="100%" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+              <svg className="block w-full" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
                 <rect x="10" y="10" width="480" height="480" rx="40" ry="40" fill="#999" stroke="#333" strokeWidth="8"/>
                 <rect x="40" y="40" width="420" height="420" rx="5" ry="5" fill="none" stroke="#ccc" strokeWidth="4" opacity="0.5"/>
                 <circle cx="250" cy="250" r="180" fill="none" stroke="#666" strokeWidth="2"/>

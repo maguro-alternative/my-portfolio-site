@@ -24,8 +24,8 @@ export function ShareTextSection({ shareText, onCopy, disabled }: ShareTextSecti
       <p className="text-sm font-semibold text-slate-700">シェアテキスト</p>
       <div className="rounded-md border border-slate-300 bg-white p-3">
         <p className="mb-2 text-xs text-slate-500">文字数: {shareText.replace(/https?:\/\/\S+/g, '').length}</p>
-        <p className="mb-3 whitespace-pre-wrap break-all text-xs text-slate-800">{shareText}</p>
-        <div className="flex gap-2">
+        <p className="whitespace-pre-wrap break-all text-xs text-slate-800">{shareText}</p>
+        <div className="mt-4 flex gap-2 border-t border-slate-200 pt-3">
           <button
             onClick={onCopy}
             className="rounded border border-slate-300 bg-white px-3 py-1 text-xs text-slate-700 hover:bg-slate-50"

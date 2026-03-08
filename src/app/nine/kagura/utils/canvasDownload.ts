@@ -61,7 +61,7 @@ export async function generateCanvasImage(title: string, selectedItems: Download
 
   const contentW = W - PAD * 2;
   const cardW = (contentW - GAP * (COLS - 1)) / COLS;
-  const imgH = Math.round(cardW * 9 / 16);
+  const imgH = cardW;
   const cardH = imgH + LABEL_HEIGHT;
   const ROWS = 3;
   const titleAreaH = TITLE_FONT_SIZE + 20;
