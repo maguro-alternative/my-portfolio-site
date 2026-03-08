@@ -45,9 +45,10 @@ export default function NineKagura() {
       <div
         className="border-b-2 border-slate-400"
         style={{
-          backgroundImage: "url('https://senrankagura.marv.jp/img/bg_header_top.png')",
+          backgroundImage: `url('/api/image-proxy?url=${encodeURIComponent('https://senrankagura.marv.jp/img/bg_header_top.png')}')`,
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center top',
+          backgroundSize: 'cover',
         }}
       >
         <header className="mx-auto max-w-[700px] px-4 pb-4 pt-6 text-center">
