@@ -23,5 +23,25 @@ button {
 /* kagura-portal-bg のモバイル対応 */
 .kagura-portal-bg {
   min-width: unset;
-  background-size: auto, auto, 100% auto;
+  /* ヘッダー画像をページ背景から外す（花だけ残す） */
+  background-image:
+    url("https://senrankagura.marv.jp/img/bg_top_flower02.png"),
+    url("https://senrankagura.marv.jp/img/bg_main_flower03.png");
+  background-repeat: no-repeat, no-repeat;
+  background-position: right bottom, left bottom;
+  background-size: auto, auto;
+}
+
+/* ヘッダー背景画像を独立した要素にして下端をフェードアウト */
+.kagura-header-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url("https://senrankagura.marv.jp/img/bg_header_top.png");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: 100% auto;
+  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
 }
