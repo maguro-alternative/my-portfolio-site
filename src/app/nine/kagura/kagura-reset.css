@@ -1,47 +1,50 @@
 /* kaguraページ用: globals.css のグローバルスタイルをリセット */
 body {
-  place-items: unset;
-  min-width: unset;
-  background: #ffffff;
+  place-items: unset !important;
+  min-width: unset !important;
+  background: #ffffff !important;
 }
 
 p {
-  margin: 0;
+  margin: 0 !important;
 }
 
 button {
-  border-radius: unset;
-  border: none;
-  padding: unset;
-  font-size: unset;
-  font-weight: unset;
-  background-color: unset;
-  margin-right: unset;
-  margin-bottom: unset;
+  border-radius: unset !important;
+  border: none !important;
+  padding: unset !important;
+  font-size: unset !important;
+  font-weight: unset !important;
+  background-color: unset !important;
+  margin-right: unset !important;
+  margin-bottom: unset !important;
 }
 
 /* kagura-portal-bg のモバイル対応 */
 .kagura-portal-bg {
-  min-width: unset;
+  min-width: unset !important;
   /* ヘッダー画像をページ背景から外す（花だけ残す） */
   background-image:
     url("https://senrankagura.marv.jp/img/bg_top_flower02.png"),
-    url("https://senrankagura.marv.jp/img/bg_main_flower03.png");
-  background-repeat: no-repeat, no-repeat;
-  background-position: right bottom, left bottom;
-  background-size: auto, auto;
+    url("https://senrankagura.marv.jp/img/bg_main_flower03.png") !important;
+  background-repeat: no-repeat, no-repeat !important;
+  background-position: right bottom, left bottom !important;
+  background-size: auto, auto !important;
 }
 
 /* ヘッダー背景画像を独立した要素にして下端をフェードアウト */
 .kagura-header-bg {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 300px;
   background-image: url("https://senrankagura.marv.jp/img/bg_header_top.png");
   background-repeat: no-repeat;
   background-position: center top;
   background-size: 100% auto;
-  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
   pointer-events: none;
   z-index: 0;
 }
