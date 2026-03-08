@@ -31,7 +31,7 @@ export default function NineKagura() {
 
   const handleGenerate = async () => {
     try {
-      const dataUrl = await generateCanvasImage('私を構成する9人のカグラ', selectedItems);
+      const dataUrl = await generateCanvasImage('私を構成する9人のシノビ少女', selectedItems);
       setGeneratedImage(dataUrl);
     } catch (err) {
       console.error('画像の生成に失敗しました', err);
@@ -51,9 +51,9 @@ export default function NineKagura() {
         }}
       >
         <header className="mx-auto max-w-[700px] px-4 pb-4 pt-6 text-center">
-          <h1 className="text-2xl font-bold text-slate-800">私を構成する9人のカグラ</h1>
+          <h1 className="text-2xl font-bold text-slate-800">私を構成する9人のシノビ少女</h1>
           <p className="mt-1 text-sm text-slate-500">
-            9キャラクターを選んで一覧化し、画像として保存できます。
+            9人のシノビ少女を選んで一覧化し、画像として保存できます。
           </p>
         </header>
       </div>
@@ -97,7 +97,7 @@ export default function NineKagura() {
           <div className="mb-8">
             <img
               src={generatedImage}
-              alt="私を構成する9人のカグラ"
+              alt="私を構成する9人のシノビ少女"
               className="w-full rounded-lg shadow-md"
             />
           </div>
