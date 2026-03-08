@@ -49,7 +49,7 @@ export const kaguraCharacters: KaguraCharacter[] = [
   { name: '華毘', reading: 'はなび', team: '巫神楽', slug: 'hanabi', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_hanabi.png' },
   { name: '華風流', reading: 'かふる', team: '巫神楽', slug: 'kafuru', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_kafuru.png' },
   { name: '神楽', reading: 'かぐら', team: '巫神楽', slug: 'kagura', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_kagura.png' },
-  { name: '奈楽', reading: 'ならく', team: '巫神楽', slug: 'naraku', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_naraku.png' },
+  { name: '奈楽', reading: 'ならく', team: '巫神楽', slug: 'nalaku', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_nalaku.png' },
 
   // 大会運営委員
   { name: 'ジャスミン', reading: 'じゃすみん', team: '大会運営委員', slug: 'jasmine', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_jasmine.png' },
