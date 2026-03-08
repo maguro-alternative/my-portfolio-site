@@ -40,8 +40,7 @@ export default function NineKagura() {
 
   return (
     <div className="kagura-portal-bg relative min-h-screen w-full overflow-hidden">
-      <div className="kagura-header-bg" aria-hidden="true" />
-      <header className="relative z-10 px-4 pb-8 pt-6">
+      <header className="px-4 pb-8 pt-6">
         <div className="mx-auto max-w-lg">
           <p className="text-sm font-semibold tracking-widest text-slate-500">
             9 KAGURA CHARACTERS
