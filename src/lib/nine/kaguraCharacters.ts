@@ -56,7 +56,7 @@ export const kaguraCharacters: KaguraCharacter[] = [
   { name: '大道寺先輩', reading: 'だいどうじせんぱい', team: '大会運営委員', slug: 'daidoji-senpai', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_daidoji.png' },
   { name: '凛', reading: 'りん', team: '大会運営委員', slug: 'rin', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_rin.png' },
   { name: '両姫', reading: 'りょうき', team: '大会運営委員', slug: 'ryoki', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_ryoki.png' },
-  { name: '雪不帰', reading: 'ふぶき', team: '大会運営委員', slug: 'fubuki', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_fubuki.png' },
+  { name: '雪不帰', reading: 'ふぶき', team: '大会運営委員', slug: 'fubuki', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_add_f.png' },
 
   // 遠野天狗ノ忍衆
   { name: '夕焼', reading: 'ゆうやき', team: '遠野天狗ノ忍衆', slug: 'yuyaki', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_yuyaki.png' },
