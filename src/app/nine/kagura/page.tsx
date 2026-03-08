@@ -6,7 +6,6 @@ import { generateCanvasImage } from './utils/canvasDownload';
 import { CharacterSearchModal } from './components/CharacterSearchModal';
 import { ShareTextSection } from './components/ShareTextSection';
 import { SelectionGrid } from './components/SelectionGrid';
-import { WaveFooter } from './components/WaveFooter';
 
 export default function NineKagura() {
   const {
@@ -40,24 +39,22 @@ export default function NineKagura() {
 
   return (
     <div className="kagura-portal-bg relative min-h-screen w-full overflow-hidden">
-      {/* ヘッダー背景画像 + 下線 */}
-      <div className="border-b-2 border-slate-400">
-        <img
-          src="https://senrankagura.marv.jp/img/bg_header_top.png"
-          alt=""
-          className="block w-full"
-        />
+      {/* ヘッダー背景画像 + 下線（背景にヘッダーテキストを内包） */}
+      <div
+        className="border-b-2 border-slate-400"
+        style={{
+          backgroundImage: "url('https://senrankagura.marv.jp/img/bg_header_top.png')",
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center top',
+        }}
+      >
+        <header className="mx-auto max-w-[700px] px-4 pb-4 pt-6 text-center">
+          <h1 className="text-2xl font-bold text-slate-800">私を構成する9人のカグラ</h1>
+          <p className="mt-1 text-sm text-slate-500">
+            9キャラクターを選んで一覧化し、画像として保存できます。
+          </p>
+        </header>
       </div>
-
-      {/* ヘッダーテキスト */}
-      <header className="mx-auto max-w-[700px] px-4 pb-4 pt-6 text-center">
-        <h1 className="text-2xl font-bold text-slate-800">
-          私を構成する9人のカグラ
-        </h1>
-        <p className="mt-1 text-sm text-slate-500">
-          9キャラクターを選んで一覧化し、画像として保存できます。
-        </p>
-      </header>
 
       {/* 白い囲みコンテンツ */}
       <div className="kagura-content-box">
@@ -119,7 +116,6 @@ export default function NineKagura() {
           onClose={() => setModalOpen(false)}
         />
       </div>
-      <WaveFooter />
     </div>
   );
 }
