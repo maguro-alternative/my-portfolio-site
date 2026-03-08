@@ -90,7 +90,7 @@ export const kaguraCharacters: KaguraCharacter[] = [
   { name: '朱璃', reading: 'しゅり', team: 'NewWave ゾディアック星導会', slug: 'syuri', imageUrl: 'https://www.marv.jp/product/kagura_nw/character/images/p_syuri.jpg' },
   { name: '藍夢', reading: 'あいむ', team: 'NewWave ゾディアック星導会', slug: 'aimu', imageUrl: 'https://www.marv.jp/product/kagura_nw/character/images/p_aimu.jpg' },
   { name: '飛彗', reading: 'ひすい', team: 'NewWave 県立志野塚工業高校', slug: 'hisui', imageUrl: 'https://www.marv.jp/product/kagura_nw/character/images/p_hisui.jpg' },
-  { name: '風魔', reading: 'ふうま', team: 'NewWave 国立半蔵学院', slug: 'fuma', imageUrl: 'https://www.marv.jp/product/kagura_nw/character/images/p_fuma.jpg' },
+  { name: '風魔', reading: 'ふうま', team: 'NewWave 国立半蔵学院', slug: 'fuma', imageUrl: 'https://www.marv.jp/product/kagura_nw/character/images/p_fuuma.jpg' },
   { name: '土方', reading: 'ひじかた', team: 'NewWave 国立半蔵学院', slug: 'hijikata', imageUrl: 'https://www.marv.jp/product/kagura_nw/character/images/p_hijikata.jpg' },
   { name: '清明', reading: 'せいめい', team: 'NewWave 国立半蔵学院', slug: 'seimei', imageUrl: 'https://www.marv.jp/product/kagura_nw/character/images/p_seimei.jpg' },
   { name: '村正', reading: 'むらまさ', team: 'NewWave 国立半蔵学院', slug: 'muramasa', imageUrl: 'https://www.marv.jp/product/kagura_nw/character/images/p_muramasa.jpg' },
