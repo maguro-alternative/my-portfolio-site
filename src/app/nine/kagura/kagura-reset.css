@@ -24,6 +24,7 @@ p {
 /* ヘッダー背景画像 */
 .kagura-header-bg {
   background: #e8e4e4 url("https://senrankagura.marv.jp/img/bg_header_top.png") no-repeat center top / cover !important;
+  margin-bottom: 16px;
 }
 
 /* 白い囲みコンテンツボックス（本家風） */
@@ -32,7 +33,7 @@ p {
   border: 1px solid #ddd;
   border-radius: 4px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-  margin: 0 12px 24px;
+  margin: 16px 12px 24px;
   padding: 20px 16px;
   max-width: 540px;
   margin-left: auto;
