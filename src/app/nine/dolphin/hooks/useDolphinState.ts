@@ -83,13 +83,9 @@ export function useDolphinState() {
 
   // シェアテキスト生成
   useEffect(() => {
-    const items = selectedItems
-      .map((item, i) => `${i + 1}. ${item.name || '未選択'}`)
-      .join('\n');
-
     const params = buildShareParams(selectedItems);
     const shareUrl = `${window.location.origin}/nine/dolphin?${params.toString()}`;
-    setShareText(`#My9Dolphin #私を構成する9人のドルフィン\n\n${items}\n\n${shareUrl}`);
+    setShareText(`#My9Dolphin #私を構成する9人のドルフィン\n\n${shareUrl}`);
   }, [selectedItems]);
 
   const handleSelect = (index: number, name: string, imageUrl: string, slug: string) => {
