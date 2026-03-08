@@ -14,14 +14,34 @@ function createEmptyItems(): SelectedItem[] {
   return Array(9).fill(null).map(() => ({ name: '' }));
 }
 
-function buildShareParams(items: SelectedItem[]): URLSearchParams {
-  const params = new URLSearchParams();
-  items.forEach((item, index) => {
-    if (item.slug) {
-      params.set(`s${index + 1}`, item.slug);
-    }
+// slug → 配列インデックスのマップを構築
+const slugToIndex = new Map(kaguraCharacters.map((c, i) => [c.slug, i]));
+
+function buildShareParam(items: SelectedItem[]): string {
+  const indices = items.map(item => {
+    if (!item.slug) return '';
+    const idx = slugToIndex.get(item.slug);
+    return idx !== undefined ? String(idx) : '';
   });
-  return params;
+  return indices.join('-');
+}
+
+function parseShareParam(param: string): SelectedItem[] {
+  const items = createEmptyItems();
+  const parts = param.split('-');
+  for (let i = 0; i < Math.min(parts.length, 9); i++) {
+    if (parts[i] === '') continue;
+    const idx = parseInt(parts[i], 10);
+    if (isNaN(idx) || idx < 0 || idx >= kaguraCharacters.length) continue;
+    const char = kaguraCharacters[idx];
+    items[i] = {
+      name: char.name,
+      image: proxyUrl(char.imageUrl),
+      originalImage: char.imageUrl,
+      slug: char.slug,
+    };
+  }
+  return items;
 }
 
 function proxyUrl(imageUrl: string): string {
@@ -32,17 +52,27 @@ export function useKaguraState() {
   const [selectedItems, setSelectedItems] = useState<SelectedItem[]>(createEmptyItems());
   const shareText = useMemo(() => {
     if (typeof window === 'undefined') return '';
-    const params = buildShareParams(selectedItems);
-    const shareUrl = `${window.location.origin}/nine/kagura?${params.toString()}`;
+    const c = buildShareParam(selectedItems);
+    const shareUrl = `${window.location.origin}/nine/kagura?c=${c}`;
     return `私を構成する9人のシノビ少女\n#My9Kagura #私を構成する9人のシノビ少女\n\n${shareUrl}`;
   }, [selectedItems]);
 
   const selectedCount = selectedItems.filter((item) => item.name).length;
 
-  // URLパラメータから選択内容を復元
+  // URLパラメータから選択内容を復元（新形式 ?c= と旧形式 ?s1= の両方に対応）
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
 
+    const cParam = params.get('c');
+    if (cParam) {
+      const items = parseShareParam(cParam);
+      if (items.some(item => item.name)) {
+        setSelectedItems(items);
+      }
+      return;
+    }
+
+    // 旧形式の後方互換
     const items = createEmptyItems();
     for (let i = 1; i <= 9; i++) {
       const slug = params.get(`s${i}`);
@@ -66,8 +96,8 @@ export function useKaguraState() {
 
   // OGP画像URLを更新
   useEffect(() => {
-    const params = buildShareParams(selectedItems);
-    const ogUrl = `/api/og/kagura?${params.toString()}`;
+    const c = buildShareParam(selectedItems);
+    const ogUrl = `/api/og/kagura?c=${c}`;
     const fullUrl = `${window.location.origin}${ogUrl}`;
 
     const updateMeta = (selector: string, attr: string, value: string) => {
