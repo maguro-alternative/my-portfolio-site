@@ -23,7 +23,7 @@ p {
 
 /* ヘッダー背景画像 */
 .kagura-header-bg {
-  background: #e8e4e4 url("https://senrankagura.marv.jp/img/bg_header_top.png") no-repeat center top / 100% auto !important;
+  background: #e8e4e4 url("https://senrankagura.marv.jp/img/bg_header_top.png") no-repeat center top / cover !important;
 }
 
 /* 白い囲みコンテンツボックス（本家風） */
