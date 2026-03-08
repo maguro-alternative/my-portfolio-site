@@ -40,7 +40,7 @@ export default function NineKagura() {
   };
 
   return (
-    <div className="relative min-h-screen w-full">
+    <div className="kagura-portal-bg relative min-h-screen w-full">
       <WaveBackground />
       <header className="relative z-10 px-4 pb-16 pt-6">
         <div className="mx-auto max-w-lg">
