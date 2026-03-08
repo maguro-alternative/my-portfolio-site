@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { dolphinCharacters } from '@/lib/nine/dolphinCharacters';
 
 export interface SelectedItem {
@@ -30,7 +30,12 @@ function proxyUrl(imageUrl: string): string {
 
 export function useDolphinState() {
   const [selectedItems, setSelectedItems] = useState<SelectedItem[]>(createEmptyItems());
-  const [shareText, setShareText] = useState('');
+  const shareText = useMemo(() => {
+    if (typeof window === 'undefined') return '';
+    const params = buildShareParams(selectedItems);
+    const shareUrl = `${window.location.origin}/nine/dolphin?${params.toString()}`;
+    return `私を構成する9人のドルフィン\n#My9Dolphin #私を構成する9人のドルフィン\n\n${shareUrl}`;
+  }, [selectedItems]);
 
   const selectedCount = selectedItems.filter((item) => item.name).length;
 
@@ -79,17 +84,6 @@ export function useDolphinState() {
 
     updateMeta('meta[property="og:image"]', 'property', fullUrl);
     updateMeta('meta[name="twitter:image"]', 'name', fullUrl);
-  }, [selectedItems]);
-
-  // シェアテキスト生成
-  useEffect(() => {
-    const items = selectedItems
-      .map((item, i) => `${i + 1}. ${item.name || '未選択'}`)
-      .join('\n');
-
-    const params = buildShareParams(selectedItems);
-    const shareUrl = `${window.location.origin}/nine/dolphin?${params.toString()}`;
-    setShareText(`#My9Dolphin #私を構成する9人のドルフィン\n\n${items}\n\n${shareUrl}`);
   }, [selectedItems]);
 
   const handleSelect = (index: number, name: string, imageUrl: string, slug: string) => {
