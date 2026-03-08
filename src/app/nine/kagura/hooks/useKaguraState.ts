@@ -34,7 +34,7 @@ export function useKaguraState() {
     if (typeof window === 'undefined') return '';
     const params = buildShareParams(selectedItems);
     const shareUrl = `${window.location.origin}/nine/kagura?${params.toString()}`;
-    return `私を構成する9人のカグラ\n#My9Kagura #私を構成する9人のカグラ\n\n${shareUrl}`;
+    return `私を構成する9人のシノビ少女\n#My9Kagura #私を構成する9人のシノビ少女\n\n${shareUrl}`;
   }, [selectedItems]);
 
   const selectedCount = selectedItems.filter((item) => item.name).length;
