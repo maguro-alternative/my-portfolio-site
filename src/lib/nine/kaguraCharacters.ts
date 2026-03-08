@@ -26,7 +26,7 @@ export const kaguraCharacters: KaguraCharacter[] = [
   { name: '雪泉', reading: 'ゆみ', team: '死塾月閃女学館', slug: 'yumi', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_yumi.png' },
   { name: '叢', reading: 'むらくも', team: '死塾月閃女学館', slug: 'murakumo', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_murakumo.png' },
   { name: '夜桜', reading: 'よざくら', team: '死塾月閃女学館', slug: 'yozakura', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_yozakura.png' },
-  { name: '四季', reading: 'しき', team: '死塾月閃女学館', slug: 'shiki', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_shiki.png' },
+  { name: '四季', reading: 'しき', team: '死塾月閃女学館', slug: 'shiki', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_siki.png' },
   { name: '美野里', reading: 'みのり', team: '死塾月閃女学館', slug: 'minori', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_minori.png' },
 
   // 死塾月閃女学館中等部
