@@ -84,7 +84,7 @@ export const kaguraCharacters: KaguraCharacter[] = [
   { name: '羽衣', reading: 'うい', team: '天城封結衆', slug: 'ui', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_ui.png' },
   { name: '風切', reading: 'かざきり', team: '天城封結衆', slug: 'kazakiri', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_kazakiri.png' },
   { name: '日和', reading: 'ひより', team: '天城封結衆', slug: 'hiyori', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_hiyori.png' },
-  { name: '天音', reading: 'あまね', team: '天城封結衆', slug: 'amane', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_amane.png' },
+  { name: '雨音', reading: 'あまね', team: '天城封結衆', slug: 'amane', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_amane.png' },
 
   // NewWave
   { name: '黒母衣', reading: 'くろほろ', team: 'NewWave', slug: 'kurohoro', imageUrl: 'https://www.marv.jp/product/kagura_nw/character/images/p_kurohoro.jpg' },
