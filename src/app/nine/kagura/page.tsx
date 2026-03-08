@@ -41,7 +41,7 @@ export default function NineKagura() {
   return (
     <div className="kagura-portal-bg relative min-h-screen w-full overflow-hidden">
       {/* ヘッダー（背景の上に直接表示） */}
-      <header className="px-4 pb-4 pt-6 text-center">
+      <header className="mx-auto max-w-[700px] border-b-2 border-slate-300 px-4 pb-4 pt-6 text-center">
         <h1 className="text-2xl font-bold text-slate-800">
           私を構成する9人のカグラ
         </h1>
