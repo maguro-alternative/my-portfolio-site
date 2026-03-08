@@ -13,7 +13,7 @@ export const kaguraCharacters: KaguraCharacter[] = [
   { name: '葛城', reading: 'かつらぎ', team: '国立半蔵学院', slug: 'katsuragi', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_katsuragi.png' },
   { name: '柳生', reading: 'やぎゅう', team: '国立半蔵学院', slug: 'yagyu', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_yagyu.png' },
   { name: '雲雀', reading: 'ひばり', team: '国立半蔵学院', slug: 'hibari', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_hibari.png' },
-  { name: '菖蒲', reading: 'しょうぶ', team: '国立半蔵学院', slug: 'shobu', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_shobu.png' },
+  { name: '菖蒲', reading: 'あやめ', team: '国立半蔵学院', slug: 'ayame', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_ayame.png' },
 
   // 焔紅蓮隊
   { name: '焔', reading: 'ほむら', team: '焔紅蓮隊', slug: 'homura', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_homura.png' },
@@ -30,8 +30,8 @@ export const kaguraCharacters: KaguraCharacter[] = [
   { name: '美野里', reading: 'みのり', team: '死塾月閃女学館', slug: 'minori', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_minori.png' },
 
   // 死塾月閃女学館中等部
-  { name: '閃光', reading: 'せんこう', team: '死塾月閃女学館中等部', slug: 'senkou', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_senkou.png' },
-  { name: '月光', reading: 'げっこう', team: '死塾月閃女学館中等部', slug: 'gekkou', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_gekkou.png' },
+  { name: '閃光', reading: 'せんこう', team: '死塾月閃女学館中等部', slug: 'senkou', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_add_s.png' },
+  { name: '月光', reading: 'げっこう', team: '死塾月閃女学館中等部', slug: 'gekkou', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_add_g.png' },
 
   // 秘立蛇女子学園
   { name: '雅緋', reading: 'みやび', team: '秘立蛇女子学園', slug: 'miyabi', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_miyabi.png' },
@@ -40,7 +40,7 @@ export const kaguraCharacters: KaguraCharacter[] = [
   { name: '両備', reading: 'りょうび', team: '秘立蛇女子学園', slug: 'ryobi', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_ryobi.png' },
   { name: '両奈', reading: 'りょうな', team: '秘立蛇女子学園', slug: 'ryona', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_ryona.png' },
   { name: '総司', reading: 'そうじ', team: '秘立蛇女子学園', slug: 'souji', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_souji.png' },
-  { name: '芭蕉', reading: 'ばしょう', team: '秘立蛇女子学園', slug: 'basho', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_basho.png' },
+  { name: '芭蕉', reading: 'ばしょう', team: '秘立蛇女子学園', slug: 'bashou', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_bashou.png' },
   { name: '芦屋', reading: 'あしや', team: '秘立蛇女子学園', slug: 'ashiya', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_ashiya.png' },
   { name: '伊吹', reading: 'いぶき', team: '秘立蛇女子学園', slug: 'ibuki', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_ibuki.png' },
 
@@ -84,6 +84,7 @@ export const kaguraCharacters: KaguraCharacter[] = [
   { name: '羽衣', reading: 'うい', team: '天城封結衆', slug: 'ui', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_ui.png' },
   { name: '風切', reading: 'かざきり', team: '天城封結衆', slug: 'kazakiri', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_kazakiri.png' },
   { name: '日和', reading: 'ひより', team: '天城封結衆', slug: 'hiyori', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_hiyori.png' },
+  { name: '天音', reading: 'あまね', team: '天城封結衆', slug: 'amane', imageUrl: 'https://hpgames.jp/shinomas/share/images/chara_icon/chara_btn_amane.png' },
 
   // NewWave
   { name: '黒母衣', reading: 'くろほろ', team: 'NewWave', slug: 'kurohoro', imageUrl: 'https://www.marv.jp/product/kagura_nw/character/images/p_kurohoro.jpg' },
