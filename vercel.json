@@ -1,0 +1,14 @@
+{
+  "rewrites": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "my9dolphin.(?<domain>.*)"
+        }
+      ],
+      "destination": "/nine/dolphin/:path*"
+    }
+  ]
+}
