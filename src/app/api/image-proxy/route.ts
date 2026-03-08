@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   }
 
   // 許可されたドメインのみ
-  const allowedDomains = ['hpgames.jp'];
+  const allowedDomains = ['hpgames.jp', 'www.marv.jp', 'seesaawiki.jp'];
   const url = new URL(decodeURIComponent(imageUrl));
   
   if (!allowedDomains.some(domain => url.hostname.includes(domain))) {

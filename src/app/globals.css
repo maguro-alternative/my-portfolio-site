@@ -184,3 +184,21 @@ h2 {
 .read-the-docs {
   color: #888;
 }
+
+/* kagura portal background styles (reference: senrankagura.marv.jp) */
+.kagura-portal-bg {
+  min-width: 1000px;
+  background-color: #fff;
+  background-image: 
+    url("https://senrankagura.marv.jp/img/bg_top_flower02.png"),
+    url("https://senrankagura.marv.jp/img/bg_main_flower03.png"),
+    url("https://senrankagura.marv.jp/img/bg_header_top.png");
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-position: right bottom, left bottom, center top;
+}
+
+.kagura-portal-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-top: 140px; /* space for header-like area */
+}
