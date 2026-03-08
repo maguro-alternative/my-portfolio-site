@@ -7,6 +7,7 @@ import { CharacterSearchModal } from './components/CharacterSearchModal';
 import { ShareTextSection } from './components/ShareTextSection';
 import { SelectionGrid } from './components/SelectionGrid';
 import { SiteFooter } from './components/SiteFooter';
+import { SakuraEffect } from './components/SakuraEffect';
 
 export default function NineKagura() {
   const {
@@ -117,6 +118,7 @@ export default function NineKagura() {
           onClose={() => setModalOpen(false)}
         />
       </div>
+      <SakuraEffect />
       <SiteFooter />
     </div>
   );
