@@ -25,12 +25,11 @@ button {
   min-width: unset !important;
   background-color: #f5f0f0 !important;
   background-image:
-    url("https://senrankagura.marv.jp/img/bg_header_top.png"),
     url("https://senrankagura.marv.jp/img/bg_top_flower02.png"),
     url("https://senrankagura.marv.jp/img/bg_main_flower03.png") !important;
-  background-repeat: no-repeat, no-repeat, no-repeat !important;
-  background-position: center top, right bottom, left bottom !important;
-  background-size: 100% auto, auto, auto !important;
+  background-repeat: no-repeat, no-repeat !important;
+  background-position: right bottom, left bottom !important;
+  background-size: auto, auto !important;
 }
 
 /* 白い囲みコンテンツボックス（本家風） */
