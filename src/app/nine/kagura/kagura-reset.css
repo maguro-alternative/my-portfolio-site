@@ -20,7 +20,8 @@ button {
   margin-bottom: unset;
 }
 
-/* kagura-portal-bg のmin-widthをモバイル対応にする */
+/* kagura-portal-bg のモバイル対応 */
 .kagura-portal-bg {
   min-width: unset;
+  background-size: auto, auto, 100% auto;
 }

@@ -6,7 +6,6 @@ import { generateCanvasImage } from './utils/canvasDownload';
 import { CharacterSearchModal } from './components/CharacterSearchModal';
 import { ShareTextSection } from './components/ShareTextSection';
 import { SelectionGrid } from './components/SelectionGrid';
-import { WaveBackground } from './components/WaveBackground';
 import { WaveFooter } from './components/WaveFooter';
 
 export default function NineKagura() {
@@ -40,17 +39,16 @@ export default function NineKagura() {
   };
 
   return (
-    <div className="kagura-portal-bg relative min-h-screen w-full">
-      <WaveBackground />
-      <header className="relative z-10 px-4 pb-16 pt-6">
+    <div className="kagura-portal-bg relative min-h-screen w-full overflow-hidden">
+      <header className="relative z-10 px-4 pb-8 pt-6">
         <div className="mx-auto max-w-lg">
-          <p className="text-sm font-semibold tracking-widest text-white/80">
+          <p className="text-sm font-semibold tracking-widest text-slate-500">
             9 KAGURA CHARACTERS
           </p>
-          <h1 className="mt-1 text-2xl font-bold text-white">
+          <h1 className="mt-1 text-2xl font-bold text-slate-800">
             私を構成する9人のカグラ
           </h1>
-          <p className="mt-1 text-sm text-white/70">
+          <p className="mt-1 text-sm text-slate-500">
             9キャラクターを選んで一覧化し、画像として保存できます。
           </p>
         </div>
