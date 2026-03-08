@@ -20,54 +20,36 @@ button {
   margin-bottom: unset !important;
 }
 
-/* kagura-portal-bg のモバイル対応 */
+/* ページ全体の背景（ヘッダー画像＋花） */
 .kagura-portal-bg {
   min-width: unset !important;
-  /* ヘッダー画像をページ背景から外す（花だけ残す） */
+  background-color: #f5f0f0 !important;
   background-image:
+    url("https://senrankagura.marv.jp/img/bg_header_top.png"),
     url("https://senrankagura.marv.jp/img/bg_top_flower02.png"),
     url("https://senrankagura.marv.jp/img/bg_main_flower03.png") !important;
-  background-repeat: no-repeat, no-repeat !important;
-  background-position: right bottom, left bottom !important;
-  background-size: auto, auto !important;
+  background-repeat: no-repeat, no-repeat, no-repeat !important;
+  background-position: center top, right bottom, left bottom !important;
+  background-size: 100% auto, auto, auto !important;
 }
 
-/* ヘッダー装飾枠 */
-.kagura-header {
-  margin: 16px 12px 0;
-  border: 2px solid #c8a2c8;
-  border-radius: 8px;
-  background: linear-gradient(135deg, rgba(200, 162, 200, 0.05), rgba(147, 112, 219, 0.08));
-  box-shadow: 0 0 0 4px #fff, 0 0 0 6px rgba(200, 162, 200, 0.3);
-  position: relative;
-}
-
-/* 角のアクセント装飾 */
-.kagura-header::before,
-.kagura-header::after {
-  content: "";
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border-color: #9370db;
-  border-style: solid;
-}
-.kagura-header::before {
-  top: -1px;
-  left: -1px;
-  border-width: 3px 0 0 3px;
-  border-radius: 6px 0 0 0;
-}
-.kagura-header::after {
-  top: -1px;
-  right: -1px;
-  border-width: 3px 3px 0 0;
-  border-radius: 0 6px 0 0;
+/* 白い囲みコンテンツボックス（本家風） */
+.kagura-content-box {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  margin: 0 12px 24px;
+  padding: 20px 16px;
+  max-width: 540px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @media (min-width: 768px) {
-  .kagura-header {
-    margin: 24px auto 0;
+  .kagura-content-box {
+    padding: 32px 40px;
     max-width: 700px;
+    margin-top: 8px;
   }
 }

@@ -40,21 +40,18 @@ export default function NineKagura() {
 
   return (
     <div className="kagura-portal-bg relative min-h-screen w-full overflow-hidden">
-      <header className="kagura-header px-4 pb-8 pt-6">
-        <div className="mx-auto max-w-lg">
-          <p className="text-sm font-semibold tracking-widest text-slate-500">
-            9 KAGURA CHARACTERS
-          </p>
-          <h1 className="mt-1 text-2xl font-bold text-slate-800">
-            私を構成する9人のカグラ
-          </h1>
-          <p className="mt-1 text-sm text-slate-500">
-            9キャラクターを選んで一覧化し、画像として保存できます。
-          </p>
-        </div>
+      {/* ヘッダー（背景の上に直接表示） */}
+      <header className="px-4 pb-4 pt-6 text-center">
+        <h1 className="text-2xl font-bold text-slate-800">
+          私を構成する9人のカグラ
+        </h1>
+        <p className="mt-1 text-sm text-slate-500">
+          9キャラクターを選んで一覧化し、画像として保存できます。
+        </p>
       </header>
 
-      <div className="mx-auto max-w-lg px-4 pb-6">
+      {/* 白い囲みコンテンツ */}
+      <div className="kagura-content-box">
         {/* カウンター + リセット */}
         <div className="mb-3 flex items-center justify-between">
           <p className="text-sm font-semibold text-slate-700">
