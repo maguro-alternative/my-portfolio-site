@@ -21,6 +21,14 @@ p {
   background-size: auto, auto !important;
 }
 
+/* ヘッダー背景画像 */
+.kagura-header-bg {
+  background-image: url("https://senrankagura.marv.jp/img/bg_header_top.png") !important;
+  background-repeat: no-repeat !important;
+  background-position: center top !important;
+  background-size: cover !important;
+}
+
 /* 白い囲みコンテンツボックス（本家風） */
 .kagura-content-box {
   background: #fff;

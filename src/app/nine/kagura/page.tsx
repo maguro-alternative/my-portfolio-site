@@ -42,15 +42,7 @@ export default function NineKagura() {
   return (
     <div className="kagura-portal-bg relative min-h-screen w-full overflow-hidden">
       {/* ヘッダー背景画像 + 下線（背景にヘッダーテキストを内包） */}
-      <div
-        className="border-b-2 border-slate-400"
-        style={{
-          backgroundImage: `url('/api/image-proxy?url=${encodeURIComponent('https://senrankagura.marv.jp/img/bg_header_top.png')}')`,
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center top',
-          backgroundSize: 'cover',
-        }}
-      >
+      <div className="kagura-header-bg border-b-2 border-slate-400">
         <header className="mx-auto max-w-[700px] px-4 pb-4 pt-6 text-center">
           <h1 className="text-2xl font-bold text-slate-800">私を構成する9人のシノビ少女</h1>
           <p className="mt-1 text-sm text-slate-500">
