@@ -31,3 +31,39 @@ button {
   background-position: right bottom, left bottom !important;
   background-size: auto, auto !important;
 }
+
+/* PC向けヘッダー装飾枠 */
+@media (min-width: 768px) {
+  .kagura-header {
+    margin: 24px auto 0;
+    max-width: 700px;
+    border: 2px solid #c8a2c8;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(200, 162, 200, 0.05), rgba(147, 112, 219, 0.08));
+    box-shadow: 0 0 0 4px #fff, 0 0 0 6px rgba(200, 162, 200, 0.3);
+    position: relative;
+  }
+
+  /* 角のアクセント装飾 */
+  .kagura-header::before,
+  .kagura-header::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-color: #9370db;
+    border-style: solid;
+  }
+  .kagura-header::before {
+    top: -1px;
+    left: -1px;
+    border-width: 3px 0 0 3px;
+    border-radius: 6px 0 0 0;
+  }
+  .kagura-header::after {
+    top: -1px;
+    right: -1px;
+    border-width: 3px 3px 0 0;
+    border-radius: 0 6px 0 0;
+  }
+}
