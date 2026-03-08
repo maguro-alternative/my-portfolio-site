@@ -6,6 +6,7 @@ import { generateCanvasImage } from './utils/canvasDownload';
 import { CharacterSearchModal } from './components/CharacterSearchModal';
 import { ShareTextSection } from './components/ShareTextSection';
 import { SelectionGrid } from './components/SelectionGrid';
+import { SiteFooter } from './components/SiteFooter';
 
 export default function NineKagura() {
   const {
@@ -116,6 +117,7 @@ export default function NineKagura() {
           onClose={() => setModalOpen(false)}
         />
       </div>
+      <SiteFooter />
     </div>
   );
 }
