@@ -51,7 +51,7 @@ export function WaveFooter() {
           作者のTwitter: <a href="https://twitter.com/sigumataityouda" className="text-blue-300 hover:text-blue-100" target="_blank" rel="noopener noreferrer">@sigumataityouda</a>, <a href="https://twitter.com/maguro_alterich" className="text-blue-300 hover:text-blue-100" target="_blank" rel="noopener noreferrer">@maguro_alterich</a>
         </p>
         <p className="pointer-events-auto text-center text-sm text-white">
-          画像：&copy;Marvelous Inc. &copy;HONEY PARADE GAMES Inc.
+          画像：&copy;Marvelous Inc.
         </p>
       </div>
     </div>
