@@ -34,7 +34,7 @@ export function useDolphinState() {
     if (typeof window === 'undefined') return '';
     const params = buildShareParams(selectedItems);
     const shareUrl = `${window.location.origin}/nine/dolphin?${params.toString()}`;
-    return `#My9Dolphin #私を構成する9人のドルフィン\n\n${shareUrl}`;
+    return `私を構成する9人のドルフィン\n#My9Dolphin #私を構成する9人のドルフィン\n\n${shareUrl}`;
   }, [selectedItems]);
 
   const selectedCount = selectedItems.filter((item) => item.name).length;
