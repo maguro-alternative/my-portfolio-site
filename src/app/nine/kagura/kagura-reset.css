@@ -1,0 +1,21 @@
+/* kaguraページ用: globals.css のグローバルスタイルをリセット */
+body {
+  place-items: unset;
+  min-width: unset;
+  background: #ffffff;
+}
+
+p {
+  margin: 0;
+}
+
+button {
+  border-radius: unset;
+  border: none;
+  padding: unset;
+  font-size: unset;
+  font-weight: unset;
+  background-color: unset;
+  margin-right: unset;
+  margin-bottom: unset;
+}
