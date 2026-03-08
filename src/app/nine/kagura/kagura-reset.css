@@ -9,17 +9,6 @@ p {
   margin: 0 !important;
 }
 
-button {
-  border-radius: unset !important;
-  border: none !important;
-  padding: unset !important;
-  font-size: unset !important;
-  font-weight: unset !important;
-  background-color: unset !important;
-  margin-right: unset !important;
-  margin-bottom: unset !important;
-}
-
 /* ページ全体の背景（ヘッダー画像＋花） */
 .kagura-portal-bg {
   min-width: unset !important;
@@ -43,6 +32,9 @@ button {
   max-width: 540px;
   margin-left: auto;
   margin-right: auto;
+  position: relative;
+  z-index: 20;
+  overflow: visible;
 }
 
 @media (min-width: 768px) {
