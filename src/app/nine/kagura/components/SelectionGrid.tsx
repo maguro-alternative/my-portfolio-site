@@ -53,14 +53,28 @@ export function SelectionGrid({ selectedItems, onPanelClick, onClearPanel }: Sel
           ) : (
             <button
               onClick={() => onPanelClick(index)}
-              className="group relative aspect-square w-full rounded-md border border-slate-300 bg-slate-100 shadow-sm transition-colors hover:border-slate-400 hover:bg-slate-200/70"
+              className="group relative aspect-square w-full overflow-hidden rounded-lg transition-opacity hover:opacity-80"
             >
-              <div className="absolute inset-2 flex flex-col items-center justify-center gap-1 rounded border border-dashed border-slate-300 group-hover:border-slate-400">
-                <svg className="h-10 w-10 text-red-500" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M11 2h2v9h9v2h-9v9h-2v-9H2v-2h9z" />
-                </svg>
-                <span className="text-xs font-bold tracking-widest text-slate-500">ENTRY</span>
-              </div>
+              <svg width="100%" height="100%" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+                <rect x="10" y="10" width="480" height="480" rx="40" ry="40" fill="#999" stroke="#333" strokeWidth="8"/>
+                <rect x="40" y="40" width="420" height="420" rx="5" ry="5" fill="none" stroke="#ccc" strokeWidth="4" opacity="0.5"/>
+                <circle cx="250" cy="250" r="180" fill="none" stroke="#666" strokeWidth="2"/>
+                <circle cx="250" cy="250" r="170" fill="none" stroke="#666" strokeWidth="5"/>
+                <defs>
+                  <path id={`textCircle-${index}`} d="M 250, 250 m -145, 0 a 145,145 0 1,1 290,0 a 145,145 0 1,1 -290,0" />
+                </defs>
+                <text fill="#444" fontFamily="Arial, sans-serif" fontSize="34" fontWeight="bold" letterSpacing="6">
+                  <textPath href={`#textCircle-${index}`} startOffset="50%" textAnchor="middle">
+                    SHINOVI MASTERS
+                  </textPath>
+                </text>
+                <g fill="#777" stroke="#444" strokeWidth="2" strokeLinejoin="round">
+                  <path d="M 250,90 L 275,225 L 410,250 L 275,275 L 250,410 L 225,275 L 90,250 L 225,225 Z" />
+                  <path d="M 250,90 V 410 M 90,250 H 410" stroke="#ccc" strokeWidth="1" opacity="0.5"/>
+                </g>
+                <path d="M 250,380 C 230,380 215,410 215,430 C 215,445 235,450 250,440 C 265,450 285,445 285,430 C 285,410 270,380 250,380 Z" fill="#666" />
+                <circle cx="250" cy="250" r="185" fill="none" stroke="#fff" strokeWidth="1" opacity="0.3"/>
+              </svg>
             </button>
           )}
         </div>
