@@ -66,6 +66,7 @@ export function CharacterSearchModal({
           </h2>
           <button
             onClick={onClose}
+            aria-label="閉じる"
             className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-600"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -83,7 +84,7 @@ export function CharacterSearchModal({
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <button className="flex items-center justify-center rounded-lg bg-indigo-600 px-4 text-white hover:bg-indigo-700">
+          <button aria-label="検索" className="flex items-center justify-center rounded-lg bg-indigo-600 px-4 text-white hover:bg-indigo-700">
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>

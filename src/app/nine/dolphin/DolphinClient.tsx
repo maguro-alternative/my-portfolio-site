@@ -44,19 +44,19 @@ export default function DolphinClient() {
       <WaveBackground />
       <header className="relative z-10 px-4 pb-16 pt-6">
         <div className="mx-auto max-w-lg">
-          <p className="text-sm font-semibold tracking-widest text-white/80">
+          <p className="text-sm font-semibold tracking-widest text-white">
             9 DOLPHIN WAVE CHARACTERS
           </p>
           <h1 className="mt-1 text-2xl font-bold text-white">
             私を構成する9人のドルフィン
           </h1>
-          <p className="mt-1 text-sm text-white/70">
+          <p className="mt-1 text-sm text-white/90">
             9キャラクターを選んで一覧化し、画像として保存できます。
           </p>
         </div>
       </header>
 
-      <div className="mx-auto max-w-lg px-4 pb-6">
+      <main className="mx-auto max-w-lg px-4 pb-6">
         {/* カウンター + リセット */}
         <div className="mb-3 flex items-center justify-between">
           <p className="text-sm font-semibold text-slate-700">
@@ -114,7 +114,7 @@ export default function DolphinClient() {
           onSelect={(name, imageUrl, slug) => handleSelect(activePanelIndex, name, imageUrl, slug)}
           onClose={() => setModalOpen(false)}
         />
-      </div>
+      </main>
       <WaveFooter />
     </div>
   );

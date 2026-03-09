@@ -45,14 +45,14 @@ export default function KaguraClient() {
       <div className="kagura-header-bg border-b-2 border-slate-400">
         <header className="mx-auto max-w-[700px] px-4 pb-4 pt-6 text-center">
           <h1 className="text-2xl font-bold text-slate-800">私を構成する9人のシノビ少女</h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-slate-600">
             9人のシノビ少女を選んで一覧化し、画像として保存できます。
           </p>
         </header>
       </div>
 
       {/* 白い囲みコンテンツ */}
-      <div className="kagura-content-box">
+      <main className="kagura-content-box">
         {/* カウンター + リセット */}
         <div className="mb-3 flex items-center justify-between">
           <p className="text-sm font-semibold text-slate-700">
@@ -110,7 +110,7 @@ export default function KaguraClient() {
           onSelect={(name, imageUrl, slug) => handleSelect(activePanelIndex, name, imageUrl, slug)}
           onClose={() => setModalOpen(false)}
         />
-      </div>
+      </main>
       <SakuraEffect />
       <SiteFooter />
     </div>
