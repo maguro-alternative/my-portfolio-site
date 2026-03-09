@@ -4,13 +4,22 @@ import { kaguraCharacters } from '@/lib/nine/kaguraCharacters';
 
 export const runtime = 'edge';
 
+// slug から拡張子を判定（marv.jp/seesaawiki は jpg）
+function getImageExt(slug: string): string {
+  const char = kaguraCharacters.find(c => c.slug === slug);
+  if (!char) return 'png';
+  if (char.imageUrl.endsWith('.jpg')) return 'jpg';
+  return 'png';
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
+    const origin = new URL(request.url).origin;
     const title = searchParams.get('title') || '私を構成する9人のシノビ少女';
 
-    // キャラクター名を解決
-    const characterNames: string[] = [];
+    // キャラクター情報を解決
+    const characters: { name: string; slug: string }[] = [];
 
     const cParam = searchParams.get('c');
     if (cParam) {
@@ -19,28 +28,42 @@ export async function GET(request: NextRequest) {
         if (i < parts.length && parts[i] !== '') {
           const idx = parseInt(parts[i], 10);
           if (!isNaN(idx) && idx >= 0 && idx < kaguraCharacters.length) {
-            characterNames.push(kaguraCharacters[idx].name);
+            characters.push({ name: kaguraCharacters[idx].name, slug: kaguraCharacters[idx].slug });
           } else {
-            characterNames.push('');
+            characters.push({ name: '', slug: '' });
           }
         } else {
-          characterNames.push('');
+          characters.push({ name: '', slug: '' });
         }
       }
     } else {
-      // 旧形式 ?s1=slug&s2=slug...
       for (let i = 1; i <= 9; i++) {
         const slug = searchParams.get(`s${i}`);
         if (slug) {
           const char = kaguraCharacters.find(c => c.slug === slug);
-          characterNames.push(char ? char.name : '');
+          characters.push(char ? { name: char.name, slug: char.slug } : { name: '', slug: '' });
         } else {
-          characterNames.push('');
+          characters.push({ name: '', slug: '' });
         }
       }
     }
 
-    const hasAny = characterNames.some(n => n !== '');
+    const hasAny = characters.some(c => c.name !== '');
+
+    // ローカル画像が利用可能かチェック
+    let useImages = false;
+    if (hasAny) {
+      const firstChar = characters.find(c => c.slug !== '');
+      if (firstChar) {
+        const ext = getImageExt(firstChar.slug);
+        try {
+          const res = await fetch(`${origin}/og-images/kagura/${firstChar.slug}.${ext}`, { method: 'HEAD' });
+          useImages = res.ok;
+        } catch {
+          useImages = false;
+        }
+      }
+    }
 
     return new ImageResponse(
       (
@@ -84,7 +107,7 @@ export async function GET(request: NextRequest) {
             </div>
 
             {hasAny ? (
-              /* キャラクター名グリッド */
+              /* キャラクターグリッド */
               <div
                 style={{
                   display: 'flex',
@@ -94,32 +117,70 @@ export async function GET(request: NextRequest) {
                   justifyContent: 'center',
                 }}
               >
-                {characterNames.map((name, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '30%',
-                      height: '64px',
-                      borderRadius: '12px',
-                      backgroundColor: name ? '#fdf2f8' : '#f8fafc',
-                      border: name ? '2px solid #f472b6' : '2px dashed #cbd5e1',
-                    }}
-                  >
+                {characters.map((char, index) => {
+                  const ext = char.slug ? getImageExt(char.slug) : 'png';
+                  return (
                     <div
+                      key={index}
                       style={{
                         display: 'flex',
-                        fontSize: name ? '20px' : '16px',
-                        fontWeight: name ? 'bold' : 'normal',
-                        color: name ? '#9d174d' : '#94a3b8',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: '30%',
+                        height: useImages ? '160px' : '64px',
+                        borderRadius: '12px',
+                        backgroundColor: char.name ? '#fdf2f8' : '#f8fafc',
+                        border: char.name ? '2px solid #f472b6' : '2px dashed #cbd5e1',
+                        overflow: 'hidden',
                       }}
                     >
-                      {name || '?'}
+                      {useImages && char.slug ? (
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '100%',
+                            height: '100%',
+                          }}
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={`${origin}/og-images/kagura/${char.slug}.${ext}`}
+                            width={110}
+                            height={110}
+                            style={{ objectFit: 'contain' }}
+                            alt=""
+                          />
+                          <div
+                            style={{
+                              display: 'flex',
+                              fontSize: '14px',
+                              fontWeight: 'bold',
+                              color: '#9d174d',
+                              marginTop: '4px',
+                            }}
+                          >
+                            {char.name}
+                          </div>
+                        </div>
+                      ) : (
+                        <div
+                          style={{
+                            display: 'flex',
+                            fontSize: char.name ? '20px' : '16px',
+                            fontWeight: char.name ? 'bold' : 'normal',
+                            color: char.name ? '#9d174d' : '#94a3b8',
+                          }}
+                        >
+                          {char.name || '?'}
+                        </div>
+                      )}
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             ) : (
               <div

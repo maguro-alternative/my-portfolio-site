@@ -7,21 +7,36 @@ export const runtime = 'edge';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
+    const origin = new URL(request.url).origin;
     const title = searchParams.get('title') || '私を構成する9人のドルフィン';
 
-    // slug からキャラクター名を解決
-    const characterNames: string[] = [];
+    // slug からキャラクター情報を解決
+    const characters: { name: string; slug: string }[] = [];
     for (let i = 1; i <= 9; i++) {
       const slug = searchParams.get(`s${i}`);
       if (slug) {
         const char = dolphinCharacters.find(c => c.slug === slug);
-        characterNames.push(char ? char.name : '');
+        characters.push(char ? { name: char.name, slug: char.slug } : { name: '', slug: '' });
       } else {
-        characterNames.push('');
+        characters.push({ name: '', slug: '' });
       }
     }
 
-    const hasAny = characterNames.some(n => n !== '');
+    const hasAny = characters.some(c => c.name !== '');
+
+    // ローカル画像が利用可能かチェック（最初のキャラで判定）
+    let useImages = false;
+    if (hasAny) {
+      const firstChar = characters.find(c => c.slug !== '');
+      if (firstChar) {
+        try {
+          const res = await fetch(`${origin}/og-images/dolphin/${firstChar.slug}.png`, { method: 'HEAD' });
+          useImages = res.ok;
+        } catch {
+          useImages = false;
+        }
+      }
+    }
 
     return new ImageResponse(
       (
@@ -65,7 +80,7 @@ export async function GET(request: NextRequest) {
             </div>
 
             {hasAny ? (
-              /* キャラクター名グリッド */
+              /* キャラクターグリッド */
               <div
                 style={{
                   display: 'flex',
@@ -75,30 +90,65 @@ export async function GET(request: NextRequest) {
                   justifyContent: 'center',
                 }}
               >
-                {characterNames.map((name, index) => (
+                {characters.map((char, index) => (
                   <div
                     key={index}
                     style={{
                       display: 'flex',
+                      flexDirection: 'column',
                       alignItems: 'center',
                       justifyContent: 'center',
                       width: '30%',
-                      height: '64px',
+                      height: useImages ? '160px' : '64px',
                       borderRadius: '12px',
-                      backgroundColor: name ? '#eef2ff' : '#f8fafc',
-                      border: name ? '2px solid #818cf8' : '2px dashed #cbd5e1',
+                      backgroundColor: char.name ? '#eef2ff' : '#f8fafc',
+                      border: char.name ? '2px solid #818cf8' : '2px dashed #cbd5e1',
+                      overflow: 'hidden',
                     }}
                   >
-                    <div
-                      style={{
-                        display: 'flex',
-                        fontSize: name ? '20px' : '16px',
-                        fontWeight: name ? 'bold' : 'normal',
-                        color: name ? '#3730a3' : '#94a3b8',
-                      }}
-                    >
-                      {name || '?'}
-                    </div>
+                    {useImages && char.slug ? (
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '100%',
+                          height: '100%',
+                        }}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={`${origin}/og-images/dolphin/${char.slug}.png`}
+                          width={110}
+                          height={110}
+                          style={{ objectFit: 'contain' }}
+                          alt=""
+                        />
+                        <div
+                          style={{
+                            display: 'flex',
+                            fontSize: '14px',
+                            fontWeight: 'bold',
+                            color: '#3730a3',
+                            marginTop: '4px',
+                          }}
+                        >
+                          {char.name}
+                        </div>
+                      </div>
+                    ) : (
+                      <div
+                        style={{
+                          display: 'flex',
+                          fontSize: char.name ? '20px' : '16px',
+                          fontWeight: char.name ? 'bold' : 'normal',
+                          color: char.name ? '#3730a3' : '#94a3b8',
+                        }}
+                      >
+                        {char.name || '?'}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
