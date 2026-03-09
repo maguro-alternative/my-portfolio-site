@@ -57,17 +57,19 @@ export async function GET(request: NextRequest) {
               maxWidth: '1100px',
             }}
           >
-            <h1
+            <div
               style={{
+                display: 'flex',
                 fontSize: '40px',
                 fontWeight: 'bold',
                 color: '#1e293b',
                 marginBottom: '32px',
                 textAlign: 'center',
+                justifyContent: 'center',
               }}
             >
               {title}
-            </h1>
+            </div>
             <div
               style={{
                 display: 'flex',
@@ -124,6 +126,9 @@ export async function GET(request: NextRequest) {
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             whiteSpace: 'nowrap',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
                           }}
                         >
                           {characterNames[index] || '未選択'}
@@ -134,6 +139,7 @@ export async function GET(request: NextRequest) {
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
                       <div
                         style={{
+                          display: 'flex',
                           fontSize: '14px',
                           fontWeight: 'bold',
                           color: '#64748b',
@@ -144,6 +150,7 @@ export async function GET(request: NextRequest) {
                       </div>
                       <div
                         style={{
+                          display: 'flex',
                           fontSize: '14px',
                           color: '#94a3b8',
                         }}

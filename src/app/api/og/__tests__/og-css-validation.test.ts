@@ -85,6 +85,36 @@ describe('OG image routes - CSS validation', () => {
         }
       });
 
+      it('should have display:flex on every <div> element', () => {
+        const lines = content.split('\n');
+        const divsWithoutFlex: number[] = [];
+
+        for (let i = 0; i < lines.length; i++) {
+          const trimmed = lines[i].trim();
+          // Detect opening <div tags (but skip comments)
+          if (trimmed.startsWith('//') || trimmed.startsWith('*')) continue;
+
+          if (trimmed.includes('<div') && !trimmed.includes('<div>')) {
+            // Inline style div - check if display: 'flex' or display: 'none' exists
+            // Look ahead up to 15 lines for the style closing
+            const chunk = lines.slice(i, Math.min(i + 15, lines.length)).join(' ');
+            const hasDisplayFlex = /display:\s*['"]flex['"]/.test(chunk);
+            const hasDisplayNone = /display:\s*['"]none['"]/.test(chunk);
+            if (!hasDisplayFlex && !hasDisplayNone) {
+              divsWithoutFlex.push(i + 1);
+            }
+          }
+        }
+
+        if (divsWithoutFlex.length > 0) {
+          expect.fail(
+            `Found <div> elements without explicit display:flex in ${relativePath} at lines: ${divsWithoutFlex.join(', ')}\n` +
+              `satori requires all divs with multiple children to have display: "flex" or "none". ` +
+              `To be safe, add display: "flex" to every <div>.`
+          );
+        }
+      });
+
       it('should not use unsupported CSS properties (grid-related)', () => {
         const gridProps = [
           'gridTemplateColumns',
