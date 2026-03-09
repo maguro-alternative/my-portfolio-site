@@ -16,31 +16,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://maguro-alternative.com'),
   title: "私を構成する9人のシノビ少女",
   description: "9人の閃乱カグラのキャラクターを選んで画像として保存。お気に入りのキャラクターで自分だけの画像を作成できます。",
   icons: {
     icon: "/nine/kagura/kagurun.png",
-  },
-  openGraph: {
-    title: "私を構成する9人のシノビ少女",
-    description: "9人の閃乱カグラのキャラクターを選んで画像として保存",
-    type: "website",
-    locale: "ja_JP",
-    siteName: "私を構成する9人のシノビ少女",
-    images: [
-      {
-        url: '/api/og/kagura?title=私を構成する9人のシノビ少女',
-        width: 1200,
-        height: 630,
-        alt: '私を構成する9人のシノビ少女',
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "私を構成する9人のシノビ少女",
-    description: "9人の閃乱カグラのキャラクターを選んで画像として保存",
-    images: ['/api/og/kagura?title=私を構成する9人のシノビ少女'],
   },
 };
 
