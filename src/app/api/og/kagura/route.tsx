@@ -4,14 +4,37 @@ import { kaguraCharacters } from '@/lib/nine/kaguraCharacters';
 
 export const runtime = 'edge';
 
+function arrayBufferToBase64(buffer: ArrayBuffer): string {
+  const bytes = new Uint8Array(buffer);
+  let binary = '';
+  const chunkSize = 8192;
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    const chunk = bytes.subarray(i, Math.min(i + chunkSize, bytes.length));
+    binary += String.fromCharCode(...chunk);
+  }
+  return btoa(binary);
+}
+
+async function fetchImageAsDataUrl(url: string): Promise<string | null> {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const buf = await res.arrayBuffer();
+    const base64 = arrayBufferToBase64(buf);
+    const contentType = res.headers.get('content-type') || 'image/png';
+    return `data:${contentType};base64,${base64}`;
+  } catch {
+    return null;
+  }
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const title = searchParams.get('title') || '私を構成する9人のシノビ少女';
 
-    // ?c= パラメータからキャラクター情報を解決（インデックスのダッシュ区切り）
-    const characterImages: string[] = [];
-    const characterNames: string[] = [];
+    // キャラクター情報を解決
+    const characters: { name: string; slug: string; imageUrl: string }[] = [];
 
     const cParam = searchParams.get('c');
     if (cParam) {
@@ -20,36 +43,37 @@ export async function GET(request: NextRequest) {
         if (i < parts.length && parts[i] !== '') {
           const idx = parseInt(parts[i], 10);
           if (!isNaN(idx) && idx >= 0 && idx < kaguraCharacters.length) {
-            characterImages.push(kaguraCharacters[idx].imageUrl);
-            characterNames.push(kaguraCharacters[idx].name);
+            const ch = kaguraCharacters[idx];
+            characters.push({ name: ch.name, slug: ch.slug, imageUrl: ch.imageUrl });
           } else {
-            characterImages.push('');
-            characterNames.push('');
+            characters.push({ name: '', slug: '', imageUrl: '' });
           }
         } else {
-          characterImages.push('');
-          characterNames.push('');
+          characters.push({ name: '', slug: '', imageUrl: '' });
         }
       }
     } else {
-      // 旧形式 ?s1=slug&s2=slug... にも対応
       for (let i = 1; i <= 9; i++) {
         const slug = searchParams.get(`s${i}`);
         if (slug) {
           const char = kaguraCharacters.find(c => c.slug === slug);
-          if (char) {
-            characterImages.push(char.imageUrl);
-            characterNames.push(char.name);
-          } else {
-            characterImages.push('');
-            characterNames.push('未選択');
-          }
+          characters.push(char ? { name: char.name, slug: char.slug, imageUrl: char.imageUrl } : { name: '', slug: '', imageUrl: '' });
         } else {
-          characterImages.push('');
-          characterNames.push('');
+          characters.push({ name: '', slug: '', imageUrl: '' });
         }
       }
     }
+
+    const hasAny = characters.some(c => c.name !== '');
+
+    // 全画像を外部URLから並列で事前取得し、base64 data URLに変換
+    const imageDataUrls: (string | null)[] = await Promise.all(
+      characters.map(char => {
+        if (!char.imageUrl) return Promise.resolve(null);
+        return fetchImageAsDataUrl(char.imageUrl);
+      })
+    );
+    const useImages = imageDataUrls.some(url => url !== null);
 
     return new ImageResponse(
       (
@@ -61,7 +85,7 @@ export async function GET(request: NextRequest) {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: '#fce5f0',
+            background: 'linear-gradient(135deg, #f472b6 0%, #c084fc 100%)',
             padding: '40px',
           }}
         >
@@ -70,128 +94,124 @@ export async function GET(request: NextRequest) {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              justifyContent: 'center',
               backgroundColor: 'white',
               borderRadius: '24px',
-              padding: '32px',
-              boxShadow: '0 8px 16px rgba(0, 0, 0, 0.1)',
+              padding: '40px 48px',
+              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
               width: '90%',
-              maxWidth: '1100px',
+              maxWidth: '1080px',
             }}
           >
+            {/* タイトル */}
             <div
               style={{
                 display: 'flex',
-                fontSize: '40px',
+                fontSize: '42px',
                 fontWeight: 'bold',
                 color: '#1e293b',
-                marginBottom: '32px',
+                marginBottom: hasAny ? '28px' : '12px',
                 textAlign: 'center',
-                justifyContent: 'center',
               }}
             >
               {title}
             </div>
-            <div
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '12px',
-                width: '100%',
-              }}
-            >
-              {[...Array(9)].map((_, index) => (
-                <div
-                  key={index}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: characterImages[index] && characterImages[index] !== '' ? 'transparent' : '#fdf2f8',
-                    borderRadius: '12px',
-                    overflow: 'hidden',
-                    height: '160px',
-                    border: '2px solid #f9a8d4',
-                    position: 'relative',
-                    width: '31.5%',
-                  }}
-                >
-                  {characterImages[index] && characterImages[index] !== '' ? (
-                    <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%', position: 'relative' }}>
-                      <img
-                        src={characterImages[index]}
-                        alt={characterNames[index] || `Character ${index + 1}`}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
-                        }}
-                      />
+
+            {hasAny ? (
+              /* キャラクターグリッド */
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '10px',
+                  width: '100%',
+                  justifyContent: 'center',
+                }}
+              >
+                {characters.map((char, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '30%',
+                      height: useImages ? '160px' : '64px',
+                      borderRadius: '12px',
+                      backgroundColor: char.name ? '#fdf2f8' : '#f8fafc',
+                      border: char.name ? '2px solid #f472b6' : '2px dashed #cbd5e1',
+                      overflow: 'hidden',
+                    }}
+                  >
+                    {imageDataUrls[index] ? (
                       <div
                         style={{
-                          position: 'absolute',
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
-                          padding: '8px',
                           display: 'flex',
                           flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '100%',
+                          height: '100%',
                         }}
                       >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={imageDataUrls[index]!}
+                          width={110}
+                          height={110}
+                          style={{ objectFit: 'contain' }}
+                          alt=""
+                        />
                         <div
                           style={{
-                            fontSize: '12px',
-                            color: 'white',
-                            textAlign: 'center',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
                             display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
+                            fontSize: '14px',
+                            fontWeight: 'bold',
+                            color: '#9d174d',
+                            marginTop: '4px',
                           }}
                         >
-                          {characterNames[index] || '未選択'}
+                          {char.name}
                         </div>
                       </div>
-                    </div>
-                  ) : (
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
+                    ) : (
                       <div
                         style={{
                           display: 'flex',
-                          fontSize: '14px',
-                          fontWeight: 'bold',
-                          color: '#be185d',
-                          marginBottom: '8px',
+                          fontSize: char.name ? '20px' : '16px',
+                          fontWeight: char.name ? 'bold' : 'normal',
+                          color: char.name ? '#9d174d' : '#94a3b8',
                         }}
                       >
-                        #{index + 1}
+                        {char.name || '?'}
                       </div>
-                      <div
-                        style={{
-                          display: 'flex',
-                          fontSize: '14px',
-                          color: '#f9a8d4',
-                        }}
-                      >
-                        未選択
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div
+                style={{
+                  display: 'flex',
+                  fontSize: '20px',
+                  color: '#64748b',
+                  marginTop: '4px',
+                }}
+              >
+                9人の閃乱カグラのキャラクターを選んで画像として保存
+              </div>
+            )}
           </div>
+
+          {/* フッター */}
           <div
             style={{
+              display: 'flex',
               marginTop: '20px',
               fontSize: '18px',
-              color: '#be185d',
-              display: 'flex',
+              color: 'rgba(255, 255, 255, 0.9)',
               alignItems: 'center',
+              gap: '8px',
             }}
           >
             🌸 閃乱カグラ
@@ -204,7 +224,7 @@ export async function GET(request: NextRequest) {
       }
     );
   } catch {
-    return new Response(`Failed to generate the image`, {
+    return new Response('Failed to generate the image', {
       status: 500,
     });
   }
