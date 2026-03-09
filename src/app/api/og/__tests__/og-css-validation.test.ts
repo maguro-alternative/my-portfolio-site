@@ -65,6 +65,26 @@ describe('OG image routes - CSS validation', () => {
         }
       });
 
+      it('should not use React fragments (<>...</>) which satori wraps as implicit divs without display:flex', () => {
+        const lines = content.split('\n');
+        const fragments: number[] = [];
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i].trim();
+          // Detect JSX fragment opening/closing tags (but ignore comments)
+          if ((line.includes('<>') || line.includes('</>')) && !line.startsWith('//') && !line.startsWith('*')) {
+            fragments.push(i + 1);
+          }
+        }
+
+        if (fragments.length > 0) {
+          expect.fail(
+            `Found React fragments in ${relativePath} at lines: ${fragments.join(', ')}\n` +
+              `satori does not support fragments. Use a <div style={{ display: "flex" }}> wrapper instead.`
+          );
+        }
+      });
+
       it('should not use unsupported CSS properties (grid-related)', () => {
         const gridProps = [
           'gridTemplateColumns',
