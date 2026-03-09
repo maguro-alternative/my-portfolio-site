@@ -2,6 +2,7 @@ import Link from "next/link";
 import Twitter from "@/components/socials/twitter";
 import Github from "@/components/socials/github";
 import Uchuemon from "@/components/commonUI/uchuemon";
+import ArticlesSection from "@/components/features/ArticlesSection";
 
 export default function Home() {
   return (
@@ -40,6 +41,11 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <ArticlesSection
+        qiitaId="maguro-alternative"
+        zennId="maguro_alterna"
+        noteId="maguro_alter"
+      />
       <div className="text-center p-5 text-white">
         <p>&copy; 2025 Maguro Alternative. All rights reserved.</p>
       </div>
