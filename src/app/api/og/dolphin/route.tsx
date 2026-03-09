@@ -70,8 +70,8 @@ export async function GET(request: NextRequest) {
             </h1>
             <div
               style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(3, 1fr)',
+                display: 'flex',
+                flexWrap: 'wrap',
                 gap: '12px',
                 width: '100%',
               }}
@@ -90,6 +90,7 @@ export async function GET(request: NextRequest) {
                     height: '160px',
                     border: '2px solid #cbd5e1',
                     position: 'relative',
+                    width: '31.5%',
                   }}
                 >
                   {characterImages[index] && characterImages[index] !== '' ? (
