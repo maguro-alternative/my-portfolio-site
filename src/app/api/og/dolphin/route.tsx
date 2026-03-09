@@ -94,7 +94,7 @@ export async function GET(request: NextRequest) {
                   }}
                 >
                   {characterImages[index] && characterImages[index] !== '' ? (
-                    <>
+                    <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%', position: 'relative' }}>
                       <img
                         src={characterImages[index]}
                         alt={characterNames[index] || `Character ${index + 1}`}
@@ -129,9 +129,9 @@ export async function GET(request: NextRequest) {
                           {characterNames[index] || '未選択'}
                         </div>
                       </div>
-                    </>
+                    </div>
                   ) : (
-                    <>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
                       <div
                         style={{
                           fontSize: '14px',
@@ -150,7 +150,7 @@ export async function GET(request: NextRequest) {
                       >
                         未選択
                       </div>
-                    </>
+                    </div>
                   )}
                 </div>
               ))}
