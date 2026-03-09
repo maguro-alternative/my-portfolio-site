@@ -44,6 +44,7 @@ export default function Home() {
       <ArticlesSection
         qiitaId="maguro-alternative"
         zennId="maguro_alterna"
+        noteId="maguro_alter"
       />
       <div className="text-center p-5 text-white">
         <p>&copy; 2025 Maguro Alternative. All rights reserved.</p>
