@@ -21,27 +21,6 @@ export const metadata: Metadata = {
   icons: {
     icon: "/nine/dolphin/fenio.png",
   },
-  openGraph: {
-    title: "私を構成する9人のドルフィン",
-    description: "9人のドルフィンウェーブのキャラクターを選んで画像として保存",
-    type: "website",
-    locale: "ja_JP",
-    siteName: "私を構成する9人のドルフィン",
-    images: [
-      {
-        url: '/api/og/dolphin?title=私を構成する9人のドルフィン',
-        width: 1200,
-        height: 630,
-        alt: '私を構成する9人のドルフィン',
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "私を構成する9人のドルフィン",
-    description: "9人のドルフィンウェーブのキャラクターを選んで画像として保存",
-    images: ['/api/og/dolphin?title=私を構成する9人のドルフィン'],
-  },
 };
 
 export default function RootLayout({
