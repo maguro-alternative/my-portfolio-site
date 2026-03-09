@@ -19,6 +19,10 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://maguro-alternative.com'),
   title: "私を構成する9人のシノビ少女",
   description: "9人の閃乱カグラのキャラクターを選んで画像として保存。お気に入りのキャラクターで自分だけの画像を作成できます。",
+  keywords: ["閃乱カグラ", "シノビ少女", "キャラクター", "私を構成する9人", "画像作成"],
+  alternates: {
+    canonical: '/nine/kagura',
+  },
   icons: {
     icon: "/nine/kagura/kagurun.png",
   },
