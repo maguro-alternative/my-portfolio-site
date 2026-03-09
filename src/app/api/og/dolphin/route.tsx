@@ -4,6 +4,19 @@ import { dolphinCharacters } from '@/lib/nine/dolphinCharacters';
 
 export const runtime = 'edge';
 
+async function fetchImageAsDataUrl(url: string): Promise<string | null> {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const buf = await res.arrayBuffer();
+    const base64 = btoa(String.fromCharCode(...new Uint8Array(buf)));
+    const contentType = res.headers.get('content-type') || 'image/png';
+    return `data:${contentType};base64,${base64}`;
+  } catch {
+    return null;
+  }
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -24,19 +37,15 @@ export async function GET(request: NextRequest) {
 
     const hasAny = characters.some(c => c.name !== '');
 
-    // ローカル画像が利用可能かチェック（最初のキャラで判定）
-    let useImages = false;
-    if (hasAny) {
-      const firstChar = characters.find(c => c.slug !== '');
-      if (firstChar) {
-        try {
-          const res = await fetch(`${origin}/og-images/dolphin/${firstChar.slug}.png`, { method: 'HEAD' });
-          useImages = res.ok;
-        } catch {
-          useImages = false;
-        }
-      }
-    }
+    // 全画像を並列で事前取得し、base64 data URLに変換
+    const imageDataUrls: (string | null)[] = await Promise.all(
+      characters.map(char =>
+        char.slug
+          ? fetchImageAsDataUrl(`${origin}/og-images/dolphin/${char.slug}.png`)
+          : Promise.resolve(null)
+      )
+    );
+    const useImages = imageDataUrls.some(url => url !== null);
 
     return new ImageResponse(
       (
@@ -106,7 +115,7 @@ export async function GET(request: NextRequest) {
                       overflow: 'hidden',
                     }}
                   >
-                    {useImages && char.slug ? (
+                    {imageDataUrls[index] ? (
                       <div
                         style={{
                           display: 'flex',
@@ -119,7 +128,7 @@ export async function GET(request: NextRequest) {
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                          src={`${origin}/og-images/dolphin/${char.slug}.png`}
+                          src={imageDataUrls[index]!}
                           width={110}
                           height={110}
                           style={{ objectFit: 'contain' }}

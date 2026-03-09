@@ -12,6 +12,19 @@ function getImageExt(slug: string): string {
   return 'png';
 }
 
+async function fetchImageAsDataUrl(url: string): Promise<string | null> {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const buf = await res.arrayBuffer();
+    const base64 = btoa(String.fromCharCode(...new Uint8Array(buf)));
+    const contentType = res.headers.get('content-type') || 'image/png';
+    return `data:${contentType};base64,${base64}`;
+  } catch {
+    return null;
+  }
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -50,20 +63,15 @@ export async function GET(request: NextRequest) {
 
     const hasAny = characters.some(c => c.name !== '');
 
-    // ローカル画像が利用可能かチェック
-    let useImages = false;
-    if (hasAny) {
-      const firstChar = characters.find(c => c.slug !== '');
-      if (firstChar) {
-        const ext = getImageExt(firstChar.slug);
-        try {
-          const res = await fetch(`${origin}/og-images/kagura/${firstChar.slug}.${ext}`, { method: 'HEAD' });
-          useImages = res.ok;
-        } catch {
-          useImages = false;
-        }
-      }
-    }
+    // 全画像を並列で事前取得し、base64 data URLに変換
+    const imageDataUrls: (string | null)[] = await Promise.all(
+      characters.map(char => {
+        if (!char.slug) return Promise.resolve(null);
+        const ext = getImageExt(char.slug);
+        return fetchImageAsDataUrl(`${origin}/og-images/kagura/${char.slug}.${ext}`);
+      })
+    );
+    const useImages = imageDataUrls.some(url => url !== null);
 
     return new ImageResponse(
       (
@@ -117,70 +125,67 @@ export async function GET(request: NextRequest) {
                   justifyContent: 'center',
                 }}
               >
-                {characters.map((char, index) => {
-                  const ext = char.slug ? getImageExt(char.slug) : 'png';
-                  return (
-                    <div
-                      key={index}
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        width: '30%',
-                        height: useImages ? '160px' : '64px',
-                        borderRadius: '12px',
-                        backgroundColor: char.name ? '#fdf2f8' : '#f8fafc',
-                        border: char.name ? '2px solid #f472b6' : '2px dashed #cbd5e1',
-                        overflow: 'hidden',
-                      }}
-                    >
-                      {useImages && char.slug ? (
+                {characters.map((char, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '30%',
+                      height: useImages ? '160px' : '64px',
+                      borderRadius: '12px',
+                      backgroundColor: char.name ? '#fdf2f8' : '#f8fafc',
+                      border: char.name ? '2px solid #f472b6' : '2px dashed #cbd5e1',
+                      overflow: 'hidden',
+                    }}
+                  >
+                    {imageDataUrls[index] ? (
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '100%',
+                          height: '100%',
+                        }}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={imageDataUrls[index]!}
+                          width={110}
+                          height={110}
+                          style={{ objectFit: 'contain' }}
+                          alt=""
+                        />
                         <div
                           style={{
                             display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            width: '100%',
-                            height: '100%',
+                            fontSize: '14px',
+                            fontWeight: 'bold',
+                            color: '#9d174d',
+                            marginTop: '4px',
                           }}
                         >
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={`${origin}/og-images/kagura/${char.slug}.${ext}`}
-                            width={110}
-                            height={110}
-                            style={{ objectFit: 'contain' }}
-                            alt=""
-                          />
-                          <div
-                            style={{
-                              display: 'flex',
-                              fontSize: '14px',
-                              fontWeight: 'bold',
-                              color: '#9d174d',
-                              marginTop: '4px',
-                            }}
-                          >
-                            {char.name}
-                          </div>
+                          {char.name}
                         </div>
-                      ) : (
-                        <div
-                          style={{
-                            display: 'flex',
-                            fontSize: char.name ? '20px' : '16px',
-                            fontWeight: char.name ? 'bold' : 'normal',
-                            color: char.name ? '#9d174d' : '#94a3b8',
-                          }}
-                        >
-                          {char.name || '?'}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+                      </div>
+                    ) : (
+                      <div
+                        style={{
+                          display: 'flex',
+                          fontSize: char.name ? '20px' : '16px',
+                          fontWeight: char.name ? 'bold' : 'normal',
+                          color: char.name ? '#9d174d' : '#94a3b8',
+                        }}
+                      >
+                        {char.name || '?'}
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
             ) : (
               <div
