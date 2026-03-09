@@ -35,6 +35,25 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
+      <head>
+        <link rel="preconnect" href="https://senrankagura.marv.jp" />
+        <link
+          rel="preload"
+          href="https://senrankagura.marv.jp/img/bg_header_top.png"
+          as="image"
+          fetchPriority="high"
+        />
+        <link
+          rel="preload"
+          href="https://senrankagura.marv.jp/img/bg_top_flower02.png"
+          as="image"
+        />
+        <link
+          rel="preload"
+          href="https://senrankagura.marv.jp/img/bg_main_flower03.png"
+          as="image"
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

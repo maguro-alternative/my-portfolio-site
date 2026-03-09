@@ -14,6 +14,7 @@ export function SelectionGrid({ selectedItems, onPanelClick, onClearPanel }: Sel
           {item.name ? (
             <button
               onClick={() => onPanelClick(index)}
+              aria-label={`${item.name} を変更`}
               className="group relative aspect-square w-full overflow-hidden rounded-lg border border-slate-200 bg-slate-100 p-0"
             >
               {item.image && (
@@ -53,6 +54,7 @@ export function SelectionGrid({ selectedItems, onPanelClick, onClearPanel }: Sel
           ) : (
             <button
               onClick={() => onPanelClick(index)}
+              aria-label={`スロット ${index + 1} にキャラクターを追加`}
               className="relative aspect-square w-full overflow-hidden rounded-lg transition-opacity hover:opacity-80"
             >
               <svg className="absolute inset-0 h-full w-full" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
