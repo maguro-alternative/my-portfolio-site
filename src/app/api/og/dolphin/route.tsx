@@ -9,25 +9,19 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const title = searchParams.get('title') || '私を構成する9人のドルフィン';
 
-    // slug からキャラクター情報を解決
-    const characterImages: string[] = [];
+    // slug からキャラクター名を解決
     const characterNames: string[] = [];
     for (let i = 1; i <= 9; i++) {
       const slug = searchParams.get(`s${i}`);
       if (slug) {
         const char = dolphinCharacters.find(c => c.slug === slug);
-        if (char) {
-          characterImages.push(char.imageUrl);
-          characterNames.push(char.name);
-        } else {
-          characterImages.push('');
-          characterNames.push('未選択');
-        }
+        characterNames.push(char ? char.name : '');
       } else {
-        characterImages.push('');
         characterNames.push('');
       }
     }
+
+    const hasAny = characterNames.some(n => n !== '');
 
     return new ImageResponse(
       (
@@ -39,7 +33,7 @@ export async function GET(request: NextRequest) {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: '#e5f2fc',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
             padding: '40px',
           }}
         >
@@ -48,128 +42,89 @@ export async function GET(request: NextRequest) {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              justifyContent: 'center',
               backgroundColor: 'white',
               borderRadius: '24px',
-              padding: '32px',
-              boxShadow: '0 8px 16px rgba(0, 0, 0, 0.1)',
+              padding: '40px 48px',
+              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
               width: '90%',
-              maxWidth: '1100px',
+              maxWidth: '1080px',
             }}
           >
+            {/* タイトル */}
             <div
               style={{
                 display: 'flex',
-                fontSize: '40px',
+                fontSize: '42px',
                 fontWeight: 'bold',
                 color: '#1e293b',
-                marginBottom: '32px',
+                marginBottom: hasAny ? '28px' : '12px',
                 textAlign: 'center',
-                justifyContent: 'center',
               }}
             >
               {title}
             </div>
-            <div
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '12px',
-                width: '100%',
-              }}
-            >
-              {[...Array(9)].map((_, index) => (
-                <div
-                  key={index}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: characterImages[index] && characterImages[index] !== '' ? 'transparent' : '#f1f5f9',
-                    borderRadius: '12px',
-                    overflow: 'hidden',
-                    height: '160px',
-                    border: '2px solid #cbd5e1',
-                    position: 'relative',
-                    width: '31.5%',
-                  }}
-                >
-                  {characterImages[index] && characterImages[index] !== '' ? (
-                    <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%', position: 'relative' }}>
-                      <img
-                        src={characterImages[index]}
-                        alt={characterNames[index] || `Character ${index + 1}`}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
-                        }}
-                      />
-                      <div
-                        style={{
-                          position: 'absolute',
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
-                          padding: '8px',
-                          display: 'flex',
-                          flexDirection: 'column',
-                        }}
-                      >
-                        <div
-                          style={{
-                            fontSize: '12px',
-                            color: 'white',
-                            textAlign: 'center',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}
-                        >
-                          {characterNames[index] || '未選択'}
-                        </div>
-                      </div>
+
+            {hasAny ? (
+              /* キャラクター名グリッド */
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '10px',
+                  width: '100%',
+                  justifyContent: 'center',
+                }}
+              >
+                {characterNames.map((name, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '30%',
+                      height: '64px',
+                      borderRadius: '12px',
+                      backgroundColor: name ? '#eef2ff' : '#f8fafc',
+                      border: name ? '2px solid #818cf8' : '2px dashed #cbd5e1',
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        fontSize: name ? '20px' : '16px',
+                        fontWeight: name ? 'bold' : 'normal',
+                        color: name ? '#3730a3' : '#94a3b8',
+                      }}
+                    >
+                      {name || '?'}
                     </div>
-                  ) : (
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
-                      <div
-                        style={{
-                          display: 'flex',
-                          fontSize: '14px',
-                          fontWeight: 'bold',
-                          color: '#64748b',
-                          marginBottom: '8px',
-                        }}
-                      >
-                        #{index + 1}
-                      </div>
-                      <div
-                        style={{
-                          display: 'flex',
-                          fontSize: '14px',
-                          color: '#94a3b8',
-                        }}
-                      >
-                        未選択
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div
+                style={{
+                  display: 'flex',
+                  fontSize: '20px',
+                  color: '#64748b',
+                  marginTop: '4px',
+                }}
+              >
+                9人のドルフィンウェーブのキャラクターを選んで画像として保存
+              </div>
+            )}
           </div>
+
+          {/* フッター */}
           <div
             style={{
+              display: 'flex',
               marginTop: '20px',
               fontSize: '18px',
-              color: '#64748b',
-              display: 'flex',
+              color: 'rgba(255, 255, 255, 0.9)',
               alignItems: 'center',
+              gap: '8px',
             }}
           >
             🐬 ドルフィンウェーブ
@@ -182,7 +137,7 @@ export async function GET(request: NextRequest) {
       }
     );
   } catch {
-    return new Response(`Failed to generate the image`, {
+    return new Response('Failed to generate the image', {
       status: 500,
     });
   }
