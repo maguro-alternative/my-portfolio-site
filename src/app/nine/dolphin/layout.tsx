@@ -14,12 +14,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const siteUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : 'http://localhost:3000';
-
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
   title: "私を構成する9人のドルフィン",
   description: "9人のドルフィンウェーブのキャラクターを選んで画像として保存。お気に入りのキャラクターで自分だけの画像を作成できます。",
   icons: {
