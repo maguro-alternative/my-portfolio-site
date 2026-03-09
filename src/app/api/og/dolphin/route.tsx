@@ -31,28 +31,27 @@ async function fetchImageAsDataUrl(url: string): Promise<string | null> {
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const origin = new URL(request.url).origin;
     const title = searchParams.get('title') || '私を構成する9人のドルフィン';
 
     // slug からキャラクター情報を解決
-    const characters: { name: string; slug: string }[] = [];
+    const characters: { name: string; slug: string; imageUrl: string }[] = [];
     for (let i = 1; i <= 9; i++) {
       const slug = searchParams.get(`s${i}`);
       if (slug) {
         const char = dolphinCharacters.find(c => c.slug === slug);
-        characters.push(char ? { name: char.name, slug: char.slug } : { name: '', slug: '' });
+        characters.push(char ? { name: char.name, slug: char.slug, imageUrl: char.imageUrl } : { name: '', slug: '', imageUrl: '' });
       } else {
-        characters.push({ name: '', slug: '' });
+        characters.push({ name: '', slug: '', imageUrl: '' });
       }
     }
 
     const hasAny = characters.some(c => c.name !== '');
 
-    // 全画像を並列で事前取得し、base64 data URLに変換
+    // 全画像を外部URLから並列で事前取得し、base64 data URLに変換
     const imageDataUrls: (string | null)[] = await Promise.all(
       characters.map(char =>
-        char.slug
-          ? fetchImageAsDataUrl(`${origin}/og-images/dolphin/${char.slug}.png`)
+        char.imageUrl
+          ? fetchImageAsDataUrl(char.imageUrl)
           : Promise.resolve(null)
       )
     );

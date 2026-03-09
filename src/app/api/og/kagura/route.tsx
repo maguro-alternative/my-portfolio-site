@@ -4,14 +4,6 @@ import { kaguraCharacters } from '@/lib/nine/kaguraCharacters';
 
 export const runtime = 'edge';
 
-// slug から拡張子を判定（marv.jp/seesaawiki は jpg）
-function getImageExt(slug: string): string {
-  const char = kaguraCharacters.find(c => c.slug === slug);
-  if (!char) return 'png';
-  if (char.imageUrl.endsWith('.jpg')) return 'jpg';
-  return 'png';
-}
-
 function arrayBufferToBase64(buffer: ArrayBuffer): string {
   const bytes = new Uint8Array(buffer);
   let binary = '';
@@ -39,11 +31,10 @@ async function fetchImageAsDataUrl(url: string): Promise<string | null> {
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const origin = new URL(request.url).origin;
     const title = searchParams.get('title') || '私を構成する9人のシノビ少女';
 
     // キャラクター情報を解決
-    const characters: { name: string; slug: string }[] = [];
+    const characters: { name: string; slug: string; imageUrl: string }[] = [];
 
     const cParam = searchParams.get('c');
     if (cParam) {
@@ -52,12 +43,13 @@ export async function GET(request: NextRequest) {
         if (i < parts.length && parts[i] !== '') {
           const idx = parseInt(parts[i], 10);
           if (!isNaN(idx) && idx >= 0 && idx < kaguraCharacters.length) {
-            characters.push({ name: kaguraCharacters[idx].name, slug: kaguraCharacters[idx].slug });
+            const ch = kaguraCharacters[idx];
+            characters.push({ name: ch.name, slug: ch.slug, imageUrl: ch.imageUrl });
           } else {
-            characters.push({ name: '', slug: '' });
+            characters.push({ name: '', slug: '', imageUrl: '' });
           }
         } else {
-          characters.push({ name: '', slug: '' });
+          characters.push({ name: '', slug: '', imageUrl: '' });
         }
       }
     } else {
@@ -65,21 +57,20 @@ export async function GET(request: NextRequest) {
         const slug = searchParams.get(`s${i}`);
         if (slug) {
           const char = kaguraCharacters.find(c => c.slug === slug);
-          characters.push(char ? { name: char.name, slug: char.slug } : { name: '', slug: '' });
+          characters.push(char ? { name: char.name, slug: char.slug, imageUrl: char.imageUrl } : { name: '', slug: '', imageUrl: '' });
         } else {
-          characters.push({ name: '', slug: '' });
+          characters.push({ name: '', slug: '', imageUrl: '' });
         }
       }
     }
 
     const hasAny = characters.some(c => c.name !== '');
 
-    // 全画像を並列で事前取得し、base64 data URLに変換
+    // 全画像を外部URLから並列で事前取得し、base64 data URLに変換
     const imageDataUrls: (string | null)[] = await Promise.all(
       characters.map(char => {
-        if (!char.slug) return Promise.resolve(null);
-        const ext = getImageExt(char.slug);
-        return fetchImageAsDataUrl(`${origin}/og-images/kagura/${char.slug}.${ext}`);
+        if (!char.imageUrl) return Promise.resolve(null);
+        return fetchImageAsDataUrl(char.imageUrl);
       })
     );
     const useImages = imageDataUrls.some(url => url !== null);
