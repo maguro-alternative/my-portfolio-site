@@ -1,72 +1,74 @@
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 
 export function SakuraEffect() {
-  const initParticles = async () => {
-    try {
-      const { tsParticles } = await import('@tsparticles/engine');
-      const { loadAll } = await import('@tsparticles/all');
+  useEffect(() => {
+    const initParticles = async () => {
+      try {
+        const { tsParticles } = await import('@tsparticles/engine');
+        const { loadAll } = await import('@tsparticles/all');
 
-      await loadAll(tsParticles);
+        await loadAll(tsParticles);
 
-      await tsParticles.load({
-        id: 'sakura-particles',
-        options: {
-          particles: {
-            number: {
-              value: 40,
-              density: { enable: true },
-            },
-            color: {
-              value: ['#FFB7C5', '#FF91A4', '#DDA0DD', '#F4C2C2'],
-            },
-            shape: {
-              type: 'circle',
-            },
-            opacity: {
-              value: { min: 0.3, max: 0.7 },
-            },
-            size: {
-              value: { min: 2, max: 8 },
-            },
-            move: {
-              enable: true,
-              speed: 2,
-              direction: 'bottom',
-              random: true,
-              straight: false,
-              outModes: 'out',
-            },
-            rotate: {
-              value: { min: 0, max: 360 },
-              animation: {
+        await tsParticles.load({
+          id: 'sakura-particles',
+          options: {
+            particles: {
+              number: {
+                value: 40,
+                density: { enable: true },
+              },
+              color: {
+                value: ['#FFB7C5', '#FF91A4', '#DDA0DD', '#F4C2C2'],
+              },
+              shape: {
+                type: 'circle',
+              },
+              opacity: {
+                value: { min: 0.3, max: 0.7 },
+              },
+              size: {
+                value: { min: 2, max: 8 },
+              },
+              move: {
                 enable: true,
-                speed: 8,
-                sync: false,
+                speed: 2,
+                direction: 'bottom',
+                random: true,
+                straight: false,
+                outModes: 'out',
+              },
+              rotate: {
+                value: { min: 0, max: 360 },
+                animation: {
+                  enable: true,
+                  speed: 8,
+                  sync: false,
+                },
+              },
+              wobble: {
+                enable: true,
+                distance: 15,
+                speed: 3,
               },
             },
-            wobble: {
-              enable: true,
-              distance: 15,
-              speed: 3,
+            interactivity: {
+              events: {
+                onHover: { enable: false },
+                onClick: { enable: false },
+              },
             },
+            retina_detect: true,
           },
-          interactivity: {
-            events: {
-              onHover: { enable: false },
-              onClick: { enable: false },
-            },
-          },
-          retina_detect: true,
-        },
-      });
-    } catch (error) {
-      console.error('Failed to load sakura particles:', error);
-    }
-  };
+        });
+      } catch (error) {
+        console.error('Failed to load sakura particles:', error);
+      }
+    };
 
-  initParticles();
+    initParticles();
+  }, []);
 
   return (
     <Suspense fallback={null}>

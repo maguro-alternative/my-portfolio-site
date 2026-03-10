@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, forwardRef, useImperativeHandle } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { KaguraCharacter, kaguraCharacters } from '@/lib/nine/kaguraCharacters';
 
 interface CharacterSearchModalProps {
@@ -10,20 +10,33 @@ interface CharacterSearchModalProps {
   onClose: () => void;
 }
 
-export interface CharacterSearchModalHandle {
-  focusInput: () => void;
-}
-
-export const CharacterSearchModal = forwardRef<
-  CharacterSearchModalHandle,
-  CharacterSearchModalProps
->(function CharacterSearchModal({ isOpen, panelIndex, onSelect, onClose }, ref) {
+export function CharacterSearchModal({
+  isOpen,
+  panelIndex,
+  onSelect,
+  onClose,
+}: CharacterSearchModalProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useImperativeHandle(ref, () => ({
-    focusInput: () => inputRef.current?.focus(),
-  }));
+  useEffect(() => {
+    if (isOpen) {
+      setSearchTerm('');
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  }, [isOpen]);
+
+  // Prevent background scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -93,7 +106,6 @@ export const CharacterSearchModal = forwardRef<
                 <button
                   key={i}
                   onClick={() => {
-                    setSearchTerm('');
                     onSelect(char.name, char.imageUrl, char.slug);
                     onClose();
                   }}
@@ -116,4 +128,4 @@ export const CharacterSearchModal = forwardRef<
       </div>
     </div>
   );
-});
+}

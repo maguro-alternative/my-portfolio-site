@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { kaguraCharacters } from '@/lib/nine/kaguraCharacters';
 
 export interface SelectedItem {
@@ -60,7 +60,7 @@ export function useKaguraState() {
   const selectedCount = selectedItems.filter((item) => item.name).length;
 
   // URLパラメータから選択内容を復元（新形式 ?c= と旧形式 ?s1= の両方に対応）
-  const initializeFromUrl = ()=> {
+  useEffect(() => {
     const params = new URLSearchParams(window.location.search);
 
     const cParam = params.get('c');
@@ -91,20 +91,13 @@ export function useKaguraState() {
 
     if (items.some(item => item.name)) {
       setSelectedItems(items);
-      updateOgImageMeta(items);
     }
-  };
+  }, []);
 
-  if (typeof window !== 'undefined') {
-    initializeFromUrl();
-  }
-
-  // OGP画像URLを更新するユーティリティ
-  const updateOgImageMeta = (items: SelectedItem[]) => {
-    if (typeof window === 'undefined') return;
-
-    const params = buildShareParam(items);
-    const ogUrl = `/api/og/kagura?c=${params}`;
+  // OGP画像URLを更新
+  useEffect(() => {
+    const c = buildShareParam(selectedItems);
+    const ogUrl = `/api/og/kagura?c=${c}`;
     const fullUrl = `${window.location.origin}${ogUrl}`;
 
     const updateMeta = (selector: string, attr: string, value: string) => {
@@ -121,26 +114,22 @@ export function useKaguraState() {
 
     updateMeta('meta[property="og:image"]', 'property', fullUrl);
     updateMeta('meta[name="twitter:image"]', 'name', fullUrl);
-  };
+  }, [selectedItems]);
 
   const handleSelect = (index: number, name: string, imageUrl: string, slug: string) => {
     const newItems = [...selectedItems];
     newItems[index] = { name, image: proxyUrl(imageUrl), originalImage: imageUrl, slug };
     setSelectedItems(newItems);
-    updateOgImageMeta(newItems);
   };
 
   const handleReset = () => {
-    const empty = createEmptyItems();
-    setSelectedItems(empty);
-    updateOgImageMeta(empty);
+    setSelectedItems(createEmptyItems());
   };
 
   const handleClearPanel = (index: number) => {
     const newItems = [...selectedItems];
     newItems[index] = { name: '' };
     setSelectedItems(newItems);
-    updateOgImageMeta(newItems);
   };
 
   const handleCopyShareText = () => {
