@@ -40,7 +40,7 @@ export function useDolphinState() {
   const selectedCount = selectedItems.filter((item) => item.name).length;
 
   // URLパラメータから選択内容を復元
-  useEffect(() => {
+  const initializeFromUrl = () => {
     const params = new URLSearchParams(window.location.search);
 
     const items = createEmptyItems();
@@ -62,7 +62,11 @@ export function useDolphinState() {
     if (items.some(item => item.name)) {
       setSelectedItems(items);
     }
-  }, []);
+  };
+
+  if (typeof window !== 'undefined') {
+    initializeFromUrl();
+  }
 
   // OGP画像URLを更新
   useEffect(() => {
