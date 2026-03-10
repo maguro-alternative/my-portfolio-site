@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { dolphinCharacters } from '@/lib/nine/dolphinCharacters';
 
 export interface SelectedItem {
@@ -61,6 +61,7 @@ export function useDolphinState() {
 
     if (items.some(item => item.name)) {
       setSelectedItems(items);
+      updateOgImageMeta(items);
     }
   };
 
@@ -68,9 +69,11 @@ export function useDolphinState() {
     initializeFromUrl();
   }
 
-  // OGP画像URLを更新
-  useEffect(() => {
-    const params = buildShareParams(selectedItems);
+  // OGP画像URLを更新するユーティリティ
+  const updateOgImageMeta = (items: SelectedItem[]) => {
+    if (typeof window === 'undefined') return;
+
+    const params = buildShareParams(items);
     const ogUrl = `/api/og/dolphin?${params.toString()}`;
     const fullUrl = `${window.location.origin}${ogUrl}`;
 
@@ -88,22 +91,26 @@ export function useDolphinState() {
 
     updateMeta('meta[property="og:image"]', 'property', fullUrl);
     updateMeta('meta[name="twitter:image"]', 'name', fullUrl);
-  }, [selectedItems]);
+  };
 
   const handleSelect = (index: number, name: string, imageUrl: string, slug: string) => {
     const newItems = [...selectedItems];
     newItems[index] = { name, image: proxyUrl(imageUrl), originalImage: imageUrl, slug };
     setSelectedItems(newItems);
+    updateOgImageMeta(newItems);
   };
 
   const handleReset = () => {
-    setSelectedItems(createEmptyItems());
+    const empty = createEmptyItems();
+    setSelectedItems(empty);
+    updateOgImageMeta(empty);
   };
 
   const handleClearPanel = (index: number) => {
     const newItems = [...selectedItems];
     newItems[index] = { name: '' };
     setSelectedItems(newItems);
+    updateOgImageMeta(newItems);
   };
 
   const handleCopyShareText = () => {
