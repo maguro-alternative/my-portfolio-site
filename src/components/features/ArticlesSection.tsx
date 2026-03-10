@@ -1,44 +1,11 @@
+import Link from "next/link";
 import {
   fetchQiitaArticles,
   fetchZennArticles,
   fetchNoteArticles,
   type Article,
 } from "@/lib/articles";
-
-const PLATFORM_STYLES: Record<
-  Article["platform"],
-  { label: string; bg: string; icon: string }
-> = {
-  qiita: { label: "Qiita", bg: "bg-[#55C500]/20", icon: "📝" },
-  zenn: { label: "Zenn", bg: "bg-[#3EA8FF]/20", icon: "📘" },
-  note: { label: "note", bg: "bg-[#41C9B4]/20", icon: "✏️" },
-};
-
-function ArticleCard({ article }: { article: Article }) {
-  const style = PLATFORM_STYLES[article.platform];
-  const date = new Date(article.publishedAt).toLocaleDateString("ja-JP");
-
-  return (
-    <a
-      href={article.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="block rounded-lg p-4 bg-white/5 hover:bg-white/10 transition-colors"
-    >
-      <div className="flex items-center gap-2 mb-2">
-        <span
-          className={`text-xs px-2 py-0.5 rounded-full ${style.bg} text-white`}
-        >
-          {style.icon} {style.label}
-        </span>
-        <span className="text-xs text-white/60">{date}</span>
-      </div>
-      <h3 className="text-sm leading-snug text-white line-clamp-2">
-        {article.title}
-      </h3>
-    </a>
-  );
-}
+import ArticleCard from "@/components/features/ArticleCard";
 
 type Props = {
   qiitaId?: string;
@@ -73,6 +40,14 @@ export default async function ArticlesSection({
         {articles.map((article) => (
           <ArticleCard key={article.url} article={article} />
         ))}
+      </div>
+      <div className="mt-4 text-center">
+        <Link
+          href="/articles"
+          className="inline-block px-6 py-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors text-sm text-white no-underline"
+        >
+          もっと見る →
+        </Link>
       </div>
     </section>
   );
