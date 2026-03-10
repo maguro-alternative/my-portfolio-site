@@ -1,30 +1,14 @@
-import Link from "next/link";
 import Twitter from "@/components/socials/twitter";
 import Github from "@/components/socials/github";
 import Zenn from "@/components/socials/zenn";
 import Qiita from "@/components/socials/qiita";
 import Uchuemon from "@/components/commonUI/uchuemon";
+import Header from "@/components/commonUI/Header";
 
 export default function ProfilePage() {
   return (
     <>
-      <div className="flex md:flex-row justify-between items-center p-2">
-        <div className="flex gap-5 mb-2.5 md:mb-0 p-2 text-white">
-          <Link href="/" className="no-underline">
-            Home
-          </Link>
-          <Link href="/profile" className="no-underline">
-            Profile
-          </Link>
-          <Link href="/articles" className="no-underline">
-            Articles
-          </Link>
-        </div>
-        <div className="flex items-center">
-          <Twitter id="sigumataityouda" />
-          <Github id="maguro-alternative" />
-        </div>
-      </div>
+      <Header />
 
       <div className="text-white max-w-4/5 mx-auto">
         <h1 className="text-4xl mb-5">自己紹介</h1>
