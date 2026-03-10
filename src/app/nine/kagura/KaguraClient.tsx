@@ -1,9 +1,10 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useKaguraState } from './hooks/useKaguraState';
 import { generateCanvasImage } from './utils/canvasDownload';
 import { CharacterSearchModal } from './components/CharacterSearchModal';
+import type { CharacterSearchModalHandle } from './components/CharacterSearchModal';
 import { ShareTextSection } from './components/ShareTextSection';
 import { SelectionGrid } from './components/SelectionGrid';
 import { SiteFooter } from './components/SiteFooter';
@@ -24,9 +25,12 @@ export default function KaguraClient() {
   const [activePanelIndex, setActivePanelIndex] = useState(0);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
 
+  const modalRef = useRef<CharacterSearchModalHandle | null>(null);
+
   const handlePanelClick = (index: number) => {
     setActivePanelIndex(index);
     setModalOpen(true);
+    setTimeout(() => modalRef.current?.focusInput?.(), 100);
   };
 
   const handleGenerate = async () => {
@@ -105,6 +109,7 @@ export default function KaguraClient() {
 
         {/* 検索モーダル */}
         <CharacterSearchModal
+          ref={modalRef}
           isOpen={modalOpen}
           panelIndex={activePanelIndex}
           onSelect={(name, imageUrl, slug) => handleSelect(activePanelIndex, name, imageUrl, slug)}
