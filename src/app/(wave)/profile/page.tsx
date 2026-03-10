@@ -16,6 +16,9 @@ export default function ProfilePage() {
           <Link href="/profile" className="no-underline">
             Profile
           </Link>
+          <Link href="/articles" className="no-underline">
+            Articles
+          </Link>
         </div>
         <div className="flex items-center">
           <Twitter id="sigumataityouda" />
