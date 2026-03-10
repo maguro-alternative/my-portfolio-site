@@ -60,7 +60,7 @@ export function useKaguraState() {
   const selectedCount = selectedItems.filter((item) => item.name).length;
 
   // URLパラメータから選択内容を復元（新形式 ?c= と旧形式 ?s1= の両方に対応）
-  useEffect(() => {
+  const initializeFromUrl = ()=> {
     const params = new URLSearchParams(window.location.search);
 
     const cParam = params.get('c');
@@ -92,7 +92,11 @@ export function useKaguraState() {
     if (items.some(item => item.name)) {
       setSelectedItems(items);
     }
-  }, []);
+  };
+
+  if (typeof window !== 'undefined') {
+    initializeFromUrl();
+  }
 
   // OGP画像URLを更新
   useEffect(() => {
