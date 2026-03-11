@@ -16,6 +16,7 @@ export default function KaguraClient() {
     selectedCount,
     shareText,
     handleSelect,
+    handleRandomSelect,
     handleReset,
     handleClearPanel,
     handleCopyShareText,
@@ -62,13 +63,21 @@ export default function KaguraClient() {
           <p className="text-sm font-semibold text-slate-700">
             {selectedCount} / 9 キャラ選択済み
           </p>
-          <button
-            onClick={handleReset}
-            disabled={selectedCount === 0}
-            className="text-sm text-slate-400 hover:text-slate-600 disabled:cursor-not-allowed disabled:text-slate-300"
-          >
-            リセット
-          </button>
+          <div className="flex gap-3">
+            <button
+              onClick={handleRandomSelect}
+              className="text-sm text-indigo-500 hover:text-indigo-700"
+            >
+              ランダム
+            </button>
+            <button
+              onClick={handleReset}
+              disabled={selectedCount === 0}
+              className="text-sm text-slate-400 hover:text-slate-600 disabled:cursor-not-allowed disabled:text-slate-300"
+            >
+              リセット
+            </button>
+          </div>
         </div>
 
         {/* 3x3 パネルグリッド */}
