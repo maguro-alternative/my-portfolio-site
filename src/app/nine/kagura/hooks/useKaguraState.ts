@@ -131,6 +131,19 @@ export function useKaguraState() {
     updateOgImageMeta(newItems);
   };
 
+  const handleRandomSelect = () => {
+    const shuffled = [...kaguraCharacters].sort(() => Math.random() - 0.5);
+    const picked = shuffled.slice(0, 9);
+    const items: SelectedItem[] = picked.map(char => ({
+      name: char.name,
+      image: proxyUrl(char.imageUrl),
+      originalImage: char.imageUrl,
+      slug: char.slug,
+    }));
+    setSelectedItems(items);
+    updateOgImageMeta(items);
+  };
+
   const handleReset = () => {
     const empty = createEmptyItems();
     setSelectedItems(empty);
@@ -154,6 +167,7 @@ export function useKaguraState() {
     selectedCount,
     shareText,
     handleSelect,
+    handleRandomSelect,
     handleReset,
     handleClearPanel,
     handleCopyShareText,
