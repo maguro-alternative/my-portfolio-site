@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Header from "@/components/commonUI/Header";
 import { getBlogPost, getBlogSlugs } from "@/lib/blog";
+import { mdxComponents } from "@/components/blog/mdxComponents";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -40,7 +41,7 @@ export default async function BlogPostPage({ params }: Props) {
           <time className="text-sm text-white/60">{date}</time>
         </header>
         <div className="blog-content max-w-none text-white/90 text-base leading-relaxed">
-          <MDXRemote source={post.content} />
+          <MDXRemote source={post.content} components={mdxComponents} />
         </div>
       </article>
       <div className="text-center p-5 text-white">
