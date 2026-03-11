@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, forwardRef, useImperativeHandle } from 'react';
 import { DolphinCharacter, dolphinCharacters } from '@/lib/nine/dolphinCharacters';
 
 interface CharacterSearchModalProps {
@@ -10,33 +10,23 @@ interface CharacterSearchModalProps {
   onClose: () => void;
 }
 
-export function CharacterSearchModal({
+export interface CharacterSearchModalHandle {
+  focusInput: () => void;
+}
+
+export const CharacterSearchModal = forwardRef<CharacterSearchModalHandle, CharacterSearchModalProps>(
+  function CharacterSearchModal({
   isOpen,
   panelIndex,
   onSelect,
   onClose,
-}: CharacterSearchModalProps) {
+}: CharacterSearchModalProps, ref) {
   const [searchTerm, setSearchTerm] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (isOpen) {
-      setSearchTerm('');
-      setTimeout(() => inputRef.current?.focus(), 100);
-    }
-  }, [isOpen]);
-
-  // Prevent background scroll when modal is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
+  useImperativeHandle(ref, () => ({
+    focusInput: () => inputRef.current?.focus(),
+  }));
 
   if (!isOpen) return null;
 
@@ -106,6 +96,7 @@ export function CharacterSearchModal({
                 <button
                   key={i}
                   onClick={() => {
+                    setSearchTerm('');
                     onSelect(char.name, char.imageUrl, char.slug);
                     onClose();
                   }}
@@ -128,4 +119,4 @@ export function CharacterSearchModal({
       </div>
     </div>
   );
-}
+});
