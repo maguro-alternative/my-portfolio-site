@@ -158,4 +158,4 @@ export function useKaguraState() {
     handleClearPanel,
     handleCopyShareText,
   };
-}
+};

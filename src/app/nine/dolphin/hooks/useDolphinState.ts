@@ -128,4 +128,4 @@ export function useDolphinState() {
     handleClearPanel,
     handleCopyShareText,
   };
-}
+};

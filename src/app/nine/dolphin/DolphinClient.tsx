@@ -1,10 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { useDolphinState } from './hooks/useDolphinState';
 import { generateCanvasImage } from './utils/canvasDownload';
 import { CharacterSearchModal } from './components/CharacterSearchModal';
-import type { CharacterSearchModalHandle } from './components/CharacterSearchModal';
 import { ShareTextSection } from './components/ShareTextSection';
 import { SelectionGrid } from './components/SelectionGrid';
 import { WaveBackground } from './components/WaveBackground';
@@ -25,12 +24,9 @@ export default function DolphinClient() {
   const [activePanelIndex, setActivePanelIndex] = useState(0);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
 
-  const modalRef = useRef<CharacterSearchModalHandle | null>(null);
-
   const handlePanelClick = (index: number) => {
     setActivePanelIndex(index);
     setModalOpen(true);
-    setTimeout(() => modalRef.current?.focusInput?.(), 100);
   };
 
   const handleGenerate = async () => {
@@ -113,7 +109,6 @@ export default function DolphinClient() {
 
         {/* 検索モーダル */}
         <CharacterSearchModal
-          ref={modalRef}
           isOpen={modalOpen}
           panelIndex={activePanelIndex}
           onSelect={(name, imageUrl, slug) => handleSelect(activePanelIndex, name, imageUrl, slug)}
