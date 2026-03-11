@@ -63,17 +63,17 @@ export default function KaguraClient() {
           <p className="text-sm font-semibold text-slate-700">
             {selectedCount} / 9 キャラ選択済み
           </p>
-          <div className="flex gap-3">
+          <div className="flex gap-2">
             <button
               onClick={handleRandomSelect}
-              className="text-sm text-indigo-500 hover:text-indigo-700"
+              className="rounded-md bg-indigo-500 px-3 py-1 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-indigo-600"
             >
               ランダム
             </button>
             <button
               onClick={handleReset}
               disabled={selectedCount === 0}
-              className="text-sm text-slate-400 hover:text-slate-600 disabled:cursor-not-allowed disabled:text-slate-300"
+              className="rounded-md bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-600 shadow-sm transition-colors hover:bg-slate-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-300"
             >
               リセット
             </button>
