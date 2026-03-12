@@ -31,7 +31,8 @@ export default async function ArticlesSection({
     .sort(
       (a, b) =>
         new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-    );
+    )
+    .slice(0, 9);
 
   if (articles.length === 0) return null;
 
