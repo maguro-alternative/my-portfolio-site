@@ -3,8 +3,8 @@ import Image from "next/image";
 
 export const mdxComponents: MDXComponents = {
   img: (props) => {
-    const { src, alt, ...rest } = props as React.ImgHTMLAttributes<HTMLImageElement>;
-    if (!src) return null;
+    const { src, alt } = props as React.ImgHTMLAttributes<HTMLImageElement>;
+    if (!src || typeof src !== "string") return null;
     return (
       <Image
         src={src}
@@ -13,7 +13,6 @@ export const mdxComponents: MDXComponents = {
         height={450}
         className="rounded-lg my-4"
         style={{ width: "100%", height: "auto" }}
-        {...rest}
       />
     );
   },
