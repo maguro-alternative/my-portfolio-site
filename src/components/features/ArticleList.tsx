@@ -6,6 +6,7 @@ import ArticleCard from "@/components/features/ArticleCard";
 
 const FILTERS: { label: string; value: Article["platform"] | "all" }[] = [
   { label: "すべて", value: "all" },
+  { label: "🐟 Blog", value: "blog" },
   { label: "📝 Qiita", value: "qiita" },
   { label: "📘 Zenn", value: "zenn" },
   { label: "✏️ note", value: "note" },
