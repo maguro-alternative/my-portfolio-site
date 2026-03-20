@@ -7,6 +7,7 @@ import {
   type Article,
 } from "@/lib/articles";
 import { fetchBlogArticles } from "@/lib/blog";
+import { fetchSlideArticles } from "@/lib/slides";
 import ArticleList from "@/components/features/ArticleList";
 
 export const metadata: Metadata = {
@@ -21,6 +22,7 @@ const NOTE_ID = "maguro_alter";
 export default async function ArticlesPage() {
   const results = await Promise.all([
     Promise.resolve(fetchBlogArticles(10)),
+    Promise.resolve(fetchSlideArticles(10)),
     fetchQiitaArticles(QIITA_ID, 10),
     fetchZennArticles(ZENN_ID, 10),
     fetchNoteArticles(NOTE_ID, 10),

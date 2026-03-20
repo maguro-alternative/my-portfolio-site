@@ -6,6 +6,7 @@ import {
   type Article,
 } from "@/lib/articles";
 import { fetchBlogArticles } from "@/lib/blog";
+import { fetchSlideArticles } from "@/lib/slides";
 import ArticleCard from "@/components/features/ArticleCard";
 
 type Props = {
@@ -21,6 +22,7 @@ export default async function ArticlesSection({
 }: Props) {
   const results = await Promise.all([
     Promise.resolve(fetchBlogArticles(9)),
+    Promise.resolve(fetchSlideArticles(9)),
     qiitaId ? fetchQiitaArticles(qiitaId, 9) : Promise.resolve([]),
     zennId ? fetchZennArticles(zennId, 9) : Promise.resolve([]),
     noteId ? fetchNoteArticles(noteId, 9) : Promise.resolve([]),

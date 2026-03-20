@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import type { Article } from "./articles";
 
 const SLIDES_DIR = path.join(process.cwd(), "src/content/slides");
 
@@ -51,4 +52,15 @@ export function getAllSlideDecks(): SlideDeck[] {
         new Date(b.frontmatter.date).getTime() -
         new Date(a.frontmatter.date).getTime()
     );
+}
+
+export function fetchSlideArticles(count = 3): Article[] {
+  return getAllSlideDecks()
+    .slice(0, count)
+    .map((deck) => ({
+      title: deck.frontmatter.title,
+      url: `/slides/${deck.slug}`,
+      publishedAt: deck.frontmatter.date,
+      platform: "slides" as const,
+    }));
 }
