@@ -59,9 +59,9 @@ export default function SlideViewer({
   }, [goNext, goPrev, toggleFullscreen]);
 
   return (
-    <div className="min-h-screen bg-gray-950 flex flex-col">
+    <div className="h-dvh bg-gray-950 flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="flex items-center justify-between px-4 md:px-6 py-3 bg-gray-900 border-b border-gray-800 text-white">
+      <header className="shrink-0 flex items-center justify-between px-4 md:px-6 py-3 bg-gray-900 border-b border-gray-800 text-white">
         <Link
           href="/slides"
           className="text-sm text-gray-400 hover:text-white transition-colors"
@@ -78,20 +78,18 @@ export default function SlideViewer({
       </header>
 
       {/* Slide area */}
-      <div className="flex-1 flex flex-col items-center justify-center bg-gray-950">
-        <div className="w-full">
-          <div className="slide-content relative w-full aspect-[16/9] bg-gray-900 border-y border-gray-800 overflow-hidden">
-            <div className="absolute inset-0 p-6 md:p-16 flex items-center justify-center">
-              <div className="w-full text-white overflow-auto max-h-full">
-                <SlideSelector current={current}>{children}</SlideSelector>
-              </div>
+      <div className="flex-1 min-h-0 flex items-center justify-center bg-gray-950">
+        <div className="slide-content relative w-full aspect-[16/9] max-h-full bg-gray-900 border-y border-gray-800 overflow-hidden">
+          <div className="absolute inset-0 p-6 md:p-16 flex items-center justify-center">
+            <div className="w-full text-white overflow-auto max-h-full">
+              <SlideSelector current={current}>{children}</SlideSelector>
             </div>
           </div>
         </div>
       </div>
 
       {/* Controls */}
-      <footer className="flex items-center justify-center gap-4 px-6 py-4 bg-gray-900 border-t border-gray-800">
+      <footer className="shrink-0 flex items-center justify-center gap-4 px-6 py-4 bg-gray-900 border-t border-gray-800">
         <button
           onClick={goPrev}
           disabled={current === 0}
