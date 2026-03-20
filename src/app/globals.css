@@ -220,6 +220,14 @@ button:hover {
   border-radius: 0.5rem;
 }
 
+.slide-item {
+  display: none;
+}
+
+.slide-item.active {
+  display: block;
+}
+
 .kagura-portal-inner {
   max-width: 1000px;
   margin: 0 auto;

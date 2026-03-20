@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { serialize } from "next-mdx-remote/serialize";
+import { MDXRemote } from "next-mdx-remote/rsc";
 import { getSlideDeck, getSlideSlugs } from "@/lib/slides";
 import SlideViewer from "./SlideViewer";
 
@@ -27,11 +27,16 @@ export default async function SlidePage({ params }: Props) {
   const deck = getSlideDeck(slug);
   if (!deck) notFound();
 
-  const serializedSlides = await Promise.all(
-    deck.slides.map((md) => serialize(md))
-  );
-
   return (
-    <SlideViewer title={deck.frontmatter.title} slides={serializedSlides} />
+    <SlideViewer
+      title={deck.frontmatter.title}
+      totalSlides={deck.slides.length}
+    >
+      {deck.slides.map((md, i) => (
+        <div key={i} data-slide-index={i} className="slide-item">
+          <MDXRemote source={md} />
+        </div>
+      ))}
+    </SlideViewer>
   );
 }

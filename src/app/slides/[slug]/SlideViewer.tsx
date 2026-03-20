@@ -1,23 +1,25 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
-import { MDXRemote } from "next-mdx-remote";
-import type { MDXRemoteSerializeResult } from "next-mdx-remote";
 
 type SlideViewerProps = {
   title: string;
-  slides: MDXRemoteSerializeResult[];
+  totalSlides: number;
+  children: ReactNode;
 };
 
-export default function SlideViewer({ title, slides }: SlideViewerProps) {
-  const total = slides.length;
+export default function SlideViewer({
+  title,
+  totalSlides,
+  children,
+}: SlideViewerProps) {
   const [current, setCurrent] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const goNext = useCallback(() => {
-    setCurrent((prev) => Math.min(prev + 1, total - 1));
-  }, [total]);
+    setCurrent((prev) => Math.min(prev + 1, totalSlides - 1));
+  }, [totalSlides]);
 
   const goPrev = useCallback(() => {
     setCurrent((prev) => Math.max(prev - 1, 0));
@@ -79,7 +81,7 @@ export default function SlideViewer({ title, slides }: SlideViewerProps) {
       <div className="flex-1 flex items-center justify-center p-4 md:p-8">
         <div className="slide-content bg-gray-900 rounded-2xl shadow-2xl w-full max-w-5xl aspect-[16/9] p-8 md:p-16 flex items-center justify-center overflow-auto border border-gray-800">
           <div className="w-full max-h-full text-white">
-            <MDXRemote {...slides[current]} />
+            <SlideSelector current={current}>{children}</SlideSelector>
           </div>
         </div>
       </div>
@@ -94,16 +96,41 @@ export default function SlideViewer({ title, slides }: SlideViewerProps) {
           ←
         </button>
         <span className="text-gray-400 text-sm tabular-nums min-w-[80px] text-center">
-          {current + 1} / {total}
+          {current + 1} / {totalSlides}
         </span>
         <button
           onClick={goNext}
-          disabled={current === total - 1}
+          disabled={current === totalSlides - 1}
           className="text-white bg-gray-800 hover:bg-gray-700 disabled:opacity-30 disabled:cursor-not-allowed px-4 py-2 rounded-lg transition-colors border-gray-700"
         >
           →
         </button>
       </footer>
+    </div>
+  );
+}
+
+function SlideSelector({
+  current,
+  children,
+}: {
+  current: number;
+  children: ReactNode;
+}) {
+  const ref = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (!node) return;
+      const items = node.querySelectorAll(".slide-item");
+      items.forEach((item, i) => {
+        item.classList.toggle("active", i === current);
+      });
+    },
+    [current]
+  );
+
+  return (
+    <div ref={ref}>
+      {children}
     </div>
   );
 }
