@@ -1,7 +1,16 @@
 "use client";
 
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import Link from "next/link";
+
+const SLIDE_WIDTH = 960;
+const SLIDE_HEIGHT = 540;
 
 type SlideViewerProps = {
   title: string;
@@ -16,6 +25,8 @@ export default function SlideViewer({
 }: SlideViewerProps) {
   const [current, setCurrent] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [scale, setScale] = useState(1);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const goNext = useCallback(() => {
     setCurrent((prev) => Math.min(prev + 1, totalSlides - 1));
@@ -58,6 +69,24 @@ export default function SlideViewer({
     };
   }, [goNext, goPrev, toggleFullscreen]);
 
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const updateScale = () => {
+      const rect = container.getBoundingClientRect();
+      const scaleX = rect.width / SLIDE_WIDTH;
+      const scaleY = rect.height / SLIDE_HEIGHT;
+      setScale(Math.min(scaleX, scaleY));
+    };
+
+    updateScale();
+
+    const observer = new ResizeObserver(updateScale);
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="h-dvh bg-gray-950 flex flex-col overflow-hidden">
       {/* Header */}
@@ -78,10 +107,21 @@ export default function SlideViewer({
       </header>
 
       {/* Slide area */}
-      <div className="flex-1 min-h-0 flex items-center justify-center bg-gray-950">
-        <div className="slide-content relative w-full aspect-[16/9] max-h-full bg-gray-900 border-y border-gray-800 overflow-hidden">
-          <div className="absolute inset-0 p-6 md:p-16 flex items-center justify-center">
-            <div className="w-full text-white overflow-auto max-h-full">
+      <div
+        ref={containerRef}
+        className="flex-1 min-h-0 flex items-center justify-center bg-gray-950 overflow-hidden"
+      >
+        <div
+          className="slide-content bg-gray-900 text-white overflow-hidden"
+          style={{
+            width: SLIDE_WIDTH,
+            height: SLIDE_HEIGHT,
+            transform: `scale(${scale})`,
+            transformOrigin: "center center",
+          }}
+        >
+          <div className="w-full h-full p-10 md:p-16 flex items-center">
+            <div className="w-full">
               <SlideSelector current={current}>{children}</SlideSelector>
             </div>
           </div>
