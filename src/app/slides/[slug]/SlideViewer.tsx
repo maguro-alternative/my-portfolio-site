@@ -78,8 +78,8 @@ export default function SlideViewer({
       </header>
 
       {/* Slide area */}
-      <div className="flex-1 flex items-center justify-center p-4 md:p-8">
-        <div className="slide-content bg-gray-900 rounded-2xl shadow-2xl w-full max-w-5xl aspect-[16/9] p-8 md:p-16 flex items-center justify-center overflow-auto border border-gray-800">
+      <div className="flex-1 flex items-center justify-center p-2 md:p-8 min-h-0">
+        <div className="slide-content bg-gray-900 rounded-2xl shadow-2xl w-full max-w-5xl md:aspect-[16/9] p-5 md:p-16 flex items-center justify-center overflow-auto border border-gray-800">
           <div className="w-full max-h-full text-white">
             <SlideSelector current={current}>{children}</SlideSelector>
           </div>
