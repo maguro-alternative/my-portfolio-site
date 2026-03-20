@@ -40,7 +40,7 @@ export default async function BlogPostPage({ params }: Props) {
           <h1 className="text-4xl mb-2">{post.frontmatter.title}</h1>
           <time className="text-sm text-white/60">{date}</time>
         </header>
-        <div className="blog-content max-w-none text-white/90 text-base leading-relaxed">
+        <div className="bg-white/10 rounded-lg p-6 mb-8 blog-content max-w-none text-white/90 text-base leading-relaxed">
           <MDXRemote source={post.content} components={mdxComponents} />
         </div>
       </article>
