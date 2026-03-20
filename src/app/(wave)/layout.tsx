@@ -29,17 +29,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <div className="container mx-auto">
-          <SpotlightAndWave />
-          {children}
-        </div>
-        <Analytics />
-        <SpeedInsights />
-      </body>
-    </html>
+    <>
+      <div className={`${geistSans.variable} ${geistMono.variable} antialiased container mx-auto`}>
+        <SpotlightAndWave />
+        {children}
+      </div>
+      <Analytics />
+      <SpeedInsights />
+    </>
   );
 }
