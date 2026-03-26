@@ -9,12 +9,13 @@ const PLATFORM_STYLES: Record<
   zenn: { label: "Zenn", bg: "bg-[#3EA8FF]/20", icon: "📘" },
   note: { label: "note", bg: "bg-[#41C9B4]/20", icon: "✏️" },
   blog: { label: "Blog", bg: "bg-[#FF6B6B]/20", icon: "🐟" },
+  slides: { label: "Slides", bg: "bg-[#A78BFA]/20", icon: "🎤" },
 };
 
 export default function ArticleCard({ article }: { article: Article }) {
   const style = PLATFORM_STYLES[article.platform];
   const date = new Date(article.publishedAt).toLocaleDateString("ja-JP");
-  const isInternal = article.platform === "blog";
+  const isInternal = article.platform === "blog" || article.platform === "slides";
 
   const className =
     "block rounded-lg p-4 bg-white/5 hover:bg-white/10 transition-colors";

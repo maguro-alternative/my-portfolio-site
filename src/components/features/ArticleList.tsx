@@ -10,6 +10,7 @@ const FILTERS: { label: string; value: Article["platform"] | "all" }[] = [
   { label: "📝 Qiita", value: "qiita" },
   { label: "📘 Zenn", value: "zenn" },
   { label: "✏️ note", value: "note" },
+  { label: "🎤 Slides", value: "slides" },
 ];
 
 const PER_PAGE = 9;

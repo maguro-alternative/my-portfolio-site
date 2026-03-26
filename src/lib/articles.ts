@@ -2,7 +2,7 @@ export type Article = {
   title: string;
   url: string;
   publishedAt: string;
-  platform: "qiita" | "zenn" | "note" | "blog";
+  platform: "qiita" | "zenn" | "note" | "blog" | "slides";
 };
 
 export async function fetchQiitaArticles(
