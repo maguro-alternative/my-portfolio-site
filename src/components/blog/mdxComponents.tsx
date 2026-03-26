@@ -1,5 +1,7 @@
 import type { MDXComponents } from "mdx/types";
 import Image from "next/image";
+import LinkCard from "./LinkCard";
+import TweetEmbed from "./TweetEmbed";
 
 export const mdxComponents: MDXComponents = {
   img: (props) => {
@@ -16,4 +18,6 @@ export const mdxComponents: MDXComponents = {
       />
     );
   },
+  LinkCard,
+  TweetEmbed,
 };
