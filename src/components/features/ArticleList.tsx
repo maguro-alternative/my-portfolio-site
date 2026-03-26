@@ -75,7 +75,7 @@ export default function ArticleList({ articles }: { articles: Article[] }) {
                 <button
                   key={n}
                   onClick={() => setPage(n)}
-                  className={`w-8 h-8 rounded-lg text-sm border-none cursor-pointer transition-colors ${
+                  className={`px-3 py-1.5 rounded-lg text-sm border-none cursor-pointer transition-colors ${
                     n === currentPage
                       ? "bg-white/25 text-white"
                       : "bg-white/5 text-white/60 hover:bg-white/15 hover:text-white"
