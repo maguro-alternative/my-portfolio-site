@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "@/app/globals.css";
+import "./kagura-portal.css";
 import "./kagura-reset.css";
 
 const geistSans = Geist({
