@@ -16,9 +16,35 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const deck = getSlideDeck(slug);
   if (!deck) return {};
+
+  const title = `${deck.frontmatter.title} | スライド`;
+  const description = deck.frontmatter.description || "";
+  const ogImageUrl = `/api/og/slides?title=${encodeURIComponent(deck.frontmatter.title)}&date=${encodeURIComponent(deck.frontmatter.date)}`;
+
   return {
-    title: `${deck.frontmatter.title} | スライド`,
-    description: deck.frontmatter.description,
+    title,
+    description,
+    openGraph: {
+      title: deck.frontmatter.title,
+      description,
+      type: "article",
+      publishedTime: deck.frontmatter.date,
+      url: `/slides/${slug}`,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: deck.frontmatter.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: deck.frontmatter.title,
+      description,
+      images: [ogImageUrl],
+    },
   };
 }
 

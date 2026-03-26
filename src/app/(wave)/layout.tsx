@@ -6,10 +6,19 @@ import "./blog/blog-content.css";
 import SpotlightAndWave from "@/components/features/SpotLightAndWave";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://maguro-alternative.com"),
   title: "マグロポートフォリオ",
   description: "マグロのポートフォリオサイトです。",
   icons: {
     icon: "/uchuemon.png",
+  },
+  openGraph: {
+    siteName: "マグロポートフォリオ",
+    locale: "ja_JP",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
   },
 };
 

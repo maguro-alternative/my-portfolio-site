@@ -12,6 +12,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata = {
+  metadataBase: new URL('https://maguro-alternative.com'),
   title: 'マグロのポートフォリオサイト',
 }
 
