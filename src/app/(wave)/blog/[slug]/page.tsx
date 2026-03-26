@@ -17,9 +17,35 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = getBlogPost(slug);
   if (!post) return {};
+
+  const title = `${post.frontmatter.title} | マグロポートフォリオ`;
+  const description = post.frontmatter.description || "";
+  const ogImageUrl = `/api/og/blog?title=${encodeURIComponent(post.frontmatter.title)}&date=${encodeURIComponent(post.frontmatter.publishedAt)}`;
+
   return {
-    title: `${post.frontmatter.title} | マグロポートフォリオ`,
-    description: post.frontmatter.description,
+    title,
+    description,
+    openGraph: {
+      title: post.frontmatter.title,
+      description,
+      type: "article",
+      publishedTime: post.frontmatter.publishedAt,
+      url: `/blog/${slug}`,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.frontmatter.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.frontmatter.title,
+      description,
+      images: [ogImageUrl],
+    },
   };
 }
 
