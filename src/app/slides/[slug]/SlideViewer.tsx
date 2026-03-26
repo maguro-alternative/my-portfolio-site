@@ -10,6 +10,8 @@ import {
 import Link from "next/link";
 
 const SLIDE_BASE_WIDTH = 960;
+const SLIDE_BASE_HEIGHT = 540;
+const MOBILE_BREAKPOINT = 768;
 
 type SlideViewerProps = {
   title: string;
@@ -25,7 +27,7 @@ export default function SlideViewer({
   const [current, setCurrent] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [scale, setScale] = useState(1);
-  const [slideHeight, setSlideHeight] = useState(540);
+  const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const goNext = useCallback(() => {
@@ -75,10 +77,14 @@ export default function SlideViewer({
 
     const update = () => {
       const rect = container.getBoundingClientRect();
-      const s = rect.width / SLIDE_BASE_WIDTH;
-      setScale(s);
-      // Inverse-scale the container height to get virtual slide height
-      setSlideHeight(rect.height / s);
+      const mobile = rect.width < MOBILE_BREAKPOINT;
+      setIsMobile(mobile);
+
+      if (!mobile) {
+        const scaleX = rect.width / SLIDE_BASE_WIDTH;
+        const scaleY = rect.height / SLIDE_BASE_HEIGHT;
+        setScale(Math.min(scaleX, scaleY));
+      }
     };
 
     update();
@@ -94,14 +100,14 @@ export default function SlideViewer({
       <header className="shrink-0 flex items-center justify-between px-4 md:px-6 py-3 bg-gray-900 border-b border-gray-800 text-white">
         <Link
           href="/slides"
-          className="text-sm text-gray-400 hover:text-white transition-colors"
+          className="text-sm text-gray-400 hover:text-white transition-colors shrink-0"
         >
           ← 一覧
         </Link>
         <h1 className="text-sm font-medium truncate mx-4">{title}</h1>
         <button
           onClick={toggleFullscreen}
-          className="text-sm text-gray-400 hover:text-white transition-colors bg-transparent border-gray-700 px-3 py-1"
+          className="text-sm text-gray-400 hover:text-white transition-colors bg-transparent border-gray-700 px-3 py-1 shrink-0"
         >
           {isFullscreen ? "解除" : "全画面"}
         </button>
@@ -110,23 +116,35 @@ export default function SlideViewer({
       {/* Slide area */}
       <div
         ref={containerRef}
-        className="flex-1 min-h-0 bg-gray-900 overflow-hidden"
+        className="flex-1 min-h-0 flex items-center justify-center bg-gray-950 overflow-hidden"
       >
-        <div
-          className="slide-content text-white"
-          style={{
-            width: SLIDE_BASE_WIDTH,
-            height: slideHeight,
-            transform: `scale(${scale})`,
-            transformOrigin: "left top",
-          }}
-        >
-          <div className="w-full h-full px-10 py-8 md:px-16 md:py-12 flex items-center">
-            <div className="w-full">
-              <SlideSelector current={current}>{children}</SlideSelector>
+        {isMobile ? (
+          // Mobile: render at native size, no scale transform
+          <div className="slide-content w-full h-full bg-gray-900 text-white">
+            <div className="w-full h-full px-6 py-8 flex items-center">
+              <div className="w-full">
+                <SlideSelector current={current}>{children}</SlideSelector>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          // Desktop: 16:9 with scale transform
+          <div
+            className="slide-content bg-gray-900 text-white overflow-hidden"
+            style={{
+              width: SLIDE_BASE_WIDTH,
+              height: SLIDE_BASE_HEIGHT,
+              transform: `scale(${scale})`,
+              transformOrigin: "center center",
+            }}
+          >
+            <div className="w-full h-full p-16 flex items-center">
+              <div className="w-full">
+                <SlideSelector current={current}>{children}</SlideSelector>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Controls */}
