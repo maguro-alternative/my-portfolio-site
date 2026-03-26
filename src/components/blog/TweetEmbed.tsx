@@ -1,42 +1,54 @@
-"use client";
+import TweetEmbedClient from "./TweetEmbedClient";
+import type { TweetData } from "./TweetEmbedClient";
 
-import { useEffect, useRef } from "react";
+const TWEET_URL_PATTERN =
+  /(?:twitter\.com|x\.com|fxtwitter\.com|fixupx\.com|vxtwitter\.com)\/.+\/status\/(\d+)/;
 
-declare global {
-  interface Window {
-    twttr?: {
-      widgets: {
-        load: (element?: HTMLElement) => void;
-      };
+function extractTweetId(idOrUrl: string): string {
+  const match = idOrUrl.match(TWEET_URL_PATTERN);
+  if (match) return match[1];
+  // Assume it's already a raw ID
+  return idOrUrl.replace(/\D/g, "");
+}
+
+async function fetchTweetFromFxTwitter(
+  tweetId: string
+): Promise<TweetData | undefined> {
+  try {
+    const res = await fetch(
+      `https://api.fxtwitter.com/i/status/${tweetId}`,
+      { next: { revalidate: 86400 } }
+    );
+    if (!res.ok) return undefined;
+
+    const json = await res.json();
+    const tweet = json.tweet;
+    if (!tweet) return undefined;
+
+    return {
+      authorName: tweet.author?.name ?? "",
+      authorHandle: tweet.author?.screen_name ?? "",
+      authorAvatar: tweet.author?.avatar_url ?? "",
+      text: tweet.text ?? "",
+      createdAt: tweet.created_at ?? "",
+      mediaUrl: tweet.media?.photos?.[0]?.url ?? tweet.media?.videos?.[0]?.thumbnail_url,
     };
+  } catch {
+    return undefined;
   }
 }
 
-export default function TweetEmbed({ id }: { id: string }) {
-  const containerRef = useRef<HTMLDivElement>(null);
+type Props = {
+  id?: string;
+  url?: string;
+};
 
-  useEffect(() => {
-    const loadTwitterWidget = () => {
-      if (window.twttr) {
-        window.twttr.widgets.load(containerRef.current ?? undefined);
-        return;
-      }
+export default async function TweetEmbed({ id, url }: Props) {
+  const raw = url ?? id ?? "";
+  const tweetId = extractTweetId(raw);
+  if (!tweetId) return null;
 
-      const script = document.createElement("script");
-      script.src = "https://platform.twitter.com/widgets.js";
-      script.async = true;
-      script.charset = "utf-8";
-      document.head.appendChild(script);
-    };
+  const fallbackData = await fetchTweetFromFxTwitter(tweetId);
 
-    loadTwitterWidget();
-  }, [id]);
-
-  return (
-    <div ref={containerRef} className="tweet-embed">
-      <blockquote className="twitter-tweet" data-theme="dark">
-        <a href={`https://twitter.com/i/status/${id}`}>Loading tweet...</a>
-      </blockquote>
-    </div>
-  );
+  return <TweetEmbedClient tweetId={tweetId} fallbackData={fallbackData} />;
 }
