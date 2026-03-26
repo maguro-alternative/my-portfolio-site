@@ -1,5 +1,11 @@
-import TweetEmbedClient from "./TweetEmbedClient";
-import type { TweetData } from "./TweetEmbedClient";
+type TweetData = {
+  authorName: string;
+  authorHandle: string;
+  authorAvatar: string;
+  text: string;
+  createdAt: string;
+  mediaUrl?: string;
+};
 
 const TWEET_URL_PATTERN =
   /(?:twitter\.com|x\.com|fxtwitter\.com|fixupx\.com|vxtwitter\.com)\/.+\/status\/(\d+)/;
@@ -7,7 +13,6 @@ const TWEET_URL_PATTERN =
 function extractTweetId(idOrUrl: string): string {
   const match = idOrUrl.match(TWEET_URL_PATTERN);
   if (match) return match[1];
-  // Assume it's already a raw ID
   return idOrUrl.replace(/\D/g, "");
 }
 
@@ -31,7 +36,9 @@ async function fetchTweetFromFxTwitter(
       authorAvatar: tweet.author?.avatar_url ?? "",
       text: tweet.text ?? "",
       createdAt: tweet.created_at ?? "",
-      mediaUrl: tweet.media?.photos?.[0]?.url ?? tweet.media?.videos?.[0]?.thumbnail_url,
+      mediaUrl:
+        tweet.media?.photos?.[0]?.url ??
+        tweet.media?.videos?.[0]?.thumbnail_url,
     };
   } catch {
     return undefined;
@@ -48,7 +55,60 @@ export default async function TweetEmbed({ id, url }: Props) {
   const tweetId = extractTweetId(raw);
   if (!tweetId) return null;
 
-  const fallbackData = await fetchTweetFromFxTwitter(tweetId);
+  const tweetData = await fetchTweetFromFxTwitter(tweetId);
+  const tweetUrl = `https://x.com/i/status/${tweetId}`;
 
-  return <TweetEmbedClient tweetId={tweetId} fallbackData={fallbackData} />;
+  if (!tweetData) {
+    return (
+      <div className="tweet-embed">
+        <a
+          href={tweetUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="tweet-fallback-card"
+        >
+          <div className="tweet-fallback-text">
+            ツイートを読み込めませんでした
+          </div>
+          <div className="tweet-fallback-date">{tweetUrl}</div>
+        </a>
+      </div>
+    );
+  }
+
+  return (
+    <div className="tweet-embed">
+      <a
+        href={tweetUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="tweet-fallback-card"
+      >
+        <div className="tweet-fallback-header">
+          <img
+            src={tweetData.authorAvatar}
+            alt=""
+            className="tweet-fallback-avatar"
+            width={40}
+            height={40}
+          />
+          <div>
+            <div className="tweet-fallback-name">{tweetData.authorName}</div>
+            <div className="tweet-fallback-handle">
+              @{tweetData.authorHandle}
+            </div>
+          </div>
+        </div>
+        <div className="tweet-fallback-text">{tweetData.text}</div>
+        {tweetData.mediaUrl && (
+          <img
+            src={tweetData.mediaUrl}
+            alt=""
+            className="tweet-fallback-media"
+          />
+        )}
+        <div className="tweet-fallback-date">{tweetData.createdAt}</div>
+      </a>
+    </div>
+  );
 }
