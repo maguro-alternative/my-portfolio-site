@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { kaguraCharacters } from '@/lib/nine/kaguraCharacters';
 
 export interface SelectedItem {
@@ -61,6 +61,7 @@ export function useKaguraState() {
 
   // URLパラメータから選択内容を復元（新形式 ?c= と旧形式 ?s1= の両方に対応）
   const initializeFromUrl = ()=> {
+    if (typeof window === 'undefined') return;
     const params = new URLSearchParams(window.location.search);
 
     const cParam = params.get('c');
@@ -95,10 +96,8 @@ export function useKaguraState() {
     }
   };
 
-  useEffect(() => {
-    initializeFromUrl();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+  initializeFromUrl();
 
   // OGP画像URLを更新するユーティリティ
   const updateOgImageMeta = (items: SelectedItem[]) => {

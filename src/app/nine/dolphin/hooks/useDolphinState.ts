@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { dolphinCharacters } from '@/lib/nine/dolphinCharacters';
 
 export interface SelectedItem {
@@ -41,6 +41,7 @@ export function useDolphinState() {
 
   // URLパラメータから選択内容を復元
   const initializeFromUrl = () => {
+    if (typeof window === 'undefined') return;
     const params = new URLSearchParams(window.location.search);
 
     const items = createEmptyItems();
@@ -65,10 +66,7 @@ export function useDolphinState() {
     }
   };
 
-  useEffect(() => {
-    initializeFromUrl();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  initializeFromUrl();
 
   // OGP画像URLを更新するユーティリティ
   const updateOgImageMeta = (items: SelectedItem[]) => {

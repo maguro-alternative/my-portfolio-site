@@ -1,19 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "../globals.css";
 import SpotlightAndWave from "@/components/features/SpotLightAndWave";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "マグロポートフォリオ",
@@ -30,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <div className={`${geistSans.variable} ${geistMono.variable} antialiased container mx-auto`}>
+      <div className="antialiased container mx-auto">
         <SpotlightAndWave />
         {children}
       </div>
