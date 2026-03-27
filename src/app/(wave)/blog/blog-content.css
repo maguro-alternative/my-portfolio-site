@@ -172,6 +172,12 @@
   border-color: rgba(255, 255, 255, 0.5);
 }
 
+.blog-content .tweet-fallback-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
 .blog-content .tweet-fallback-header {
   display: flex;
   align-items: center;
