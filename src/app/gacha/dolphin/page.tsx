@@ -45,10 +45,10 @@ export default function DolphinGacha() {
           {results.map((result: { rarity: string; name: string; iconType: number; }, i: number) => (
             <li key={i} className=''>
               <div className='icon-wrapper'>
-                {result.rarity === 'ピックアップUR' ? <img src='./gacha_rare_ur_pickup.png' /> : result.rarity === 'UR' ? <img src='./gacha_rare_ur.png' /> : result.rarity === 'UR' ? <img src='./gacha_rare_ur.png' /> : result.rarity === 'SSR' ? <img src='./gacha_rare_ssr.png' /> : result.rarity === 'SR' ? <img src='./gacha_rare_sr.png' /> : null}
+                {result.rarity === 'ピックアップUR' ? <img src='./dolphin/gacha_rare_ur_pickup.png' /> : result.rarity === 'UR' ? <img src='./dolphin/gacha_rare_ur.png' /> : result.rarity === 'UR' ? <img src='./dolphin/gacha_rare_ur.png' /> : result.rarity === 'SSR' ? <img src='./dolphin/gacha_rare_ssr.png' /> : result.rarity === 'SR' ? <img src='./dolphin/gacha_rare_sr.png' /> : null}
               </div>
               <div className='icon-wrapper'>
-                {result.iconType === 1 ? <img src='./icon_wave.png'/> : result.iconType === 2 ? <img src='./icon_sun.png'/> : result.iconType === 3 ? <img src='./icon_gear.png'/> : result.iconType === 4 ? <img src='./icon_moon.png'/> : result.iconType === 5 ? <img src='./icon_wind.png'/> : null}
+                {result.iconType === 1 ? <img src='./dolphin/icon_wave.png'/> : result.iconType === 2 ? <img src='./dolphin/icon_sun.png'/> : result.iconType === 3 ? <img src='./dolphin/icon_gear.png'/> : result.iconType === 4 ? <img src='./dolphin/icon_moon.png'/> : result.iconType === 5 ? <img src='./dolphin/icon_wind.png'/> : null}
               </div>
               <div>
                 {result.name}
