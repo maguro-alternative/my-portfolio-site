@@ -24,7 +24,8 @@
     "next": "^16.1.2",
     "next-mdx-remote": "^6.0.0",
     "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "react-dom": "^19.2.3",
+    "react-unity-webgl": "^10.1.6"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.1",
