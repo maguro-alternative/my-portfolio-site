@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { dolphinCharacters } from '@/lib/nine/dolphinCharacters';
 
 export interface SelectedItem {
@@ -66,7 +66,10 @@ export function useDolphinState() {
     }
   };
 
-  initializeFromUrl();
+  useEffect(() => {
+    initializeFromUrl();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // OGP画像URLを更新するユーティリティ
   const updateOgImageMeta = (items: SelectedItem[]) => {
