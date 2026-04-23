@@ -1,0 +1,52 @@
+/* kaguraページ用: globals.css のグローバルスタイルをリセット */
+body {
+  place-items: unset !important;
+  min-width: unset !important;
+  background: #ffffff !important;
+}
+
+p {
+  margin: 0 !important;
+}
+
+/* ページ全体の背景（ヘッダー画像＋花） */
+.kagura-portal-bg {
+  min-width: unset !important;
+  background-color: #f5f0f0 !important;
+  background-image:
+    url("https://senrankagura.marv.jp/img/bg_top_flower02.png"),
+    url("https://senrankagura.marv.jp/img/bg_main_flower03.png") !important;
+  background-repeat: no-repeat, no-repeat !important;
+  background-position: right bottom, left bottom !important;
+  background-size: auto, auto !important;
+}
+
+/* ヘッダー背景画像 */
+.kagura-header-bg {
+  background: #e8e4e4 url("https://senrankagura.marv.jp/img/bg_header_top.png") no-repeat center top / cover !important;
+  margin-bottom: 16px;
+}
+
+/* 白い囲みコンテンツボックス（本家風） */
+.kagura-content-box {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  margin: 16px 12px 24px;
+  padding: 20px 16px;
+  max-width: 540px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  z-index: 20;
+  overflow: visible;
+}
+
+@media (min-width: 768px) {
+  .kagura-content-box {
+    padding: 32px 40px;
+    max-width: 700px;
+    margin-top: 8px;
+  }
+}

@@ -1,0 +1,140 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  font-family: "Helvetica Neue",
+  Arial,
+  "Hiragino Kaku Gothic ProN",
+  "Hiragino Sans",
+  Meiryo,
+  sans-serif;
+  background-size: 100%;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-text-size-adjust: none;
+  font-size: calc(30 / 1684* 100vw);
+  font-weight: 800;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #FFF;
+  border-bottom: #C0CFDB solid calc(2 / 1684* 100vw);
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: #FFF;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border-bottom: #C0CFDB solid calc(2 / 1684 * 100vw);
+}
+
+h2 {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  background: #FFF;
+  line-height: calc(62 / 1684* 100vw);
+  border-left: #0C61BF solid calc(13 / 1659* 100vw);
+  font-size: calc(28 / 1684* 100vw);
+  padding-left: calc(25 / 1684* 100vw);
+  color: #003D6D;
+  font-weight: 800;
+}
+
+.rare_box h3 {
+  height: calc(38 / 1684 * 100vw);
+  -webkit-transform: skewX(-15deg);
+  transform: skewX(-15deg);
+  background: #5F87A4;
+  position: relative;
+}
+
+.rare_box h3 .kind {
+  position: absolute;
+  -webkit-transform: skewX(15deg) translateY(-50%);
+  transform: skewX(15deg) translateY(-50%);
+  left: 5px;
+  font-size: calc(24 / 1684* 100vw);
+  color: #FFF;
+}
+
+.icon-wrapper {
+  width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+
+.gacha_step_wrapper {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+}
+
+.tab_wrap {
+  background-color: #C1D7EE;
+  position: relative;
+  padding-top: calc(18 / 1684* 100vw);
+  padding-bottom: calc(10 / 1684* 100vw);
+  background-repeat: repeat-y;
+  background-position: left;
+  width: 100%;
+}
+
+.cacha_contents_wrapper {
+  width: calc(1420 / 1684* 100vw);
+  padding-left: calc(38 / 1684* 100vw);
+  margin: 0 auto;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}

@@ -13,6 +13,9 @@ export default {
         foreground: "var(--foreground)",
       },
       animation: {
+        "wave-slow": "wave 12s linear infinite",
+        "wave-mid": "wave 8s linear infinite reverse",
+        "wave-fast": "wave 6s linear infinite",
         "fall-small-7": "fall-small 7s linear infinite",
         "fall-small-9": "fall-small 9s linear infinite",
         "fall-small-13": "fall-small 13s linear infinite",
@@ -24,6 +27,10 @@ export default {
         "fall-large-7": "fall-large 7s linear infinite",
       },
       keyframes: {
+        wave: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
         "fall-small": {
           "0%": {
             top: "-20px",
