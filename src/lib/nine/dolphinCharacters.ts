@@ -44,7 +44,7 @@ export const dolphinCharacters: DolphinCharacter[] = [
   // ISRW
   { name: 'アイネス', reading: 'あいねす', team: 'ISRW', slug: 'eines', imageUrl: 'https://hpgames.jp/dolphin-wave/assets/img/chara/eines/ogp.png' },
   { name: 'ナハト', reading: 'なはと', team: 'ISRW', slug: 'nacht', imageUrl: 'https://hpgames.jp/dolphin-wave/assets/img/chara/nacht/ogp.png' },
-  { name: 'サラ・アンソニー', reading: 'さら あんそにー', team: 'ISRW', slug: 'sarah-anthony', imageUrl: 'https://hpgames.jp/dolphin-wave/assets/img/chara/sarah-anthony/ogp.png' },
+  { name: '咲良・アンソニー', reading: 'さら あんそにー', team: 'ISRW', slug: 'sarah-anthony', imageUrl: 'https://hpgames.jp/dolphin-wave/assets/img/chara/sarah-anthony/ogp.png' },
   { name: 'アマディア・ヴォルファ', reading: 'あまでぃあ ゔぉるふぁ', team: 'ISRW', slug: 'amadea-wolfa', imageUrl: 'https://hpgames.jp/dolphin-wave/assets/img/chara/amadea-wolfa/ogp.png' },
 
   // GRIMO→GOETIA

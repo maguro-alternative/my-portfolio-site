@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "@/app/globals.css";
 
 const geistSans = Geist({
@@ -13,28 +15,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "私を構成する9人のドルフィンウェーブのキャラクター",
-  description: "9つのドルフィンウェーブのキャラクターを選んで画像として保存。お気に入りのキャラクターで自分だけの画像を作成できます。",
-  openGraph: {
-    title: "私を構成する9人のドルフィンウェーブのキャラクター",
-    description: "9つのドルフィンウェーブのキャラクターを選んで画像として保存",
-    type: "website",
-    locale: "ja_JP",
-    siteName: "私を構成する9人のドルフィンウェーブのキャラクター",
-    images: [
-      {
-        url: '/api/og/dolphin?title=私を構成する9人のドルフィンウェーブのキャラクター',
-        width: 1200,
-        height: 630,
-        alt: '私を構成する9人のドルフィンウェーブのキャラクター',
-      },
-    ],
+  metadataBase: new URL('https://maguro-alternative.com'),
+  title: "私を構成する9人のドルフィン",
+  description: "9人のドルフィンウェーブのキャラクターを選んで画像として保存。お気に入りのキャラクターで自分だけの画像を作成できます。",
+  keywords: ["ドルフィンウェーブ", "ドルフィン", "キャラクター", "私を構成する9人", "画像作成"],
+  alternates: {
+    canonical: '/nine/dolphin',
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "私を構成する9人のドルフィンウェーブのキャラクター",
-    description: "9つのドルフィンウェーブのキャラクターを選んで画像として保存",
-    images: ['/api/og/dolphin?title=私を構成する9人のドルフィンウェーブのキャラクター'],
+  icons: {
+    icon: "/nine/dolphin/fenio.png",
   },
 };
 
@@ -47,7 +36,11 @@ export default function RootLayout({
     <html lang="ja">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >{children}</body>
+      >
+        {children}
+        <Analytics />
+        <SpeedInsights />
+      </body>
     </html>
   );
 }

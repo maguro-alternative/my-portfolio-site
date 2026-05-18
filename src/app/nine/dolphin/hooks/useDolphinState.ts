@@ -1,0 +1,146 @@
+'use client';
+
+import { useState, useMemo, useEffect } from 'react';
+import { dolphinCharacters } from '@/lib/nine/dolphinCharacters';
+
+export interface SelectedItem {
+  name: string;
+  image?: string;
+  originalImage?: string;
+  slug?: string;
+}
+
+function createEmptyItems(): SelectedItem[] {
+  return Array(9).fill(null).map(() => ({ name: '' }));
+}
+
+function buildShareParams(items: SelectedItem[]): URLSearchParams {
+  const params = new URLSearchParams();
+  items.forEach((item, index) => {
+    if (item.slug) {
+      params.set(`s${index + 1}`, item.slug);
+    }
+  });
+  return params;
+}
+
+function proxyUrl(imageUrl: string): string {
+  return `/api/image-proxy?url=${encodeURIComponent(imageUrl)}`;
+}
+
+export function useDolphinState() {
+  const [selectedItems, setSelectedItems] = useState<SelectedItem[]>(createEmptyItems());
+  const shareText = useMemo(() => {
+    if (typeof window === 'undefined') return '';
+    const params = buildShareParams(selectedItems);
+    const shareUrl = `${window.location.origin}/nine/dolphin?${params.toString()}`;
+    return `私を構成する9人のドルフィン\n#My9Dolphin #私を構成する9人のドルフィン\n\n${shareUrl}`;
+  }, [selectedItems]);
+
+  const selectedCount = selectedItems.filter((item) => item.name).length;
+
+  // URLパラメータから選択内容を復元
+  const initializeFromUrl = () => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+
+    const items = createEmptyItems();
+    for (let i = 1; i <= 9; i++) {
+      const slug = params.get(`s${i}`);
+      if (slug) {
+        const char = dolphinCharacters.find(c => c.slug === slug);
+        if (char) {
+          items[i - 1] = {
+            name: char.name,
+            image: proxyUrl(char.imageUrl),
+            originalImage: char.imageUrl,
+            slug: char.slug,
+          };
+        }
+      }
+    }
+
+    if (items.some(item => item.name)) {
+      setSelectedItems(items);
+      updateOgImageMeta(items);
+    }
+  };
+
+  useEffect(() => {
+    initializeFromUrl();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // OGP画像URLを更新するユーティリティ
+  const updateOgImageMeta = (items: SelectedItem[]) => {
+    if (typeof window === 'undefined') return;
+
+    const params = buildShareParams(items);
+    const ogUrl = `/api/og/dolphin?${params.toString()}`;
+    const fullUrl = `${window.location.origin}${ogUrl}`;
+
+    const updateMeta = (selector: string, attr: string, value: string) => {
+      const el = document.querySelector(selector);
+      if (el) {
+        el.setAttribute('content', value);
+      } else {
+        const meta = document.createElement('meta');
+        meta.setAttribute(attr === 'property' ? 'property' : 'name', selector.includes('property') ? 'og:image' : 'twitter:image');
+        meta.setAttribute('content', value);
+        document.head.appendChild(meta);
+      }
+    };
+
+    updateMeta('meta[property="og:image"]', 'property', fullUrl);
+    updateMeta('meta[name="twitter:image"]', 'name', fullUrl);
+  };
+
+  const handleSelect = (index: number, name: string, imageUrl: string, slug: string) => {
+    const newItems = [...selectedItems];
+    newItems[index] = { name, image: proxyUrl(imageUrl), originalImage: imageUrl, slug };
+    setSelectedItems(newItems);
+    updateOgImageMeta(newItems);
+  };
+
+  const handleRandomSelect = () => {
+    const shuffled = [...dolphinCharacters].sort(() => Math.random() - 0.5);
+    const picked = shuffled.slice(0, 9);
+    const items: SelectedItem[] = picked.map(char => ({
+      name: char.name,
+      image: proxyUrl(char.imageUrl),
+      originalImage: char.imageUrl,
+      slug: char.slug,
+    }));
+    setSelectedItems(items);
+    updateOgImageMeta(items);
+  };
+
+  const handleReset = () => {
+    const empty = createEmptyItems();
+    setSelectedItems(empty);
+    updateOgImageMeta(empty);
+  };
+
+  const handleClearPanel = (index: number) => {
+    const newItems = [...selectedItems];
+    newItems[index] = { name: '' };
+    setSelectedItems(newItems);
+    updateOgImageMeta(newItems);
+  };
+
+  const handleCopyShareText = () => {
+    navigator.clipboard.writeText(shareText);
+    alert('コピーしました！');
+  };
+
+  return {
+    selectedItems,
+    selectedCount,
+    shareText,
+    handleSelect,
+    handleRandomSelect,
+    handleReset,
+    handleClearPanel,
+    handleCopyShareText,
+  };
+}
